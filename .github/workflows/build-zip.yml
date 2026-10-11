@@ -23,11 +23,8 @@ jobs:
       - name: PHP-Syntax prüfen
         run: find . -name '*.php' -not -path './vendor/*' -print0 | xargs -0 -n1 php -l
 
-      - name: Version im Tag und im Plugin-Header vergleichen
-        if: startsWith(github.ref, 'refs/tags/v')
-        run: |
-          header=$(sed -n "s/^ \* Version: *//p" mlab-forms.php | tr -d '[:space:]')
-          [ "v${header}" = "${GITHUB_REF_NAME}" ] || { echo "Tag ${GITHUB_REF_NAME} passt nicht zu Version ${header}"; exit 1; }
+      - name: Versionen prüfen
+        run: bin/check-version.sh ${{ startsWith(github.ref, 'refs/tags/v') && github.ref_name || '' }}
 
       - name: ZIP bauen
         id: zip

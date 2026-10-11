@@ -9,6 +9,7 @@ namespace MLab_Forms;
 
 use MLab_Forms\Admin\SettingsPage;
 use MLab_Forms\Updates\AutoUpdate;
+use MLab_Forms\Updates\GitHubUpdater;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -23,10 +24,12 @@ final class Plugin {
 	public static function boot(): void {
 		add_action( 'init', array( self::class, 'load_textdomain' ) );
 
+		$updater = new GitHubUpdater();
+		$updater->register();
 		( new AutoUpdate() )->register();
 
 		if ( is_admin() ) {
-			( new SettingsPage() )->register();
+			( new SettingsPage( $updater ) )->register();
 		}
 	}
 
