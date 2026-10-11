@@ -14,7 +14,7 @@ composer install --no-dev --optimize-autoloader --no-interaction --quiet
 
 rm -rf build dist
 mkdir -p build/mlab-forms dist
-cp -R mlab-forms.php uninstall.php readme.txt LICENSE src languages vendor build/mlab-forms/
+cp -R mlab-forms.php uninstall.php readme.txt LICENSE src assets templates schema languages vendor build/mlab-forms/
 
 # Der Ordner im ZIP muss «mlab-forms» heissen, sonst legt WordPress beim Hochladen ein zweites Plugin an.
 (cd build && zip -rq "../dist/mlab-forms-${version}.zip" mlab-forms)

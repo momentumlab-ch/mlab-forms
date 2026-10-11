@@ -35,6 +35,7 @@ final class GitHubUpdater {
 		add_action( 'upgrader_process_complete', array( $this, 'clear_cache_after_upgrade' ), 10, 2 );
 		// Wer die Update-Daten von WordPress verwirft («Erneut prüfen», WP-CLI), will auch frische GitHub-Daten.
 		add_action( 'delete_site_transient_update_plugins', array( $this, 'clear_cache' ) );
+		add_action( 'load-update-core.php', array( $this, 'clear_cache_on_force_check' ) );
 	}
 
 	/**
@@ -128,7 +129,7 @@ final class GitHubUpdater {
 	public function cached_release() {
 		$cached = get_site_transient( self::CACHE_KEY );
 
-		return is_array( $cached ) ? $cached['release'] : false;
+		return is_array( $cached ) ? ( $cached['release'] ?? null ) : false;
 	}
 
 	/**
@@ -136,6 +137,16 @@ final class GitHubUpdater {
 	 */
 	public function clear_cache(): void {
 		delete_site_transient( self::CACHE_KEY );
+	}
+
+	/**
+	 * «Erneut prüfen» unter «Dashboard › Aktualisierungen» fragt auch GitHub neu an.
+	 */
+	public function clear_cache_on_force_check(): void {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- WordPress prüft hier selbst keinen Nonce, es wird nur der Cache geleert.
+		if ( ! empty( $_GET['force-check'] ) && current_user_can( 'update_plugins' ) ) {
+			$this->clear_cache();
+		}
 	}
 
 	/**

@@ -1,0 +1,27 @@
+{
+	"schema_version": 1,
+	"title": "Anfrage",
+	"settings": {
+		"submit_label": "Anfrage senden",
+		"success_message": "Danke! Du bekommst innert 24 Stunden einen Vorschlag per E-Mail.",
+		"store_entries": true,
+		"retention_days": 365,
+		"spam": { "honeypot": true, "min_seconds": 3 },
+		"notifications": [
+			{ "id": "admin", "to": "{site_admin_email}", "reply_to": "{field:email}", "subject": "Neue Anfrage: {field:angebot}", "body": "{all_fields}" },
+			{ "id": "guest", "to": "{field:email}", "subject": "Deine Anfrage bei {site_name}", "body": "Hoi {field:name}\n\nDanke für deine Anfrage. Wir melden uns innert 24 Stunden mit einem Vorschlag.\n\n{all_fields}\n\nLiebe Grüsse\n{site_name}", "enabled": true }
+		],
+		"tracking": { "ga4_event": "generate_lead", "ga4_params": { "angebot": "{field:angebot}" } }
+	},
+	"fields": [
+		{ "id": "angebot", "type": "select", "label": "Was möchtest du machen?", "required": true,
+			"options": [ { "value": "Allgemeine Anfrage" } ],
+			"prefill": { "param": "angebot", "data_attribute": "data-anfrage" } },
+		{ "id": "datum", "type": "date", "label": "Wunschdatum", "min": "today" },
+		{ "id": "personen", "type": "number", "label": "Personen", "min": 1, "max": 12, "default": 2, "width": "half" },
+		{ "id": "name", "type": "text", "label": "Name", "required": true, "autocomplete": "name" },
+		{ "id": "email", "type": "email", "label": "E-Mail", "required": true, "autocomplete": "email" },
+		{ "id": "nachricht", "type": "textarea", "label": "Nachricht", "rows": 3 },
+		{ "id": "consent", "type": "consent", "label": "Ich bin einverstanden, dass meine Angaben zur Bearbeitung der Anfrage gespeichert werden.", "link": "{privacy_url}", "required": true }
+	]
+}
