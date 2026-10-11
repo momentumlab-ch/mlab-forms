@@ -58,7 +58,7 @@ final class AutoUpdate {
 
 		return sprintf(
 			'<a href="%s">%s</a>',
-			esc_url( SettingsPage::url() ),
+			esc_url( SettingsPage::url( 'updates' ) ),
 			esc_html( $label )
 		);
 	}
