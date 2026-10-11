@@ -1,0 +1,45 @@
+name: Plugin-ZIP bauen
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  pull_request:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer:v2
+
+      - name: PHP-Syntax prüfen
+        run: find . -name '*.php' -not -path './vendor/*' -print0 | xargs -0 -n1 php -l
+
+      - name: Version im Tag und im Plugin-Header vergleichen
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          header=$(sed -n "s/^ \* Version: *//p" mlab-forms.php | tr -d '[:space:]')
+          [ "v${header}" = "${GITHUB_REF_NAME}" ] || { echo "Tag ${GITHUB_REF_NAME} passt nicht zu Version ${header}"; exit 1; }
+
+      - name: ZIP bauen
+        id: zip
+        run: echo "path=$(bin/build-zip.sh)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mlab-forms
+          path: build/
+
+      - name: ZIP an das Release hängen
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.zip.outputs.path }}
