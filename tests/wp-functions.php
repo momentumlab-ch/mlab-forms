@@ -1,0 +1,113 @@
+<?php
+/**
+ * Minimale WordPress-Funktionen für Unit-Tests. Daten liegen in $GLOBALS['mlab_test'].
+ *
+ * @package MLab_Forms
+ */
+
+// phpcs:disable
+
+/** Setzt den Testspeicher zurück. */
+function mlab_test_reset(): void {
+	$GLOBALS['mlab_test'] = array(
+		'options'    => array(),
+		'transients' => array(),
+		'post_meta'  => array(),
+		'posts'      => array(),
+	);
+}
+mlab_test_reset();
+
+function __( $text, $domain = 'default' ) {
+	return $text;
+}
+
+function esc_html__( $text, $domain = 'default' ) {
+	return htmlspecialchars( $text, ENT_QUOTES );
+}
+
+function esc_html( $text ) {
+	return htmlspecialchars( (string) $text, ENT_QUOTES );
+}
+
+function esc_attr( $text ) {
+	return htmlspecialchars( (string) $text, ENT_QUOTES );
+}
+
+function esc_url( $url ) {
+	return (string) $url;
+}
+
+function esc_textarea( $text ) {
+	return htmlspecialchars( (string) $text, ENT_QUOTES );
+}
+
+function sanitize_text_field( $text ) {
+	return trim( preg_replace( '/[\r\n\t ]+/', ' ', strip_tags( (string) $text ) ) );
+}
+
+function sanitize_textarea_field( $text ) {
+	return trim( strip_tags( (string) $text ) );
+}
+
+function sanitize_email( $email ) {
+	return is_email( $email ) ? $email : '';
+}
+
+function sanitize_html_class( $class ) {
+	return preg_replace( '/[^A-Za-z0-9_-]/', '', (string) $class );
+}
+
+function wp_strip_all_tags( $text ) {
+	return trim( strip_tags( (string) $text ) );
+}
+
+function wp_kses_post( $text ) {
+	return (string) $text;
+}
+
+function is_email( $email ) {
+	return false !== filter_var( $email, FILTER_VALIDATE_EMAIL ) ? $email : false;
+}
+
+function apply_filters( $hook, $value, ...$args ) {
+	return $value;
+}
+
+function wp_salt( $scheme = 'auth' ) {
+	return 'test-salt-' . $scheme;
+}
+
+function current_time( $type, $gmt = false ) {
+	return 'mysql' === $type ? gmdate( 'Y-m-d H:i:s' ) : gmdate( $type );
+}
+
+function get_option( $name, $default = false ) {
+	return $GLOBALS['mlab_test']['options'][ $name ] ?? $default;
+}
+
+function update_option( $name, $value ) {
+	$GLOBALS['mlab_test']['options'][ $name ] = $value;
+	return true;
+}
+
+function get_transient( $key ) {
+	return $GLOBALS['mlab_test']['transients'][ $key ] ?? false;
+}
+
+function set_transient( $key, $value, $expiration = 0 ) {
+	$GLOBALS['mlab_test']['transients'][ $key ] = $value;
+	return true;
+}
+
+function get_post_meta( $id, $key, $single = false ) {
+	return $GLOBALS['mlab_test']['post_meta'][ $id ][ $key ] ?? '';
+}
+
+function get_posts( $args ) {
+	return array();
+}
+
+function post_type_exists( $type ) {
+	return false;
+}

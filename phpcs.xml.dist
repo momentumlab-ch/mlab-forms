@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<ruleset name="MomentumLab Forms">
+	<description>WordPress Coding Standards für MomentumLab Forms.</description>
+
+	<file>mlab-forms.php</file>
+	<file>uninstall.php</file>
+	<file>src</file>
+
+	<arg name="extensions" value="php"/>
+	<arg value="sp"/>
+
+	<config name="minimum_wp_version" value="6.9"/>
+	<config name="testVersion" value="8.1-"/>
+
+	<rule ref="WordPress">
+		<!-- PSR-4-ähnliche Dateinamen statt class-*.php, passend zur Composer-Classmap. -->
+		<exclude name="WordPress.Files.FileName"/>
+		<!-- Generische Typen (list<int>) stehen für PHPStan im Docblock. -->
+		<exclude name="Squiz.Commenting.FunctionComment.IncorrectTypeHint"/>
+	</rule>
+
+	<!-- Basismethoden geben Signaturen für die Feldtypen vor. -->
+	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter">
+		<exclude-pattern>src/Fields/FieldType.php</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="mlab-forms"/>
+				<element value="default"/>
+			</property>
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="mlab_forms"/>
+				<element value="MLab_Forms"/>
+			</property>
+		</properties>
+	</rule>
+</ruleset>

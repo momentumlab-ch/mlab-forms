@@ -1,0 +1,211 @@
+/* MomentumLab Forms: Formular-Styling. Anpassbar über CSS-Variablen am Container. */
+
+.mlab-form {
+	--mlab-form-accent: #0b6e4f;
+	--mlab-form-accent-text: #fff;
+	--mlab-form-bg: #fff;
+	--mlab-form-text: #1d2327;
+	--mlab-form-muted: #50575e;
+	--mlab-form-border: #8c8f94;
+	--mlab-form-input-bg: #fff;
+	--mlab-form-error: #b32d2e;
+	--mlab-form-success-bg: #edfaef;
+	--mlab-form-radius: 6px;
+	--mlab-form-gap: 1rem;
+	--mlab-form-font: inherit;
+
+	color: var(--mlab-form-text);
+	font-family: var(--mlab-form-font);
+}
+
+.mlab-form--dark {
+	--mlab-form-accent: #f2c14e;
+	--mlab-form-accent-text: #0e1b2c;
+	--mlab-form-bg: transparent;
+	--mlab-form-text: #f3f5f7;
+	--mlab-form-muted: #c3cad3;
+	--mlab-form-border: #7d8ba0;
+	--mlab-form-input-bg: rgba(255, 255, 255, 0.06);
+	--mlab-form-error: #ff9d9d;
+	--mlab-form-success-bg: rgba(255, 255, 255, 0.08);
+}
+
+.mlab-form__fields {
+	display: grid;
+	grid-template-columns: repeat(6, minmax(0, 1fr));
+	gap: var(--mlab-form-gap);
+	margin-bottom: var(--mlab-form-gap);
+}
+
+.mlab-form__field {
+	grid-column: span 6;
+	min-width: 0;
+}
+
+@media (min-width: 600px) {
+	.mlab-form__field--half {
+		grid-column: span 3;
+	}
+
+	.mlab-form__field--third {
+		grid-column: span 2;
+	}
+}
+
+.mlab-form__label {
+	display: block;
+	margin-bottom: 0.35rem;
+	font-weight: 600;
+	padding: 0;
+}
+
+.mlab-form__group {
+	border: 0;
+	margin: 0;
+	padding: 0;
+	min-width: 0;
+}
+
+.mlab-form__required {
+	color: var(--mlab-form-error);
+}
+
+.mlab-form input[type="text"],
+.mlab-form input[type="email"],
+.mlab-form input[type="tel"],
+.mlab-form input[type="number"],
+.mlab-form input[type="date"],
+.mlab-form select,
+.mlab-form textarea {
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 44px;
+	padding: 0.6rem 0.75rem;
+	border: 1px solid var(--mlab-form-border);
+	border-radius: var(--mlab-form-radius);
+	background: var(--mlab-form-input-bg);
+	color: var(--mlab-form-text);
+	font: inherit;
+	/* Unter 16 px zoomt iOS beim Antippen. */
+	font-size: max(16px, 1rem);
+	line-height: 1.4;
+}
+
+.mlab-form--dark select option,
+.mlab-form--dark select optgroup {
+	color: #1d2327;
+}
+
+.mlab-form textarea {
+	resize: vertical;
+}
+
+.mlab-form__choice {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.6rem;
+	min-height: 44px;
+	padding: 0.5rem 0;
+	cursor: pointer;
+}
+
+.mlab-form__choice input {
+	flex: none;
+	width: 1.25rem;
+	height: 1.25rem;
+	margin: 0.1rem 0 0;
+	accent-color: var(--mlab-form-accent);
+}
+
+.mlab-form__choice a {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.mlab-form :focus-visible {
+	outline: 3px solid var(--mlab-form-accent);
+	outline-offset: 2px;
+}
+
+.mlab-form__help {
+	margin: 0.35rem 0 0;
+	color: var(--mlab-form-muted);
+	font-size: 0.875rem;
+}
+
+.mlab-form__error {
+	margin: 0.35rem 0 0;
+	color: var(--mlab-form-error);
+	font-size: 0.875rem;
+	font-weight: 600;
+}
+
+.mlab-form__error:empty {
+	display: none;
+}
+
+.mlab-form__field--invalid input,
+.mlab-form__field--invalid select,
+.mlab-form__field--invalid textarea {
+	border-color: var(--mlab-form-error);
+	border-width: 2px;
+}
+
+.mlab-form__summary {
+	margin-bottom: var(--mlab-form-gap);
+	padding: 0.75rem 1rem;
+	border-left: 4px solid var(--mlab-form-error);
+	border-radius: var(--mlab-form-radius);
+	color: var(--mlab-form-error);
+	font-weight: 600;
+}
+
+.mlab-form__summary ul {
+	margin: 0.5rem 0 0;
+	padding-left: 1.25rem;
+	font-weight: 400;
+}
+
+.mlab-form__summary a {
+	color: inherit;
+}
+
+.mlab-form__summary[hidden] {
+	display: none;
+}
+
+.mlab-form__submit {
+	min-height: 44px;
+	padding: 0.7rem 1.5rem;
+	border: 0;
+	border-radius: var(--mlab-form-radius);
+	background: var(--mlab-form-accent);
+	color: var(--mlab-form-accent-text);
+	font: inherit;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.mlab-form__submit[disabled] {
+	opacity: 0.6;
+	cursor: progress;
+}
+
+.mlab-form__success {
+	padding: 1rem 1.25rem;
+	border-left: 4px solid var(--mlab-form-accent);
+	border-radius: var(--mlab-form-radius);
+	background: var(--mlab-form-success-bg);
+}
+
+.mlab-form__heading {
+	margin: 0.5rem 0 0;
+}
+
+.mlab-form__hp {
+	position: absolute !important;
+	left: -9999px !important;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}

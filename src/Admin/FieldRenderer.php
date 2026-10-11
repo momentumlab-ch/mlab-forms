@@ -7,6 +7,7 @@
 
 namespace MLab_Forms\Admin;
 
+use MLab_Forms\Html;
 use MLab_Forms\Settings;
 
 defined( 'ABSPATH' ) || exit;
@@ -37,7 +38,7 @@ final class FieldRenderer {
 				self::select( $attrs, (string) $value, $field['options'] ?? array() );
 				break;
 			default:
-				$attrs += array_intersect_key( $field, array_flip( array( 'min', 'max' ) ) );
+				$attrs         += array_intersect_key( $field, array_flip( array( 'min', 'max' ) ) );
 				$attrs['class'] = 'number' === $field['type'] ? 'small-text' : 'regular-text';
 				self::input( $field['type'], $attrs, (string) $value );
 		}
@@ -56,7 +57,7 @@ final class FieldRenderer {
 	private static function checkbox( array $attrs, bool $checked ): void {
 		printf(
 			'<label><input type="checkbox" value="1" %s %s> %s</label>',
-			self::attributes( $attrs ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- in attributes() escaped.
+			Html::attributes( $attrs ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- in Html::attributes() escaped.
 			checked( $checked, true, false ),
 			esc_html__( 'Aktiv', 'mlab-forms' )
 		);
@@ -70,7 +71,7 @@ final class FieldRenderer {
 	 * @param array<string, string> $options Wert => Beschriftung.
 	 */
 	private static function select( array $attrs, string $value, array $options ): void {
-		echo '<select ' . self::attributes( $attrs ) . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- in attributes() escaped.
+		echo '<select ' . Html::attributes( $attrs ) . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- in Html::attributes() escaped.
 		foreach ( $options as $option => $label ) {
 			printf( '<option value="%s" %s>%s</option>', esc_attr( $option ), selected( $value, $option, false ), esc_html( $label ) );
 		}
@@ -89,21 +90,7 @@ final class FieldRenderer {
 			'<input type="%s" value="%s" %s>',
 			esc_attr( $type ),
 			esc_attr( $value ),
-			self::attributes( $attrs ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- in attributes() escaped.
+			Html::attributes( $attrs ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- in Html::attributes() escaped.
 		);
-	}
-
-	/**
-	 * Baut escapte HTML-Attribute.
-	 *
-	 * @param array<string, int|string> $attrs Name => Wert.
-	 */
-	private static function attributes( array $attrs ): string {
-		$parts = array();
-		foreach ( $attrs as $name => $value ) {
-			$parts[] = sprintf( '%s="%s"', esc_attr( $name ), esc_attr( (string) $value ) );
-		}
-
-		return implode( ' ', $parts );
 	}
 }

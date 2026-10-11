@@ -126,13 +126,6 @@ final class Settings {
 				'default'     => true,
 				'description' => __( 'Ausschalten, damit beim Löschen des Plugins alle Formulare, Anfragen und Einstellungen entfernt werden.', 'mlab-forms' ),
 			),
-			'auto_updates'           => array(
-				'tab'         => 'updates',
-				'type'        => 'checkbox',
-				'label'       => __( 'Neue Versionen automatisch installieren', 'mlab-forms' ),
-				'default'     => false,
-				'description' => __( 'Ist der Schalter aus, zeigt WordPress neue Versionen nur an. Du installierst sie dann von Hand.', 'mlab-forms' ),
-			),
 		);
 
 		return $fields;
@@ -166,13 +159,6 @@ final class Settings {
 	 */
 	public static function get( string $key ) {
 		return self::all()[ $key ] ?? null;
-	}
-
-	/**
-	 * Sind automatische Updates eingeschaltet?
-	 */
-	public static function auto_updates_enabled(): bool {
-		return (bool) self::get( 'auto_updates' );
 	}
 
 	/**
