@@ -7,7 +7,6 @@
 
 namespace MLab_Forms\Mail;
 
-use MLab_Forms\Settings;
 use MLab_Forms\Submission\Submission;
 
 defined( 'ABSPATH' ) || exit;
@@ -16,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
  * Verschickt die Benachrichtigungen eines Formulars per wp_mail als Text-E-Mail.
  *
  * Schutz gegen Header-Injection: Empfänger und Reply-To sind nur gültige Adressen,
- * der Betreff enthält keine Zeilenumbrüche.
+ * der Betreff enthält keine Zeilenumbrüche. Absender und Antwort-Adresse löst Sender auf.
  */
 final class Notifier {
 
@@ -65,7 +64,7 @@ final class Notifier {
 			return false;
 		}
 
-		$subject = self::single_line( MergeTags::replace( (string) ( $notification['subject'] ?? '' ), $submission ) );
+		$subject = Sender::single_line( MergeTags::replace( (string) ( $notification['subject'] ?? '' ), $submission ) );
 		$body    = MergeTags::replace( (string) ( $notification['body'] ?? '{all_fields}' ), $submission );
 
 		return wp_mail( $to, $subject, $body, self::headers( $notification, $submission ) );
@@ -74,34 +73,25 @@ final class Notifier {
 	/**
 	 * Absender und Reply-To.
 	 *
+	 * Reply-To der Benachrichtigung hat Vorrang, sonst gilt der Modus aus den Absender-Einstellungen.
+	 *
 	 * @param array<string, mixed> $notification Einstellungen.
 	 * @param Submission           $submission   Absendung.
 	 * @return list<string>
 	 */
-	private static function headers( array $notification, Submission $submission ): array {
+	public static function headers( array $notification, Submission $submission ): array {
 		$headers = array( 'Content-Type: text/plain; charset=UTF-8' );
 
-		$from_email = (string) Settings::get( 'email_from_address' );
-		if ( is_email( $from_email ) ) {
-			$from_name = (string) Settings::get( 'email_from_name' );
-			$from_name = self::single_line( '' !== $from_name ? $from_name : wp_specialchars_decode( (string) get_bloginfo( 'name' ), ENT_QUOTES ) );
-			$headers[] = sprintf( 'From: %s <%s>', str_replace( array( '<', '>', '"' ), '', $from_name ), $from_email );
+		$from = Sender::from_header( $submission->form );
+		if ( '' !== $from ) {
+			$headers[] = $from;
 		}
 
-		$reply_to = self::addresses( (string) ( $notification['reply_to'] ?? '' ), $submission );
-		if ( $reply_to ) {
-			$headers[] = 'Reply-To: ' . $reply_to[0];
+		$reply_to = self::addresses( (string) ( $notification['reply_to'] ?? '' ), $submission )[0] ?? Sender::reply_to( $submission->form, $submission );
+		if ( '' !== $reply_to ) {
+			$headers[] = 'Reply-To: ' . $reply_to;
 		}
 
 		return $headers;
-	}
-
-	/**
-	 * Entfernt Zeilenumbrüche und Steuerzeichen.
-	 *
-	 * @param string $text Text.
-	 */
-	private static function single_line( string $text ): string {
-		return trim( (string) preg_replace( '/[\r\n\t\x00-\x1F\x7F]+/', ' ', $text ) );
 	}
 }

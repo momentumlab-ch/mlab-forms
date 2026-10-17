@@ -39,6 +39,17 @@ final class SpamGuardTest extends TestCase {
 		$this->assertFalse( SpamGuard::token_ok( 7, 'abc:def', 0 ) );
 	}
 
+	public function test_zu_altes_token_ist_ungueltig(): void {
+		$this->assertTrue( SpamGuard::token_ok( 7, SpamGuard::token( 7, time() - WEEK_IN_SECONDS + 60 ), 3 ) );
+		$this->assertFalse( SpamGuard::token_ok( 7, SpamGuard::token( 7, time() - WEEK_IN_SECONDS - 60 ), 3 ) );
+	}
+
+	public function test_zu_altes_token_gilt_in_check_als_spam(): void {
+		$request = array( SpamGuard::TOKEN_FIELD => SpamGuard::token( 7, time() - 3 * WEEK_IN_SECONDS ) );
+
+		$this->assertSame( SpamGuard::SPAM, SpamGuard::check( $this->form(), $request, self::IP ) );
+	}
+
 	public function test_honeypot(): void {
 		$form = $this->form();
 

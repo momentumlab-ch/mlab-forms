@@ -2,7 +2,7 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MomentumLab Forms 0.4.0\n"
+"Project-Id-Version: MomentumLab Forms 0.5.0\n"
 "Report-Msgid-Bugs-To: https://github.com/momentumlab-ch/mlab-forms/issues\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,12 +41,21 @@ msgstr ""
 msgid "https://momentumlab.ch"
 msgstr ""
 
+#: inc/Admin/ConnectionTest.php:38
+#: inc/Capabilities.php:45
+msgid "Dazu fehlt dir die Berechtigung."
+msgstr ""
+
+#: inc/Admin/ConnectionTest.php:62
+msgid "Unbekannter Dienst."
+msgstr ""
+
 #: inc/Admin/EntriesListTable.php:51
 msgid "Anfrage"
 msgstr ""
 
 #: inc/Admin/EntriesListTable.php:52
-#: inc/Forms/FormPostType.php:39
+#: inc/Forms/FormPostType.php:58
 msgid "Formular"
 msgstr ""
 
@@ -76,7 +85,8 @@ msgstr ""
 
 #: inc/Admin/EntriesListTable.php:134
 #: inc/Admin/Menu.php:48
-#: inc/Forms/FormPostType.php:43
+#: inc/Admin/Menu.php:48
+#: inc/Forms/FormPostType.php:62
 msgid "Alle Formulare"
 msgstr ""
 
@@ -95,8 +105,8 @@ msgstr ""
 #: inc/Admin/EntriesPage.php:101
 #: inc/Admin/EntriesPage.php:102
 #: inc/Admin/EntriesPage.php:128
-#: inc/Admin/FormEditor.php:229
-#: inc/Privacy/Privacy.php:78
+#: inc/Admin/FormEditor.php:246
+#: inc/Privacy/Privacy.php:80
 msgid "Anfragen"
 msgstr ""
 
@@ -158,7 +168,25 @@ msgstr ""
 msgid "Herkunft"
 msgstr ""
 
-#: inc/Admin/FieldRenderer.php:62
+#: inc/Admin/FieldRenderer.php:68
+msgid "Verbindung testen"
+msgstr ""
+
+#. translators: %s: maskierter Schlüssel
+#: inc/Admin/FieldRenderer.php:93
+#, php-format
+msgid "Gespeichert: %s. Leer lassen, damit er unverändert bleibt."
+msgstr ""
+
+#: inc/Admin/FieldRenderer.php:100
+msgid "Schlüssel entfernen"
+msgstr ""
+
+#: inc/Admin/FieldRenderer.php:48
+msgid "Diese Adresse gehört nicht zu deiner Website. Mails können im Spam landen."
+msgstr ""
+
+#: inc/Admin/FieldRenderer.php:108
 msgid "Aktiv"
 msgstr ""
 
@@ -167,61 +195,106 @@ msgid "Formular-Schema (JSON)"
 msgstr ""
 
 #: inc/Admin/FormEditor.php:48
-msgid "Einbinden"
+msgid "Aufbewahrung"
 msgstr ""
 
 #: inc/Admin/FormEditor.php:49
+msgid "Einbinden"
+msgstr ""
+
+#: inc/Admin/FormEditor.php:50
 msgid "Frühere Versionen"
 msgstr ""
 
-#: inc/Admin/FormEditor.php:64
+#: inc/Admin/FormEditor.php:65
 msgid "Das Schema beschreibt Felder, Benachrichtigungen und Einstellungen. Es wird beim Speichern geprüft."
 msgstr ""
 
-#: inc/Admin/FormEditor.php:84
+#: inc/Admin/FormEditor.php:85
 msgid "Vorlage laden …"
 msgstr ""
 
-#: inc/Admin/FormEditor.php:93
+#: inc/Admin/FormEditor.php:94
 msgid "Das aktuelle Schema durch die Vorlage ersetzen?"
 msgstr ""
 
-#: inc/Admin/FormEditor.php:109
+#: inc/Admin/FormEditor.php:110
 msgid "Nach dem Veröffentlichen kannst du das Formular mit diesem Shortcode einbinden:"
 msgstr ""
 
-#: inc/Admin/FormEditor.php:122
+#: inc/Admin/FormEditor.php:123
 msgid "Noch keine früheren Versionen."
 msgstr ""
 
-#: inc/Admin/FormEditor.php:135
+#: inc/Admin/FormEditor.php:136
 msgid "Wiederherstellen"
 msgstr ""
 
 #. translators: %s: Fehlermeldung des JSON-Parsers
-#: inc/Admin/FormEditor.php:164
+#: inc/Admin/FormEditor.php:166
 #, php-format
 msgid "Kein gültiges JSON: %s"
 msgstr ""
 
-#: inc/Admin/FormEditor.php:198
+#: inc/Admin/FormEditor.php:215
 msgid "Das Schema wurde nicht gespeichert. Bitte korrigiere diese Punkte:"
 msgstr ""
 
-#: inc/Admin/FormEditor.php:227
+#: inc/Admin/FormEditor.php:244
 msgid "Shortcode"
 msgstr ""
 
 #: inc/Admin/Menu.php:49
-#: inc/Forms/FormPostType.php:40
+#: inc/Admin/Menu.php:49
+#: inc/Forms/FormPostType.php:59
 msgid "Neues Formular"
 msgstr ""
 
-#: inc/Admin/SettingsPage.php:53
-#: inc/Admin/SettingsPage.php:54
-#: inc/Admin/SettingsPage.php:106
-#: inc/Admin/SettingsPage.php:178
+#: inc/Admin/RetentionBox.php:35
+msgid "30 Tage"
+msgstr ""
+
+#: inc/Admin/RetentionBox.php:36
+msgid "90 Tage"
+msgstr ""
+
+#: inc/Admin/RetentionBox.php:37
+msgid "1 Jahr"
+msgstr ""
+
+#: inc/Admin/RetentionBox.php:38
+msgid "2 Jahre"
+msgstr ""
+
+#: inc/Admin/RetentionBox.php:39
+msgid "Unbegrenzt"
+msgstr ""
+
+#: inc/Admin/RetentionBox.php:40
+msgid "Eigene Anzahl Tage"
+msgstr ""
+
+#: inc/Admin/RetentionBox.php:55
+msgid "So lange bleiben gesendete Anfragen gespeichert. Danach kommen sie in den Papierkorb und werden nach 30 Tagen endgültig gelöscht."
+msgstr ""
+
+#: inc/Admin/RetentionBox.php:140
+msgid "Anzahl Tage"
+msgstr ""
+
+#: inc/Admin/SettingsPage.php:61
+#: inc/Admin/SettingsPage.php:62
+#: inc/Admin/SettingsPage.php:149
+#: inc/Admin/SettingsPage.php:232
 msgid "Einstellungen"
+msgstr ""
+
+#: inc/Admin/SettingsPage.php:87
+msgid "Teste die Verbindung …"
+msgstr ""
+
+#: inc/Admin/SettingsPage.php:88
+msgid "Der Test hat nicht geklappt. Bitte versuche es nochmals."
 msgstr ""
 
 #: inc/Admin/UpdatesTab.php:41
@@ -230,10 +303,6 @@ msgstr ""
 
 #: inc/Admin/UpdatesTab.php:45
 msgid "Neueste Version"
-msgstr ""
-
-#: inc/Capabilities.php:45
-msgid "Dazu fehlt dir die Berechtigung."
 msgstr ""
 
 #: inc/Entries/Status.php:26
@@ -261,12 +330,12 @@ msgid "Spam"
 msgstr ""
 
 #: inc/Fields/CheckboxField.php:55
-#: inc/Frontend/Renderer.php:279
+#: inc/Frontend/Renderer.php:291
 msgid "Bitte bestätige die Einwilligung."
 msgstr ""
 
 #: inc/Fields/CheckboxField.php:56
-#: inc/Frontend/Renderer.php:278
+#: inc/Frontend/Renderer.php:290
 msgid "Bitte setze diesen Haken."
 msgstr ""
 
@@ -282,12 +351,24 @@ msgstr ""
 msgid "Datenschutzerklärung"
 msgstr ""
 
-#: inc/Fields/ChoiceField.php:44
+#: inc/Fields/ChoiceField.php:45
 msgid "Das Feld braucht «options» oder «options_source»."
 msgstr ""
 
-#: inc/Fields/ChoiceField.php:79
+#: inc/Fields/ChoiceField.php:83
+msgid "«default» einer Option muss true oder false sein."
+msgstr ""
+
+#: inc/Fields/ChoiceField.php:89
+msgid "Nur eine Option darf «default» sein."
+msgstr ""
+
+#: inc/Fields/ChoiceField.php:121
 msgid "Bitte wähle eine der angebotenen Möglichkeiten."
+msgstr ""
+
+#: inc/Fields/ChoiceField.php:213
+msgid "Bitte wählen"
 msgstr ""
 
 #: inc/Fields/DateField.php:23
@@ -309,7 +390,7 @@ msgid "Bitte wähle ein früheres Datum."
 msgstr ""
 
 #: inc/Fields/FieldType.php:72
-#: inc/Frontend/Renderer.php:277
+#: inc/Frontend/Renderer.php:289
 msgid "Bitte fülle dieses Feld aus."
 msgstr ""
 
@@ -358,6 +439,19 @@ msgstr ""
 msgid "HTML"
 msgstr ""
 
+#: inc/Fields/Formats.php:53
+msgid "Bitte gib eine gültige Telefonnummer ein."
+msgstr ""
+
+#: inc/Fields/Formats.php:54
+msgid "Bitte gib eine gültige Postleitzahl ein."
+msgstr ""
+
+#: inc/Fields/Formats.php:55
+#: inc/Frontend/Renderer.php:293
+msgid "Das Format stimmt nicht."
+msgstr ""
+
 #: inc/Fields/NumberField.php:23
 msgid "Zahl"
 msgstr ""
@@ -380,126 +474,137 @@ msgstr ""
 msgid "Der Wert darf höchstens %s sein."
 msgstr ""
 
+#: inc/Fields/TextField.php:45
+msgid "«format» muss «postcode_ch» oder «tel» sein."
+msgstr ""
+
+#: inc/Fields/TextField.php:48
+msgid "«pattern» ist kein gültiger regulärer Ausdruck."
+msgstr ""
+
+#: inc/Fields/TextField.php:78
+#: inc/Frontend/Renderer.php:292
+msgid "Bitte gib eine gültige E-Mail-Adresse ein."
+msgstr ""
+
 #: inc/Fields/TextareaField.php:25
 msgid "Mehrzeiliger Text"
 msgstr ""
 
-#: inc/Fields/TextField.php:45
-msgid "«pattern» ist kein gültiger regulärer Ausdruck."
-msgstr ""
-
-#: inc/Fields/TextField.php:75
-#: inc/Frontend/Renderer.php:280
-msgid "Bitte gib eine gültige E-Mail-Adresse ein."
-msgstr ""
-
-#: inc/Fields/TextField.php:78
-#: inc/Frontend/Renderer.php:281
-msgid "Das Format stimmt nicht."
-msgstr ""
-
-#: inc/Forms/Form.php:151
+#: inc/Forms/Form.php:163
 msgid "Senden"
 msgstr ""
 
-#: inc/Forms/Form.php:152
+#: inc/Forms/Form.php:164
 msgid "Danke! Wir haben deine Nachricht erhalten."
 msgstr ""
 
-#: inc/Forms/Form.php:165
+#: inc/Forms/Form.php:180
 msgid "Neue Anfrage: {form_title}"
 msgstr ""
 
-#: inc/Forms/FormPostType.php:38
+#: inc/Forms/FormPostType.php:57
 msgid "Formulare"
 msgstr ""
 
-#: inc/Forms/FormPostType.php:41
+#: inc/Forms/FormPostType.php:60
 msgid "Neues Formular erstellen"
 msgstr ""
 
-#: inc/Forms/FormPostType.php:42
+#: inc/Forms/FormPostType.php:61
 msgid "Formular bearbeiten"
 msgstr ""
 
-#: inc/Forms/FormPostType.php:44
+#: inc/Forms/FormPostType.php:63
 msgid "Formulare durchsuchen"
 msgstr ""
 
-#: inc/Forms/FormPostType.php:45
+#: inc/Forms/FormPostType.php:64
 msgid "Keine Formulare gefunden."
 msgstr ""
 
-#: inc/Forms/FormPostType.php:46
+#: inc/Forms/FormPostType.php:65
 msgid "Keine Formulare im Papierkorb."
 msgstr ""
 
-#: inc/Forms/SchemaValidator.php:55
+#: inc/Forms/SchemaValidator.php:56
 msgid "Das Schema muss ein JSON-Objekt sein."
 msgstr ""
 
 #. translators: %d: erwartete Version
-#: inc/Forms/SchemaValidator.php:60
+#: inc/Forms/SchemaValidator.php:61
 #, php-format
 msgid "«schema_version» muss %d sein."
 msgstr ""
 
-#: inc/Forms/SchemaValidator.php:81
-msgid "Muss true oder false sein."
-msgstr ""
-
-#: inc/Forms/SchemaValidator.php:85
+#: inc/Forms/SchemaValidator.php:84
 msgid "«style» muss «light» oder «dark» sein."
 msgstr ""
 
-#: inc/Forms/SchemaValidator.php:100
+#: inc/Forms/SchemaValidator.php:103
+msgid "«provider» muss leer, «turnstile», «recaptcha» oder «hcaptcha» sein. Es ist nur ein Dienst gleichzeitig möglich."
+msgstr ""
+
+#: inc/Forms/SchemaValidator.php:119
+msgid "Das ist keine gültige E-Mail-Adresse."
+msgstr ""
+
+#: inc/Forms/SchemaValidator.php:123
+msgid "«reply_to_mode» muss leer, «visitor» oder «fixed» sein."
+msgstr ""
+
+#: inc/Forms/SchemaValidator.php:134
 msgid "Muss eine Liste sein."
 msgstr ""
 
 #. translators: %s: Schlüssel
-#: inc/Forms/SchemaValidator.php:111
+#: inc/Forms/SchemaValidator.php:145
 #, php-format
 msgid "«%s» fehlt."
 msgstr ""
 
-#: inc/Forms/SchemaValidator.php:126
+#: inc/Forms/SchemaValidator.php:160
 msgid "«fields» muss eine Liste mit mindestens einem Feld sein."
 msgstr ""
 
-#: inc/Forms/SchemaValidator.php:138
+#: inc/Forms/SchemaValidator.php:172
 msgid "«id» muss aus Kleinbuchstaben, Ziffern und _ bestehen."
 msgstr ""
 
 #. translators: %s: Feld-ID
-#: inc/Forms/SchemaValidator.php:141
+#: inc/Forms/SchemaValidator.php:175
 #, php-format
 msgid "Die id «%s» kommt mehrfach vor."
 msgstr ""
 
 #. translators: %s: Typ
-#: inc/Forms/SchemaValidator.php:158
+#: inc/Forms/SchemaValidator.php:192
 #, php-format
 msgid "Unbekannter Feldtyp «%s»."
 msgstr ""
 
-#: inc/Forms/SchemaValidator.php:162
+#: inc/Forms/SchemaValidator.php:196
 msgid "«label» fehlt."
 msgstr ""
 
-#: inc/Forms/SchemaValidator.php:165
+#: inc/Forms/SchemaValidator.php:199
 msgid "«width» muss full, half oder third sein."
 msgstr ""
 
-#: inc/Forms/SchemaValidator.php:188
+#: inc/Forms/SchemaValidator.php:223
 msgid "Muss ein JSON-Objekt sein."
 msgstr ""
 
-#: inc/Forms/SchemaValidator.php:202
+#: inc/Forms/SchemaValidator.php:237
 msgid "Muss ein Text sein."
 msgstr ""
 
+#: inc/Forms/SchemaValidator.php:250
+msgid "Muss true oder false sein."
+msgstr ""
+
 #. translators: 1: Minimum, 2: Maximum
-#: inc/Forms/SchemaValidator.php:219
+#: inc/Forms/SchemaValidator.php:267
 #, php-format
 msgid "Muss eine ganze Zahl von %1$d bis %2$d sein."
 msgstr ""
@@ -516,16 +621,24 @@ msgstr ""
 msgid "Gutschein"
 msgstr ""
 
-#: inc/Frontend/Renderer.php:135
+#: inc/Frontend/Renderer.php:140
 #: inc/Submission/SubmissionHandler.php:51
 msgid "Bitte prüfe die markierten Felder."
 msgstr ""
 
-#: inc/Frontend/Renderer.php:282
+#: inc/Frontend/Renderer.php:296
+msgid "Der Spam-Schutz prüft noch. Bitte warte einen Moment und sende dann nochmals."
+msgstr ""
+
+#: inc/Frontend/Renderer.php:297
+msgid "Der Spam-Schutz konnte nicht geladen werden. Bitte lade die Seite neu und versuche es nochmals."
+msgstr ""
+
+#: inc/Frontend/Renderer.php:298
 msgid "Bitte prüfe diesen Wert."
 msgstr ""
 
-#: inc/Frontend/Renderer.php:283
+#: inc/Frontend/Renderer.php:299
 msgid "Das hat leider nicht geklappt. Bitte versuche es später nochmals."
 msgstr ""
 
@@ -533,18 +646,34 @@ msgstr ""
 msgid "MomentumLab Forms: Formular nicht gefunden oder nicht veröffentlicht."
 msgstr ""
 
-#: inc/Privacy/Privacy.php:38
-#: inc/Privacy/Privacy.php:53
+#: inc/Privacy/Privacy.php:40
+#: inc/Privacy/Privacy.php:55
 msgid "MomentumLab Forms: Anfragen"
 msgstr ""
 
-#: inc/Privacy/Privacy.php:160
+#: inc/Privacy/Privacy.php:163
 msgid ""
 "Wenn du uns über ein Formular auf dieser Website eine Anfrage sendest, speichern wir deine Angaben, um die Anfrage zu bearbeiten und dir zu antworten. Dazu gehören die Felder des Formulars, die Seite, von der du sie gesendet hast, die Sprache deines Browsers und eine verschlüsselte Kennung deiner IP-Adresse (keine IP-Adresse im Klartext). Die Kennung dient nur dem Schutz vor Spam.\n"
 "\n"
 "Du bekommst eine Bestätigung per E-Mail, falls das Formular dies vorsieht. Anfragen werden nach der festgelegten Aufbewahrungsfrist (standardmässig 365 Tage) automatisch gelöscht. Du kannst jederzeit Auskunft über deine gespeicherten Daten verlangen oder ihre Löschung beantragen.\n"
 "\n"
 "Zur Bearbeitung von Anfragen kann ein KI-Assistent eingesetzt werden. Er liest Anfragen, fasst sie zusammen und erstellt Antwortentwürfe. Diese Entwürfe prüfen wir, bevor wir sie senden; die KI versendet selbst keine Nachrichten. Rechtsgrundlage ist in der Schweiz das revDSG, für Gäste aus der EU Art. 6 Abs. 1 lit. b DSGVO (Bearbeitung deiner Anfrage)."
+msgstr ""
+
+#: inc/Privacy/Privacy.php:175
+msgid "Zum Schutz vor Spam nutzen wir auf Formularen Cloudflare Turnstile. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an Cloudflare übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA)."
+msgstr ""
+
+#: inc/Privacy/Privacy.php:176
+msgid "Zum Schutz vor Spam nutzen wir auf Formularen Google reCAPTCHA v3. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an Google übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA)."
+msgstr ""
+
+#: inc/Privacy/Privacy.php:177
+msgid "Zum Schutz vor Spam nutzen wir auf Formularen hCaptcha. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an hCaptcha übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA)."
+msgstr ""
+
+#: inc/Privacy/Privacy.php:178
+msgid "Den Inhalt von Anfragen prüfen wir mit Akismet auf Spam. Dazu werden dein Name (sofern das Formular ihn als Namensfeld kennzeichnet), deine E-Mail-Adresse, deine Nachricht, deine IP-Adresse, Angaben deines Browsers, die Herkunftsseite und die Adresse der Seite (ohne Parameter) an Akismet (Automattic) übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA)."
 msgstr ""
 
 #: inc/Settings.php:34
@@ -561,6 +690,72 @@ msgstr ""
 
 #: inc/Settings.php:38
 msgid "Updates"
+msgstr ""
+
+#: inc/Settings.php:51
+msgid "Absender"
+msgstr ""
+
+#: inc/Settings.php:52
+msgid "Die Absender-E-Mail sollte zu deiner eigenen Domain passen (zum Beispiel info@deine-firma.ch). Sonst stufen viele Postfächer die Nachrichten als Spam ein."
+msgstr ""
+
+#: inc/Settings.php:56
+msgid "Spam-Dienste"
+msgstr ""
+
+#: inc/Settings.php:57
+msgid "Honeypot und Mindestzeit sind immer aktiv. Die folgenden Dienste sind ausgeschaltet, bis du sie hier einrichtest und im Formular wählst. Sie senden Daten an Dritte. Speichere zuerst, dann kannst du die Verbindung testen."
+msgstr ""
+
+#: inc/Spam/Akismet.php:61
+msgid "Bitte trage zuerst einen Akismet-Schlüssel ein und speichere."
+msgstr ""
+
+#: inc/Spam/Akismet.php:75
+#: inc/Spam/Captcha.php:65
+msgid "Der Dienst ist gerade nicht erreichbar. Bitte versuche es später nochmals."
+msgstr ""
+
+#: inc/Spam/Akismet.php:82
+#: inc/Spam/Captcha.php:77
+msgid "Verbindung funktioniert."
+msgstr ""
+
+#: inc/Spam/Akismet.php:86
+msgid "Akismet hat den Schlüssel abgelehnt. Bitte prüfe ihn."
+msgstr ""
+
+#: inc/Spam/Captcha.php:57
+msgid "Bitte trage zuerst beide Schlüssel ein und speichere."
+msgstr ""
+
+#: inc/Spam/Captcha.php:71
+msgid "Der Dienst hat den geheimen Schlüssel abgelehnt. Bitte prüfe ihn."
+msgstr ""
+
+#: inc/Spam/Widget.php:80
+msgid "Für den Spam-Schutz braucht dieses Formular JavaScript."
+msgstr ""
+
+#: inc/Submission/SubmissionHandler.php:36
+msgid "Dieses Formular gibt es nicht mehr."
+msgstr ""
+
+#: inc/Submission/SubmissionHandler.php:42
+msgid "Zu viele Anfragen in kurzer Zeit. Bitte versuche es später noch einmal."
+msgstr ""
+
+#: inc/Submission/SubmissionHandler.php:61
+msgid "Die Anfrage konnte nicht gespeichert werden. Bitte versuche es noch einmal."
+msgstr ""
+
+#: inc/Submission/SubmissionHandler.php:78
+msgid "Der Spam-Schutz ist gerade nicht erreichbar, bitte versuche es später nochmals."
+msgstr ""
+
+#: inc/Submission/SubmissionHandler.php:81
+msgid "Der Spam-Schutz hat deine Anfrage nicht angenommen. Bitte lade die Seite neu und versuche es nochmals."
 msgstr ""
 
 #: inc/options.php:16
@@ -584,75 +779,139 @@ msgid "Dunkel"
 msgstr ""
 
 #: inc/options.php:33
-msgid "Absendername"
-msgstr ""
-
-#: inc/options.php:35
-msgid "Leer lassen für den Namen der Website."
-msgstr ""
-
-#: inc/options.php:40
-msgid "Absenderadresse"
-msgstr ""
-
-#: inc/options.php:42
-msgid "Leer lassen für die Admin-Adresse. WP Mail SMTP kann diesen Wert übersteuern."
-msgstr ""
-
-#: inc/options.php:47
 msgid "Standard-Empfänger"
 msgstr ""
 
-#: inc/options.php:49
+#: inc/options.php:35
 msgid "Empfänger für neue Anfragen, wenn das Formular nichts anderes festlegt. Leer lassen für die Admin-Adresse."
 msgstr ""
 
-#: inc/options.php:54
-msgid "Honeypot verwenden"
+#: inc/options.php:41
+msgid "Absendername"
+msgstr ""
+
+#: inc/options.php:43
+msgid "Leer lassen für den Standard von WordPress. Ist nur die Absender-E-Mail gesetzt, gilt der Name der Website."
+msgstr ""
+
+#: inc/options.php:49
+msgid "Absender-E-Mail"
+msgstr ""
+
+#: inc/options.php:51
+msgid "Leer lassen für den Standard von WordPress (wordpress@deine-domain). WP Mail SMTP kann diesen Wert übersteuern."
+msgstr ""
+
+#: inc/options.php:57
+msgid "Antwort an"
 msgstr ""
 
 #: inc/options.php:60
+msgid "E-Mail des Besuchers"
+msgstr ""
+
+#: inc/options.php:61
+msgid "Feste Adresse"
+msgstr ""
+
+#: inc/options.php:68
+msgid "Feste Antwort-Adresse"
+msgstr ""
+
+#: inc/options.php:70
+msgid "Wird nur bei «Feste Adresse» verwendet."
+msgstr ""
+
+#: inc/options.php:75
+msgid "Honeypot verwenden"
+msgstr ""
+
+#: inc/options.php:81
 msgid "Mindestzeit zum Ausfüllen (Sekunden)"
 msgstr ""
 
-#: inc/options.php:64
+#: inc/options.php:85
 msgid "Schnellere Absendungen gelten als Spam. 0 schaltet die Prüfung aus."
 msgstr ""
 
-#: inc/options.php:69
+#: inc/options.php:90
 msgid "Maximal Anfragen pro Stunde und Absender"
 msgstr ""
 
-#: inc/options.php:73
+#: inc/options.php:94
 msgid "Gezählt wird pro gehashter IP-Adresse. 0 schaltet die Begrenzung aus."
 msgstr ""
 
-#: inc/options.php:78
+#: inc/options.php:100
+msgid "Spam-Dienst"
+msgstr ""
+
+#: inc/options.php:103
+msgid "Keiner"
+msgstr ""
+
+#: inc/options.php:108
+msgid "Es kann nur ein Dienst gleichzeitig aktiv sein. Jedes Formular darf das im Schema («settings.spam.provider») übersteuern."
+msgstr ""
+
+#: inc/options.php:114
+msgid "Akismet verwenden"
+msgstr ""
+
+#: inc/options.php:116
+msgid "Prüft den Inhalt jeder Anfrage bei Akismet. Dafür werden Name (nur aus Feldern, die als Name gekennzeichnet sind), E-Mail, Nachricht, IP-Adresse, Browser-Angaben, Herkunftsseite und Seiten-Adresse ohne Parameter an Akismet (Automattic) gesendet, auch in die USA. Andere Textfelder bleiben aussen vor."
+msgstr ""
+
+#: inc/options.php:122
+msgid "Turnstile: Site-Key"
+msgstr ""
+
+#: inc/options.php:129
+msgid "Turnstile: Secret-Key"
+msgstr ""
+
+#: inc/options.php:137
+msgid "reCAPTCHA: Site-Key"
+msgstr ""
+
+#: inc/options.php:139
+msgid "Datenschutz: Google reCAPTCHA überträgt Daten deiner Besucher (u. a. IP-Adresse und Browser-Angaben) an Google, auch in die USA. Nimm den Dienst in die Datenschutzerklärung auf und prüfe, ob du eine Einwilligung brauchst. Er ist standardmässig aus."
+msgstr ""
+
+#: inc/options.php:145
+msgid "reCAPTCHA: Secret-Key"
+msgstr ""
+
+#: inc/options.php:153
+msgid "hCaptcha: Site-Key"
+msgstr ""
+
+#: inc/options.php:160
+msgid "hCaptcha: Secret-Key"
+msgstr ""
+
+#: inc/options.php:168
+msgid "Akismet: API-Schlüssel"
+msgstr ""
+
+#: inc/options.php:170
+msgid "Leer lassen, wenn das Akismet-Plugin aktiv ist: dann wird dessen Schlüssel verwendet."
+msgstr ""
+
+#: inc/options.php:176
 msgid "Anfragen aufbewahren (Tage)"
 msgstr ""
 
-#: inc/options.php:82
-msgid "Standard für neue Formulare. Ältere Anfragen werden automatisch gelöscht."
+#: inc/options.php:180
+msgid "Standard für Formulare ohne eigene Angabe. 0 heisst unbegrenzt. Ältere Anfragen kommen zuerst in den Papierkorb und werden nach 30 Tagen endgültig gelöscht."
 msgstr ""
 
-#: inc/options.php:87
+#: inc/options.php:185
 msgid "Daten beim Löschen des Plugins behalten"
 msgstr ""
 
-#: inc/options.php:89
+#: inc/options.php:187
 msgid "Ausschalten, damit beim Löschen des Plugins alle Formulare, Anfragen und Einstellungen entfernt werden."
-msgstr ""
-
-#: inc/Submission/SubmissionHandler.php:36
-msgid "Dieses Formular gibt es nicht mehr."
-msgstr ""
-
-#: inc/Submission/SubmissionHandler.php:42
-msgid "Zu viele Anfragen in kurzer Zeit. Bitte versuche es später noch einmal."
-msgstr ""
-
-#: inc/Submission/SubmissionHandler.php:56
-msgid "Die Anfrage konnte nicht gespeichert werden. Bitte versuche es noch einmal."
 msgstr ""
 
 #: inc/updater.php:54

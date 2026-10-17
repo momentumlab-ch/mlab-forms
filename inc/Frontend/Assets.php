@@ -7,7 +7,10 @@
 
 namespace MLab_Forms\Frontend;
 
+use MLab_Forms\Forms\Form;
 use MLab_Forms\Settings;
+use MLab_Forms\Spam\Services;
+use MLab_Forms\Submission\SpamGuard;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -57,6 +60,29 @@ final class Assets {
 			wp_enqueue_style( self::HANDLE );
 		}
 		wp_enqueue_script( self::HANDLE );
+	}
+
+	/**
+	 * Lädt das Skript des Spam-Dienstes, aber nur, wenn das Formular einen Anbieter nutzt.
+	 *
+	 * @param Form $form Formular.
+	 */
+	public static function enqueue_captcha( Form $form ): void {
+		$provider = SpamGuard::provider( $form );
+		if ( '' === $provider ) {
+			return;
+		}
+
+		wp_enqueue_script(
+			self::HANDLE . '-' . $provider,
+			Services::script_url( $provider ),
+			array(),
+			null, // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- fremdes Skript, Version bestimmt der Anbieter.
+			array(
+				'strategy'  => 'defer',
+				'in_footer' => true,
+			)
+		);
 	}
 
 	/**

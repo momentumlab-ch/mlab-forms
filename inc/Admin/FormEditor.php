@@ -45,6 +45,7 @@ final class FormEditor {
 	 */
 	public function add_meta_boxes(): void {
 		add_meta_box( 'mlab-form-schema', __( 'Formular-Schema (JSON)', 'mlab-forms' ), array( $this, 'render_schema_box' ), null, 'normal', 'high' );
+		add_meta_box( 'mlab-form-retention', __( 'Aufbewahrung', 'mlab-forms' ), array( new RetentionBox(), 'render' ), null, 'side' );
 		add_meta_box( 'mlab-form-embed', __( 'Einbinden', 'mlab-forms' ), array( $this, 'render_embed_box' ), null, 'side' );
 		add_meta_box( 'mlab-form-revisions', __( 'Frühere Versionen', 'mlab-forms' ), array( $this, 'render_revisions_box' ), null, 'side' );
 	}
@@ -155,6 +156,7 @@ final class FormEditor {
 		// JSON wird nicht als Text bereinigt, sondern dekodiert und gegen das Schema geprüft.
 		$json   = trim( wp_unslash( $_POST[ self::FIELD ] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$schema = json_decode( $json, true );
+		$schema = is_array( $schema ) ? $this->with_retention( $schema ) : $schema;
 		$errors = is_array( $schema )
 			? FormRepository::save( $post_id, $schema )
 			: array(
@@ -171,6 +173,21 @@ final class FormEditor {
 			return;
 		}
 		delete_transient( $this->draft_key( $post_id ) );
+	}
+
+	/**
+	 * Übernimmt die Auswahl der Box «Aufbewahrung» ins Schema, wenn sie geändert wurde.
+	 *
+	 * @param array<string, mixed> $schema Dekodiertes Schema.
+	 * @return array<string, mixed>
+	 */
+	private function with_retention( array $schema ): array {
+		if ( ! isset( $_POST[ RetentionBox::NONCE ] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ RetentionBox::NONCE ] ) ), RetentionBox::NONCE ) ) {
+			return $schema;
+		}
+
+		// Nur Zahlen und feste Auswahlwerte werden gelesen (siehe RetentionBox::days_from_request).
+		return RetentionBox::merge( $schema, wp_unslash( $_POST ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	}
 
 	/**

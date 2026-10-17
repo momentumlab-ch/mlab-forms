@@ -7,9 +7,11 @@
 
 namespace MLab_Forms\Frontend;
 
+use MLab_Forms\Fields\Formats;
 use MLab_Forms\Forms\Form;
 use MLab_Forms\Html;
 use MLab_Forms\Settings;
+use MLab_Forms\Spam\Widget;
 use MLab_Forms\Submission\PostHandler;
 use MLab_Forms\Submission\RestController;
 use MLab_Forms\Submission\SpamGuard;
@@ -91,9 +93,12 @@ final class Renderer {
 			$fields .= Form::type_of( $field )->render( $field, $value, $errors[ $field['id'] ] ?? null );
 		}
 
+		Assets::enqueue_captcha( $form );
+
 		$inner = self::summary( $result )
 			. self::hidden_inputs( $form )
 			. Html::tag( 'div', array( 'class' => 'mlab-form__fields' ), $fields )
+			. Widget::html( $form )
 			. Html::tag(
 				'button',
 				array(
@@ -112,7 +117,7 @@ final class Renderer {
 				'data-rest'      => rest_url( RestController::NAMESPACE . '/submit' ),
 				'data-prefill'   => wp_json_encode( self::prefill_config( $form ) ),
 				'data-messages'  => wp_json_encode( self::client_messages() ),
-			),
+			) + Widget::form_attributes( $form ),
 			$inner
 		);
 	}
@@ -198,7 +203,7 @@ final class Renderer {
 	/**
 	 * Felder mit HTML-ID und Startwert.
 	 *
-	 * Reihenfolge des Werts: Eingabe nach Fehler, URL-Parameter (prefill), Standardwert.
+	 * Reihenfolge des Werts: Eingabe nach Fehler, URL-Parameter (prefill), Standardzeile einer Liste, Standardwert.
 	 *
 	 * @param Form                      $form   Formular.
 	 * @param array<string, mixed>|null $values Werte nach Fehler.
@@ -210,7 +215,7 @@ final class Renderer {
 
 		foreach ( $form->prepared_fields() as $field ) {
 			$field['html_id'] = $prefix . $field['id'];
-			$value            = $values[ $field['id'] ] ?? self::prefill_value( $field ) ?? ( $field['default'] ?? '' );
+			$value            = $values[ $field['id'] ] ?? Form::type_of( $field )->initial_value( $field, self::prefill_value( $field ) );
 			$result[]         = array( self::ensure_choice( $field, $value ), $value );
 		}
 
@@ -223,7 +228,7 @@ final class Renderer {
 	 * @param array<string, mixed> $field Feld.
 	 */
 	private static function prefill_value( array $field ): ?string {
-		$param = (string) ( $field['prefill']['param'] ?? '' );
+		$param = Form::prefill_enabled( $field ) ? (string) ( $field['prefill']['param'] ?? '' ) : '';
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- nur Vorauswahl.
 		return '' !== $param && isset( $_GET[ $param ] ) ? sanitize_text_field( wp_unslash( $_GET[ $param ] ) ) : null;
@@ -237,14 +242,15 @@ final class Renderer {
 	 * @return array<string, mixed>
 	 */
 	private static function ensure_choice( array $field, $value ): array {
-		if ( empty( $field['prefill'] ) || ! isset( $field['choices'] ) || ! is_string( $value ) || '' === $value ) {
+		if ( ! Form::prefill_enabled( $field ) || ! isset( $field['choices'] ) || ! is_string( $value ) || '' === $value ) {
 			return $field;
 		}
 		if ( ! in_array( $value, array_column( $field['choices'], 'value' ), true ) ) {
 			$field['choices'][] = array(
-				'value' => $value,
-				'label' => $value,
-				'group' => '',
+				'value'   => $value,
+				'label'   => $value,
+				'group'   => '',
+				'default' => false,
 			);
 		}
 
@@ -260,7 +266,7 @@ final class Renderer {
 	private static function prefill_config( Form $form ): array {
 		$config = array();
 		foreach ( $form->fields() as $field ) {
-			$attribute = (string) ( $field['prefill']['data_attribute'] ?? '' );
+			$attribute = Form::prefill_enabled( $field ) ? (string) ( $field['prefill']['data_attribute'] ?? '' ) : '';
 			if ( preg_match( '/^data-[a-z0-9-]+$/', $attribute ) ) {
 				$config[] = array(
 					'field'     => (string) $field['id'],
@@ -285,6 +291,10 @@ final class Renderer {
 			'consent'         => __( 'Bitte bestätige die Einwilligung.', 'mlab-forms' ),
 			'typeMismatch'    => __( 'Bitte gib eine gültige E-Mail-Adresse ein.', 'mlab-forms' ),
 			'patternMismatch' => __( 'Das Format stimmt nicht.', 'mlab-forms' ),
+			'tel'             => Formats::message( Formats::TEL ),
+			'postcode_ch'     => Formats::message( Formats::POSTCODE_CH ),
+			'captchaPending'  => __( 'Der Spam-Schutz prüft noch. Bitte warte einen Moment und sende dann nochmals.', 'mlab-forms' ),
+			'captcha'         => __( 'Der Spam-Schutz konnte nicht geladen werden. Bitte lade die Seite neu und versuche es nochmals.', 'mlab-forms' ),
 			'invalid'         => __( 'Bitte prüfe diesen Wert.', 'mlab-forms' ),
 			'server'          => __( 'Das hat leider nicht geklappt. Bitte versuche es später nochmals.', 'mlab-forms' ),
 		);

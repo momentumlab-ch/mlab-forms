@@ -124,6 +124,17 @@ final class Form {
 	}
 
 	/**
+	 * Ist die Vorauswahl per Link oder URL für das Feld eingeschaltet?
+	 *
+	 * Sie gilt, wenn das Feld «prefill» kennt und «prefill.enabled» nicht false ist.
+	 *
+	 * @param array<string, mixed> $field Feld.
+	 */
+	public static function prefill_enabled( array $field ): bool {
+		return ! empty( $field['prefill'] ) && is_array( $field['prefill'] ) && false !== ( $field['prefill']['enabled'] ?? true );
+	}
+
+	/**
 	 * Ein Feld für die Ausgabe vorbereiten.
 	 *
 	 * @param array<string, mixed> $field Feld.
@@ -142,6 +153,7 @@ final class Form {
 
 	/**
 	 * Ergänzt Standardwerte. Listen (notifications) werden nicht gemischt, sondern ersetzt.
+	 * «sender» bleibt leer, damit Sender auf die globalen Einstellungen zurückfallen kann.
 	 *
 	 * @param array<string, mixed> $settings Einstellungen aus dem Schema.
 	 * @return array<string, mixed>
@@ -157,7 +169,10 @@ final class Form {
 			'spam'            => array(
 				'honeypot'    => (bool) Settings::get( 'spam_honeypot' ),
 				'min_seconds' => (int) Settings::get( 'spam_min_seconds' ),
+				'provider'    => (string) Settings::get( 'spam_provider' ),
+				'akismet'     => (bool) Settings::get( 'spam_akismet' ),
 			),
+			'sender'          => array(),
 			'notifications'   => array(
 				array(
 					'id'       => 'admin',

@@ -25,6 +25,15 @@ final class Settings {
 	public const TAB_KEY = '_tab';
 
 	/**
+	 * Name des Felds «Schlüssel entfernen» zu einem geheimen Schlüssel.
+	 *
+	 * @param string $key Schlüssel aus fields().
+	 */
+	public static function remove_key( string $key ): string {
+		return '_remove_' . $key;
+	}
+
+	/**
 	 * Tabs der Einstellungsseite, in Anzeigereihenfolge.
 	 *
 	 * @return array<string, string> Schlüssel => Titel.
@@ -40,9 +49,29 @@ final class Settings {
 	}
 
 	/**
+	 * Abschnitte innerhalb eines Tabs. Felder ohne «section» stehen im ersten Abschnitt des Tabs.
+	 *
+	 * @return array<string, array{tab: string, title: string, text: string}>
+	 */
+	public static function sections(): array {
+		return array(
+			'sender'   => array(
+				'tab'   => 'email',
+				'title' => __( 'Absender', 'mlab-forms' ),
+				'text'  => __( 'Die Absender-E-Mail sollte zu deiner eigenen Domain passen (zum Beispiel info@deine-firma.ch). Sonst stufen viele Postfächer die Nachrichten als Spam ein.', 'mlab-forms' ),
+			),
+			'services' => array(
+				'tab'   => 'spam',
+				'title' => __( 'Spam-Dienste', 'mlab-forms' ),
+				'text'  => __( 'Honeypot und Mindestzeit sind immer aktiv. Die folgenden Dienste sind ausgeschaltet, bis du sie hier einrichtest und im Formular wählst. Sie senden Daten an Dritte. Speichere zuerst, dann kannst du die Verbindung testen.', 'mlab-forms' ),
+			),
+		);
+	}
+
+	/**
 	 * Beschreibung aller Einstellungen aus inc/options.php.
 	 *
-	 * @return array<string, array{tab: string, type: string, label: string, default: mixed, description?: string, options?: array<string, string>, min?: int, max?: int}>
+	 * @return array<string, array{tab: string, type: string, label: string, default: mixed, section?: string, description?: string, notice?: string, test?: string, options?: array<string, string>, min?: int, max?: int}>
 	 */
 	public static function fields(): array {
 		static $fields = null;
@@ -101,7 +130,7 @@ final class Settings {
 		$result = self::all();
 
 		foreach ( $fields as $key => $field ) {
-			$result[ $key ] = self::sanitize_value( $field, $input[ $key ] ?? null );
+			$result[ $key ] = self::sanitize_value( $field, $input[ $key ] ?? null, $result[ $key ] ?? null, ! empty( $input[ self::remove_key( $key ) ] ) );
 		}
 
 		return $result;
@@ -110,12 +139,21 @@ final class Settings {
 	/**
 	 * Bereinigt einen Wert nach Feldtyp.
 	 *
-	 * @param array{type: string, default: mixed, options?: array<string, string>, min?: int, max?: int} $field Feldbeschreibung.
-	 * @param mixed                                                                                      $value Rohwert.
+	 * @param array{type: string, default: mixed, options?: array<string, string>, min?: int, max?: int} $field   Feldbeschreibung.
+	 * @param mixed                                                                                      $value   Rohwert.
+	 * @param mixed                                                                                      $current Bisher gespeicherter Wert.
+	 * @param bool                                                                                       $remove  Geheimen Schlüssel löschen («Schlüssel entfernen» angehakt).
 	 * @return mixed
 	 */
-	private static function sanitize_value( array $field, $value ) {
+	private static function sanitize_value( array $field, $value, $current = null, bool $remove = false ) {
 		switch ( $field['type'] ) {
+			case 'password':
+				// Geheime Schlüssel werden nie angezeigt: leer gelassen bleibt der gespeicherte Wert, mit «Schlüssel entfernen» wird er gelöscht.
+				if ( $remove ) {
+					return '';
+				}
+				$secret = trim( sanitize_text_field( (string) $value ) );
+				return '' === $secret ? (string) $current : $secret;
 			case 'checkbox':
 				return ! empty( $value );
 			case 'number':
@@ -128,5 +166,19 @@ final class Settings {
 			default:
 				return sanitize_text_field( (string) $value );
 		}
+	}
+
+	/**
+	 * Maskierte Darstellung eines geheimen Werts, z. B. «••••••••a1b2».
+	 *
+	 * @param string $secret Wert.
+	 * @return string Leer, wenn nichts gespeichert ist.
+	 */
+	public static function mask( string $secret ): string {
+		if ( '' === $secret ) {
+			return '';
+		}
+
+		return str_repeat( '•', 8 ) . ( strlen( $secret ) > 12 ? substr( $secret, -4 ) : '' );
 	}
 }

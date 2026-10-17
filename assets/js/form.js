@@ -76,16 +76,76 @@
 		return el.validity.patternMismatch ? messages.patternMismatch : messages.invalid;
 	}
 
+	/* Dieselben Regeln wie Fields\Formats auf dem Server. */
+	var formats = {
+		tel: function ( value ) {
+			return /^[0-9+\-\/() ]+$/.test( value ) && ( value.match( /[0-9]/g ) || [] ).length >= 6;
+		},
+		postcode_ch: function ( value ) {
+			return /^[0-9]{4}$/.test( value );
+		}
+	};
+
+	function formatMessage( el, messages ) {
+		var format = el.getAttribute( 'data-format' );
+		var value = el.value.trim();
+		return format && formats[ format ] && value !== '' && ! formats[ format ]( value ) ? messages[ format ] : '';
+	}
+
 	function clientErrors( form ) {
 		var errors = {};
 		var messages = JSON.parse( form.getAttribute( 'data-messages' ) || '{}' );
 		Array.prototype.forEach.call( form.elements, function ( el ) {
 			var id = fieldId( el.name );
-			if ( id && el.willValidate && ! el.validity.valid && ! errors[ id ] ) {
-				errors[ id ] = message( el, messages );
+			if ( ! id || ! el.willValidate || errors[ id ] ) {
+				return;
+			}
+			var text = el.validity.valid ? formatMessage( el, messages ) : message( el, messages );
+			if ( text ) {
+				errors[ id ] = text;
 			}
 		} );
 		return errors;
+	}
+
+	function formMessage( form, key ) {
+		return JSON.parse( form.getAttribute( 'data-messages' ) || '{}' )[ key ] || '';
+	}
+
+	var captchaFields = { turnstile: 'cf-turnstile-response', hcaptcha: 'h-captcha-response' };
+
+	/* reCAPTCHA v3 holt das Token beim Absenden. Turnstile und hCaptcha tragen es selbst ins Formular ein. */
+	function captchaToken( form ) {
+		var provider = form.getAttribute( 'data-captcha' );
+		if ( captchaFields[ provider ] ) {
+			var field = form.querySelector( '[name="' + captchaFields[ provider ] + '"]' );
+			return field && field.value ? Promise.resolve() : Promise.reject( new Error( 'captchaPending' ) );
+		}
+		if ( provider !== 'recaptcha' ) {
+			return Promise.resolve();
+		}
+		var api = window.grecaptcha;
+		if ( ! api || typeof api.ready !== 'function' ) {
+			return Promise.reject( new Error( 'captcha' ) );
+		}
+		return new Promise( function ( resolve, reject ) {
+			api.ready( function () {
+				api.execute( form.getAttribute( 'data-captcha-key' ), { action: 'submit' } ).then( function ( token ) {
+					form.querySelector( '[name="g-recaptcha-response"]' ).value = token;
+					resolve();
+				}, reject );
+			} );
+		} );
+	}
+
+	/* Ein Token gilt nur einmal: nach einer Antwort ohne Erfolg ein neues anfordern. */
+	function resetCaptcha( form ) {
+		var provider = form.getAttribute( 'data-captcha' );
+		if ( provider === 'turnstile' && window.turnstile ) {
+			window.turnstile.reset( form.querySelector( '.cf-turnstile' ) );
+		} else if ( provider === 'hcaptcha' && window.hcaptcha ) {
+			window.hcaptcha.reset();
+		}
 	}
 
 	function showSuccess( form, data ) {
@@ -118,6 +178,15 @@
 		var button = form.querySelector( '.mlab-form__submit' );
 		button.disabled = true;
 
+		captchaToken( form ).then( function () {
+			send( form, button );
+		}, function ( error ) {
+			button.disabled = false;
+			showErrors( form, {}, formMessage( form, error && error.message === 'captchaPending' ? 'captchaPending' : 'captcha' ) );
+		} );
+	}
+
+	function send( form, button ) {
 		window.fetch( form.getAttribute( 'data-rest' ), { method: 'POST', body: new window.FormData( form ), credentials: 'same-origin' } )
 			.then( function ( response ) {
 				// Antwortet der Server ohne JSON, ist die Anfrage evtl. schon gespeichert: nicht nochmals senden.
@@ -126,11 +195,12 @@
 					if ( data.status === 'success' ) {
 						showSuccess( form, data );
 					} else {
+						resetCaptcha( form );
 						showErrors( form, data.errors || {}, data.message || '' );
 					}
 				}, function () {
 					button.disabled = false;
-					showErrors( form, {}, JSON.parse( form.getAttribute( 'data-messages' ) || '{}' ).server || '' );
+					showErrors( form, {}, formMessage( form, 'server' ) );
 				} );
 			}, function () {
 				// Keine Verbindung zur REST-API: als normaler POST versuchen.

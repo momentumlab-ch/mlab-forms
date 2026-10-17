@@ -9,6 +9,7 @@ namespace MLab_Forms\Forms;
 
 use MLab_Forms\Fields\FieldTypes;
 use MLab_Forms\Settings;
+use MLab_Forms\Spam\Services;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -77,17 +78,50 @@ final class SchemaValidator {
 		foreach ( array( 'submit_label', 'success_message', 'redirect_url' ) as $key ) {
 			$this->optional_string( $settings, $key, 'settings.' . $key );
 		}
-		if ( isset( $settings['store_entries'] ) && ! is_bool( $settings['store_entries'] ) ) {
-			$this->error( 'settings.store_entries', __( 'Muss true oder false sein.', 'mlab-forms' ) );
-		}
+		$this->optional_bool( $settings, 'store_entries', 'settings.store_entries' );
 		$this->optional_setting_int( $settings, 'retention_days', 'retention_days', 'settings.retention_days' );
 		if ( isset( $settings['style'] ) && '' !== $settings['style'] && ! isset( Settings::fields()['style_preset']['options'][ $settings['style'] ] ) ) {
 			$this->error( 'settings.style', __( '«style» muss «light» oder «dark» sein.', 'mlab-forms' ) );
 		}
 		if ( isset( $settings['spam'] ) && $this->is_object( $settings['spam'], 'settings.spam' ) ) {
-			$this->optional_setting_int( $settings['spam'], 'min_seconds', 'spam_min_seconds', 'settings.spam.min_seconds' );
+			$this->check_spam( $settings['spam'] );
+		}
+		if ( isset( $settings['sender'] ) && $this->is_object( $settings['sender'], 'settings.sender' ) ) {
+			$this->check_sender( $settings['sender'] );
 		}
 		$this->check_notifications( $settings['notifications'] ?? array() );
+	}
+
+	/**
+	 * Spam-Schutz des Formulars.
+	 *
+	 * @param array<string, mixed> $spam Einstellungen.
+	 */
+	private function check_spam( array $spam ): void {
+		$this->optional_setting_int( $spam, 'min_seconds', 'spam_min_seconds', 'settings.spam.min_seconds' );
+		if ( isset( $spam['provider'] ) && ! ( is_string( $spam['provider'] ) && ( '' === $spam['provider'] || '' !== Services::normalize( $spam['provider'] ) ) ) ) {
+			$this->error( 'settings.spam.provider', __( '«provider» muss leer, «turnstile», «recaptcha» oder «hcaptcha» sein. Es ist nur ein Dienst gleichzeitig möglich.', 'mlab-forms' ) );
+		}
+		$this->optional_bool( $spam, 'akismet', 'settings.spam.akismet' );
+	}
+
+	/**
+	 * Absender des Formulars. Leere Angaben gelten als «wie in den Einstellungen».
+	 *
+	 * @param array<string, mixed> $sender Einstellungen.
+	 */
+	private function check_sender( array $sender ): void {
+		foreach ( array( 'name', 'email', 'reply_to' ) as $key ) {
+			$this->optional_string( $sender, $key, 'settings.sender.' . $key );
+		}
+		foreach ( array( 'email', 'reply_to' ) as $key ) {
+			if ( ! empty( $sender[ $key ] ) && is_string( $sender[ $key ] ) && ! is_email( $sender[ $key ] ) ) {
+				$this->error( 'settings.sender.' . $key, __( 'Das ist keine gültige E-Mail-Adresse.', 'mlab-forms' ) );
+			}
+		}
+		if ( isset( $sender['reply_to_mode'] ) && ! in_array( $sender['reply_to_mode'], array( '', 'visitor', 'fixed' ), true ) ) {
+			$this->error( 'settings.sender.reply_to_mode', __( '«reply_to_mode» muss leer, «visitor» oder «fixed» sein.', 'mlab-forms' ) );
+		}
 	}
 
 	/**
@@ -164,11 +198,12 @@ final class SchemaValidator {
 		if ( isset( $field['width'] ) && ! in_array( $field['width'], self::WIDTHS, true ) ) {
 			$this->error( $path . '.width', __( '«width» muss full, half oder third sein.', 'mlab-forms' ) );
 		}
-		foreach ( array( 'placeholder', 'help', 'autocomplete', 'link' ) as $key ) {
+		foreach ( array( 'placeholder', 'help', 'autocomplete', 'link', 'format' ) as $key ) {
 			$this->optional_string( $field, $key, $path . '.' . $key );
 		}
-		if ( isset( $field['prefill'] ) ) {
-			$this->is_object( $field['prefill'], $path . '.prefill' );
+		$this->optional_bool( $field, 'empty_first', $path . '.empty_first' );
+		if ( isset( $field['prefill'] ) && $this->is_object( $field['prefill'], $path . '.prefill' ) ) {
+			$this->optional_bool( $field['prefill'], 'enabled', $path . '.prefill.enabled' );
 		}
 		foreach ( $type->schema_errors( $field ) as $message ) {
 			$this->error( $path, $message );
@@ -200,6 +235,19 @@ final class SchemaValidator {
 	private function optional_string( array $data, string $key, string $path ): void {
 		if ( isset( $data[ $key ] ) && ! is_string( $data[ $key ] ) ) {
 			$this->error( $path, __( 'Muss ein Text sein.', 'mlab-forms' ) );
+		}
+	}
+
+	/**
+	 * Optionaler Wahrheitswert.
+	 *
+	 * @param array<string, mixed> $data Daten.
+	 * @param string               $key  Schlüssel.
+	 * @param string               $path Pfad.
+	 */
+	private function optional_bool( array $data, string $key, string $path ): void {
+		if ( isset( $data[ $key ] ) && ! is_bool( $data[ $key ] ) ) {
+			$this->error( $path, __( 'Muss true oder false sein.', 'mlab-forms' ) );
 		}
 	}
 

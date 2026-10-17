@@ -7,6 +7,7 @@
 
 namespace MLab_Forms;
 
+use MLab_Forms\Admin\ConnectionTest;
 use MLab_Forms\Admin\EntriesPage;
 use MLab_Forms\Admin\FormEditor;
 use MLab_Forms\Admin\Menu;
@@ -48,7 +49,7 @@ final class Plugin {
 			new Privacy(),
 		);
 		if ( is_admin() ) {
-			array_push( $modules, new Menu(), new FormEditor(), new EntriesPage(), new SettingsPage(), new UpdatesTab() );
+			array_push( $modules, new Menu(), new FormEditor(), new EntriesPage(), new SettingsPage(), new UpdatesTab(), new ConnectionTest() );
 		}
 
 		foreach ( $modules as $module ) {

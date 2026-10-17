@@ -111,3 +111,35 @@ function get_posts( $args ) {
 function post_type_exists( $type ) {
 	return false;
 }
+
+function get_bloginfo( $show = '' ) {
+	return $GLOBALS['mlab_test']['options']['blogname'] ?? 'Testseite';
+}
+
+function wp_specialchars_decode( $text, $quote_style = ENT_NOQUOTES ) {
+	return htmlspecialchars_decode( (string) $text, $quote_style );
+}
+
+function wp_unslash( $value ) {
+	return $value;
+}
+
+function esc_url_raw( $url ) {
+	return (string) $url;
+}
+
+function home_url( $path = '' ) {
+	return 'https://example.org' . $path;
+}
+
+function wp_parse_url( $url, $component = -1 ) {
+	return parse_url( (string) $url, $component );
+}
+
+function get_locale() {
+	return 'de_CH';
+}
+
+function add_query_arg( $key, $value, $url ) {
+	return $url . ( str_contains( $url, '?' ) ? '&' : '?' ) . $key . '=' . $value;
+}
