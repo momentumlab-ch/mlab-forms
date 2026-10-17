@@ -3,7 +3,7 @@
  * Plugin Name:       MomentumLab Forms
  * Plugin URI:        https://github.com/momentumlab-ch/mlab-forms
  * Description:       Anfrage- und Kontaktformulare für Kundenseiten von Momentum Lab.
- * Version:           0.4.0
+ * Version:           0.4.1
  * Requires at least: 6.9
  * Requires PHP:      8.1
  * Author:            Momentum Lab
@@ -19,7 +19,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MLAB_FORMS_VERSION', '0.4.0' );
+define( 'MLAB_FORMS_VERSION', '0.4.1' );
 define( 'MLAB_FORMS_FILE', __FILE__ );
 define( 'MLAB_FORMS_DIR', plugin_dir_path( __FILE__ ) );
 

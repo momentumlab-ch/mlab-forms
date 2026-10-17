@@ -2,11 +2,16 @@
 <ruleset name="MomentumLab Forms">
 	<description>WordPress Coding Standards für MomentumLab Forms.</description>
 
-	<file>mlab-forms.php</file>
-	<file>uninstall.php</file>
-	<file>inc</file>
+	<file>.</file>
+	<exclude-pattern>lib/*</exclude-pattern>
+	<exclude-pattern>vendor/*</exclude-pattern>
+	<exclude-pattern>node_modules/*</exclude-pattern>
+	<exclude-pattern>tests/*</exclude-pattern>
+	<exclude-pattern>build/*</exclude-pattern>
+	<exclude-pattern>dist/*</exclude-pattern>
 
 	<arg name="extensions" value="php"/>
+	<arg name="parallel" value="8"/>
 	<arg value="sp"/>
 
 	<config name="minimum_wp_version" value="6.9"/>

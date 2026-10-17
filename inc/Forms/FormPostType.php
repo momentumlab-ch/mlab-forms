@@ -29,22 +29,10 @@ final class FormPostType {
 	 * Registriert den Beitragstyp. Alle Rechte hängen an «mlab_forms_manage».
 	 */
 	public static function register_post_type(): void {
-		$cap = Capabilities::MANAGE;
-
 		register_post_type(
 			self::POST_TYPE,
 			array(
-				'labels'          => array(
-					'name'               => __( 'Formulare', 'mlab-forms' ),
-					'singular_name'      => __( 'Formular', 'mlab-forms' ),
-					'add_new'            => __( 'Neues Formular', 'mlab-forms' ),
-					'add_new_item'       => __( 'Neues Formular erstellen', 'mlab-forms' ),
-					'edit_item'          => __( 'Formular bearbeiten', 'mlab-forms' ),
-					'all_items'          => __( 'Alle Formulare', 'mlab-forms' ),
-					'search_items'       => __( 'Formulare durchsuchen', 'mlab-forms' ),
-					'not_found'          => __( 'Keine Formulare gefunden.', 'mlab-forms' ),
-					'not_found_in_trash' => __( 'Keine Formulare im Papierkorb.', 'mlab-forms' ),
-				),
+				'labels'          => self::labels(),
 				'public'          => false,
 				'show_ui'         => true,
 				'show_in_menu'    => false,
@@ -54,20 +42,50 @@ final class FormPostType {
 				'query_var'       => false,
 				'map_meta_cap'    => true,
 				'capability_type' => 'mlab_form',
-				'capabilities'    => array(
-					'edit_posts'             => $cap,
-					'edit_others_posts'      => $cap,
-					'edit_published_posts'   => $cap,
-					'edit_private_posts'     => $cap,
-					'publish_posts'          => $cap,
-					'read_private_posts'     => $cap,
-					'delete_posts'           => $cap,
-					'delete_others_posts'    => $cap,
-					'delete_published_posts' => $cap,
-					'delete_private_posts'   => $cap,
-					'create_posts'           => $cap,
-				),
+				'capabilities'    => self::capabilities(),
 			)
 		);
+	}
+
+	/**
+	 * Beschriftungen im Backend.
+	 *
+	 * @return array<string, string>
+	 */
+	private static function labels(): array {
+		return array(
+			'name'               => __( 'Formulare', 'mlab-forms' ),
+			'singular_name'      => __( 'Formular', 'mlab-forms' ),
+			'add_new'            => __( 'Neues Formular', 'mlab-forms' ),
+			'add_new_item'       => __( 'Neues Formular erstellen', 'mlab-forms' ),
+			'edit_item'          => __( 'Formular bearbeiten', 'mlab-forms' ),
+			'all_items'          => __( 'Alle Formulare', 'mlab-forms' ),
+			'search_items'       => __( 'Formulare durchsuchen', 'mlab-forms' ),
+			'not_found'          => __( 'Keine Formulare gefunden.', 'mlab-forms' ),
+			'not_found_in_trash' => __( 'Keine Formulare im Papierkorb.', 'mlab-forms' ),
+		);
+	}
+
+	/**
+	 * Jede Beitragstyp-Berechtigung zeigt auf «mlab_forms_manage».
+	 *
+	 * @return array<string, string>
+	 */
+	private static function capabilities(): array {
+		$primitive = array(
+			'edit_posts',
+			'edit_others_posts',
+			'edit_published_posts',
+			'edit_private_posts',
+			'publish_posts',
+			'read_private_posts',
+			'delete_posts',
+			'delete_others_posts',
+			'delete_published_posts',
+			'delete_private_posts',
+			'create_posts',
+		);
+
+		return array_fill_keys( $primitive, Capabilities::MANAGE );
 	}
 }

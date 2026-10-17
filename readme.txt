@@ -4,7 +4,7 @@ Tags: formulare, kontakt, anfrage
 Requires at least: 6.9
 Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 0.4.0
+Stable tag: 0.4.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,7 +20,19 @@ MomentumLab Forms hat einen eigenen Menüpunkt im Backend mit «Alle Formulare»
 * Spam-Schutz mit Honeypot, Mindestzeit und Limit pro IP (gehasht gespeichert).
 * Datenschutz: Aufbewahrungsdauer, Export und Löschung über die WordPress-Datenschutz-Werkzeuge.
 
-Erweiterbar über die Filter `mlab_forms_field_types`, `mlab_forms_options_providers`, `mlab_forms_style_vars` und `mlab_forms_client_ip`.
+= Hooks =
+
+Filter:
+
+* `mlab_forms_field_types`: eigene Feldtypen ergänzen oder bestehende ersetzen (Typ => Klasse).
+* `mlab_forms_options_providers`: Quellen für Auswahllisten ergänzen (`options_source` im Formular).
+* `mlab_forms_style_vars`: CSS-Variablen der Formulare setzen, z. B. `--mlab-form-accent` aus den Theme-Farben.
+* `mlab_forms_client_ip`: IP-Adresse hinter einem Proxy oder CDN korrekt bestimmen.
+
+Actions:
+
+* `mlab_forms_entry_created`: nach dem Speichern einer neuen Anfrage, mit Anfrage-ID und Eingaben.
+* `mlab_forms_settings_tab_{tab}`: eigener Inhalt unter dem Formular eines Einstellungs-Tabs.
 
 = Updates =
 
@@ -41,6 +53,10 @@ Das Repository ist öffentlich, ein Token ist nicht nötig. Wird es privat, komm
 2. Auf main mergen. Der Workflow «Release» legt das Release `vX.Y.Z` mit `mlab-forms.zip` an, sobald es zur Version noch keines gibt. Ab dann sehen die Websites das Update.
 
 == Changelog ==
+
+= 0.4.1 =
+* Interne Aufräumarbeiten nach den MomentumLab-Standards. Für Websites ändert sich nichts.
+* Die readme beschreibt jetzt alle Filter und Actions.
 
 = 0.4.0 =
 * Updates laufen über den Plugin Update Checker; das Release-ZIP heisst jetzt immer `mlab-forms.zip`.

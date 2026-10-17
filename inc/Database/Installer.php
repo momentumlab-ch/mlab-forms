@@ -82,36 +82,52 @@ final class Installer {
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
-		$charset = $wpdb->get_charset_collate();
-		$entries = self::entries_table();
-		$notes   = self::notes_table();
-
 		// dbDelta verlangt zwei Leerzeichen nach PRIMARY KEY und eine Spalte pro Zeile.
-		dbDelta(
-			"CREATE TABLE {$entries} (
-				id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-				form_id bigint(20) unsigned NOT NULL,
-				status varchar(20) NOT NULL DEFAULT 'new',
-				data longtext NOT NULL,
-				meta longtext NOT NULL,
-				created_at datetime NOT NULL,
-				updated_at datetime NOT NULL,
-				deleted_at datetime DEFAULT NULL,
-				PRIMARY KEY  (id),
-				KEY form_status (form_id,status),
-				KEY created_at (created_at),
-				KEY deleted_at (deleted_at)
-			) {$charset};
-			CREATE TABLE {$notes} (
-				id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-				entry_id bigint(20) unsigned NOT NULL,
-				type varchar(20) NOT NULL DEFAULT 'note',
-				user_id bigint(20) unsigned NOT NULL DEFAULT 0,
-				content longtext NOT NULL,
-				created_at datetime NOT NULL,
-				PRIMARY KEY  (id),
-				KEY entry_id (entry_id)
-			) {$charset};"
-		);
+		$charset = $wpdb->get_charset_collate();
+		dbDelta( self::entries_schema( $charset ) . self::notes_schema( $charset ) );
+	}
+
+	/**
+	 * Tabelle der Anfragen.
+	 *
+	 * @param string $charset Zeichensatz und Sortierung der Datenbank.
+	 */
+	private static function entries_schema( string $charset ): string {
+		$table = self::entries_table();
+
+		return "CREATE TABLE {$table} (
+			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+			form_id bigint(20) unsigned NOT NULL,
+			status varchar(20) NOT NULL DEFAULT 'new',
+			data longtext NOT NULL,
+			meta longtext NOT NULL,
+			created_at datetime NOT NULL,
+			updated_at datetime NOT NULL,
+			deleted_at datetime DEFAULT NULL,
+			PRIMARY KEY  (id),
+			KEY form_status (form_id,status),
+			KEY created_at (created_at),
+			KEY deleted_at (deleted_at)
+		) {$charset};\n";
+	}
+
+	/**
+	 * Tabelle der Notizen und des Verlaufs pro Anfrage.
+	 *
+	 * @param string $charset Zeichensatz und Sortierung der Datenbank.
+	 */
+	private static function notes_schema( string $charset ): string {
+		$table = self::notes_table();
+
+		return "CREATE TABLE {$table} (
+			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+			entry_id bigint(20) unsigned NOT NULL,
+			type varchar(20) NOT NULL DEFAULT 'note',
+			user_id bigint(20) unsigned NOT NULL DEFAULT 0,
+			content longtext NOT NULL,
+			created_at datetime NOT NULL,
+			PRIMARY KEY  (id),
+			KEY entry_id (entry_id)
+		) {$charset};\n";
 	}
 }

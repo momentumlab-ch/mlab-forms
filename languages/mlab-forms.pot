@@ -563,83 +563,83 @@ msgstr ""
 msgid "Updates"
 msgstr ""
 
-#: inc/Settings.php:54
+#: inc/options.php:16
 msgid "Formular-Styling laden"
 msgstr ""
 
-#: inc/Settings.php:56
+#: inc/options.php:18
 msgid "Ausschalten, wenn das Theme die Formulare selbst gestaltet."
 msgstr ""
 
-#: inc/Settings.php:61
+#: inc/options.php:23
 msgid "Farbschema"
 msgstr ""
 
-#: inc/Settings.php:64
+#: inc/options.php:26
 msgid "Hell"
 msgstr ""
 
-#: inc/Settings.php:65
+#: inc/options.php:27
 msgid "Dunkel"
 msgstr ""
 
-#: inc/Settings.php:71
+#: inc/options.php:33
 msgid "Absendername"
 msgstr ""
 
-#: inc/Settings.php:73
+#: inc/options.php:35
 msgid "Leer lassen für den Namen der Website."
 msgstr ""
 
-#: inc/Settings.php:78
+#: inc/options.php:40
 msgid "Absenderadresse"
 msgstr ""
 
-#: inc/Settings.php:80
+#: inc/options.php:42
 msgid "Leer lassen für die Admin-Adresse. WP Mail SMTP kann diesen Wert übersteuern."
 msgstr ""
 
-#: inc/Settings.php:85
+#: inc/options.php:47
 msgid "Standard-Empfänger"
 msgstr ""
 
-#: inc/Settings.php:87
+#: inc/options.php:49
 msgid "Empfänger für neue Anfragen, wenn das Formular nichts anderes festlegt. Leer lassen für die Admin-Adresse."
 msgstr ""
 
-#: inc/Settings.php:92
+#: inc/options.php:54
 msgid "Honeypot verwenden"
 msgstr ""
 
-#: inc/Settings.php:98
+#: inc/options.php:60
 msgid "Mindestzeit zum Ausfüllen (Sekunden)"
 msgstr ""
 
-#: inc/Settings.php:102
+#: inc/options.php:64
 msgid "Schnellere Absendungen gelten als Spam. 0 schaltet die Prüfung aus."
 msgstr ""
 
-#: inc/Settings.php:107
+#: inc/options.php:69
 msgid "Maximal Anfragen pro Stunde und Absender"
 msgstr ""
 
-#: inc/Settings.php:111
+#: inc/options.php:73
 msgid "Gezählt wird pro gehashter IP-Adresse. 0 schaltet die Begrenzung aus."
 msgstr ""
 
-#: inc/Settings.php:116
+#: inc/options.php:78
 msgid "Anfragen aufbewahren (Tage)"
 msgstr ""
 
-#: inc/Settings.php:120
+#: inc/options.php:82
 msgid "Standard für neue Formulare. Ältere Anfragen werden automatisch gelöscht."
 msgstr ""
 
-#: inc/Settings.php:125
+#: inc/options.php:87
 msgid "Daten beim Löschen des Plugins behalten"
 msgstr ""
 
-#: inc/Settings.php:127
+#: inc/options.php:89
 msgid "Ausschalten, damit beim Löschen des Plugins alle Formulare, Anfragen und Einstellungen entfernt werden."
 msgstr ""
 
