@@ -1,0 +1,57 @@
+name: Prüfungen
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer:v2
+
+      - name: Abhängigkeiten installieren
+        run: composer install --no-interaction --no-progress
+
+      - name: PHPCS (WordPress Coding Standards)
+        run: vendor/bin/phpcs
+
+      - name: PHPStan
+        run: vendor/bin/phpstan analyse --no-progress --memory-limit=2G
+
+      - name: PHPUnit
+        run: vendor/bin/phpunit
+
+  build:
+    needs: checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer:v2
+
+      - name: PHP-Syntax prüfen
+        run: find . -name '*.php' -not -path './vendor/*' -print0 | xargs -0 -n1 php -l
+
+      - name: Versionen prüfen
+        run: bin/check-version.sh
+
+      - name: ZIP bauen
+        run: bin/build-zip.sh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mlab-forms
+          path: dist/mlab-forms.zip

@@ -1,22 +1,34 @@
 #!/usr/bin/env bash
-# Baut dist/mlab-forms-<version>.zip, das ohne Composer oder Node auf dem Server läuft.
+# Baut dist/mlab-forms.zip mit den Ausschlüssen aus .distignore und prüft das Ergebnis.
+# Wird lokal, in der CI und im Release-Workflow verwendet.
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-version=$(sed -n "s/^ \* Version: *//p" mlab-forms.php | tr -d '[:space:]')
-if [ -z "$version" ]; then
-	echo "Version im Plugin-Header nicht gefunden." >&2
+slug=mlab-forms
+zip="dist/$slug.zip"
+stage=$(mktemp -d)
+trap 'rm -rf "$stage"' EXIT
+
+mkdir -p "$stage/$slug" dist
+tar --exclude-from=.distignore -cf - . | tar -xf - -C "$stage/$slug"
+rm -f "$zip"
+(cd "$stage" && zip -qr "$OLDPWD/$zip" "$slug")
+
+if unzip -Z1 "$zip" | grep -qE '(^|/)(wp-config[^/]*\.php|\.env[^/]*)$'; then
+	echo "ZIP enthält eine Konfigurations- oder Secret-Datei (wp-config, .env)." >&2
 	exit 1
 fi
 
-composer install --no-dev --optimize-autoloader --no-interaction --quiet
+top=$(unzip -Z1 "$zip" | cut -d/ -f1 | sort -u)
+if [ "$top" != "$slug" ]; then
+	echo "ZIP hat nicht genau einen Ordner oben namens $slug: $top" >&2
+	exit 1
+fi
 
-rm -rf build dist
-mkdir -p build/mlab-forms dist
-cp -R mlab-forms.php uninstall.php readme.txt LICENSE src assets templates schema languages vendor build/mlab-forms/
+size=$(stat -c%s "$zip")
+if [ "$size" -gt 8388608 ]; then
+	echo "Warnung: ZIP ist grösser als 8 MB ($size Bytes). Viele Hostings haben dort ein Upload-Limit." >&2
+fi
 
-# Der Ordner im ZIP muss «mlab-forms» heissen, sonst legt WordPress beim Hochladen ein zweites Plugin an.
-(cd build && zip -rq "../dist/mlab-forms-${version}.zip" mlab-forms)
-
-echo "dist/mlab-forms-${version}.zip"
+echo "$zip"

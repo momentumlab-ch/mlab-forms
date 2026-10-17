@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 0.4.0 =
+* Updates laufen über den Plugin Update Checker; das Release-ZIP heisst jetzt immer `mlab-forms.zip`.
+* Das Plugin bringt alles mit, was es braucht, und läuft auch aus einem frisch heruntergeladenen ZIP.
+* Lizenz ist jetzt GPL-2.0 oder später.
+* Übersetzungsvorlage und deutsche Übersetzung (Schweiz) liegen bei.
+
 = 0.3.0 =
 * Formulare mit Feldtypen, Vorlagen, Revisionen und Shortcode.
 * Anfragen im Backend mit Status, Notizen und CSV-Export.

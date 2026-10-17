@@ -1,9 +1,8 @@
-# Publishes a GitHub release with the plugin archive whenever main carries a
-# plugin version that has no release yet. Installed sites pick the release up
-# through the plugin's update check.
+# Veröffentlicht ein GitHub Release mit dem Installations-ZIP, sobald main eine Plugin-Version trägt,
+# zu der es noch kein Release gibt. Installierte Seiten finden es über den Plugin Update Checker.
 #
-# It also runs for a pushed v* tag or a release published on GitHub, and can
-# be started by hand under Actions > Release > Run workflow.
+# Läuft auch bei einem gepushten Tag vX.Y.Z, einem auf GitHub veröffentlichten Release und
+# von Hand unter Actions > Release > Run workflow.
 name: Release
 
 on:
@@ -28,60 +27,52 @@ jobs:
         with:
           ref: ${{ github.event.release.tag_name || github.ref }}
 
-      - name: Read version
+      - name: Version prüfen
         id: version
         run: |
-          header=$(sed -n 's/^ \* Version:[[:space:]]*//p' mlab-forms.php)
-          constant=$(sed -n "s/^define( 'MLAB_FORMS_VERSION', '\(.*\)' );/\1/p" mlab-forms.php)
-          if [ "$header" != "$constant" ]; then
-            echo "::error::Plugin header version $header and MLAB_FORMS_VERSION $constant differ."
-            exit 1
-          fi
-          tag="v$header"
+          version=$(sed -n 's/^ \* Version:[[:space:]]*//p' mlab-forms.php | tr -d '[:space:]')
+          pushed=""
           if [ "${{ github.ref_type }}" = "tag" ] || [ -n "${{ github.event.release.tag_name }}" ]; then
             pushed="${{ github.event.release.tag_name || github.ref_name }}"
-            if [ "$pushed" != "$tag" ]; then
-              echo "::error::Tag $pushed does not match plugin version $header."
-              exit 1
-            fi
           fi
-          echo "tag=$tag" >> "$GITHUB_OUTPUT"
-          echo "version=$header" >> "$GITHUB_OUTPUT"
+          bin/check-version.sh $pushed
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
 
-      - name: Check for an existing release
+      - name: Vorhandenes Release suchen
         id: existing
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          v="${{ steps.version.outputs.version }}"
           if gh release view "${{ steps.version.outputs.tag }}" --json assets --jq '.assets[].name' 2>/dev/null \
-            | grep -qx "mlab-forms-$v.zip"; then
-            echo "Release ${{ steps.version.outputs.tag }} already has its archive."
+            | grep -qx "mlab-forms.zip"; then
+            echo "Release ${{ steps.version.outputs.tag }} hat sein ZIP bereits."
             echo "done=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Build archive
+      - name: ZIP bauen und prüfen
         if: steps.existing.outputs.done != 'true'
         run: |
-          git archive --format=zip --prefix=mlab-forms/ \
-            -o "mlab-forms-${{ steps.version.outputs.version }}.zip" HEAD
+          bin/build-zip.sh
+          # Übergang: Version 0.3.0 erkennt Updates nur an Dateien namens mlab-forms-<version>.zip.
+          cp dist/mlab-forms.zip "dist/mlab-forms-${{ steps.version.outputs.version }}.zip"
 
-      - name: Release notes from CHANGELOG.md
+      - name: Release-Notizen aus CHANGELOG.md
         if: steps.existing.outputs.done != 'true'
         run: |
           awk -v v="${{ steps.version.outputs.version }}" '
-            /^## \[/ { if (found) exit; if (index($0, "[" v "]")) { found=1; next } }
+            /^= / { if (found) exit; if ($0 == "= " v " =") { found=1; next } }
             found' CHANGELOG.md > notes.md
 
-      - name: Create or update release
+      - name: Release anlegen oder ergänzen
         if: steps.existing.outputs.done != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           tag="${{ steps.version.outputs.tag }}"
-          zip="mlab-forms-${{ steps.version.outputs.version }}.zip"
+          files=(dist/mlab-forms.zip "dist/mlab-forms-${{ steps.version.outputs.version }}.zip")
           if gh release view "$tag" >/dev/null 2>&1; then
-            gh release upload "$tag" "$zip" --clobber
+            gh release upload "$tag" "${files[@]}" --clobber
           else
-            gh release create "$tag" "$zip" --target "$GITHUB_SHA" --title "$tag" --notes-file notes.md
+            gh release create "$tag" "${files[@]}" --target "$GITHUB_SHA" --title "$tag" --notes-file notes.md
           fi

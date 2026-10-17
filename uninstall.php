@@ -11,11 +11,10 @@ use MLab_Forms\Database\Installer;
 use MLab_Forms\Entries\Retention;
 use MLab_Forms\Forms\FormPostType;
 use MLab_Forms\Settings;
-use MLab_Forms\Updates\GitHubUpdater;
 
 defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/inc/autoload.php';
 
 Retention::unschedule();
 
@@ -40,4 +39,3 @@ Installer::drop_tables();
 Capabilities::revoke();
 delete_option( Settings::OPTION );
 delete_option( Activator::VERSION_OPTION );
-delete_site_transient( GitHubUpdater::CACHE_KEY );
