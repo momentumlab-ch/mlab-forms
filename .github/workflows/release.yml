@@ -31,8 +31,8 @@ jobs:
       - name: Read version
         id: version
         run: |
-          header=$(sed -n 's/^ \* Version:[[:space:]]*//p' mlab-media-folder.php)
-          constant=$(sed -n "s/^define( 'MLAB_MEDIA_FOLDER_VERSION', '\(.*\)' );/\1/p" mlab-media-folder.php)
+          header=$(sed -n 's/^ \* Version:[[:space:]]*//p' mlab-forms.php)
+          constant=$(sed -n "s/^define( 'MLAB_MEDIA_FOLDER_VERSION', '\(.*\)' );/\1/p" mlab-forms.php)
           if [ "$header" != "$constant" ]; then
             echo "::error::Plugin header version $header and MLAB_MEDIA_FOLDER_VERSION $constant differ."
             exit 1
@@ -55,7 +55,7 @@ jobs:
         run: |
           v="${{ steps.version.outputs.version }}"
           if gh release view "${{ steps.version.outputs.tag }}" --json assets --jq '.assets[].name' 2>/dev/null \
-            | grep -qx "mlab-media-folder-$v.zip"; then
+            | grep -qx "mlab-forms-$v.zip"; then
             echo "Release ${{ steps.version.outputs.tag }} already has its archive."
             echo "done=true" >> "$GITHUB_OUTPUT"
           fi
@@ -63,8 +63,8 @@ jobs:
       - name: Build archive
         if: steps.existing.outputs.done != 'true'
         run: |
-          git archive --format=zip --prefix=mlab-media-folder/ \
-            -o "mlab-media-folder-${{ steps.version.outputs.version }}.zip" HEAD
+          git archive --format=zip --prefix=mlab-forms/ \
+            -o "mlab-forms-${{ steps.version.outputs.version }}.zip" HEAD
 
       - name: Release notes from CHANGELOG.md
         if: steps.existing.outputs.done != 'true'
@@ -79,7 +79,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           tag="${{ steps.version.outputs.tag }}"
-          zip="mlab-media-folder-${{ steps.version.outputs.version }}.zip"
+          zip="mlab-forms-${{ steps.version.outputs.version }}.zip"
           if gh release view "$tag" >/dev/null 2>&1; then
             gh release upload "$tag" "$zip" --clobber
           else
