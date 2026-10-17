@@ -3,8 +3,18 @@ includes:
 parameters:
     level: 6
     paths:
-        - src
+        - inc
         - mlab-forms.php
         - uninstall.php
+    scanDirectories:
+        - lib/plugin-update-checker
     bootstrapFiles:
         - tests/phpstan-bootstrap.php
+    ignoreErrors:
+        # inc/updater.php folgt der Vorlage: Schalter $private für private Repos, GitHubApi hinter getVcsApi().
+        -
+            identifiers:
+                - booleanAnd.leftAlwaysFalse
+                - if.alwaysFalse
+                - method.notFound
+            path: inc/updater.php

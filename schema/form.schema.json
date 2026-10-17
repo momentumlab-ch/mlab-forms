@@ -2,7 +2,7 @@
 	"$schema": "https://json-schema.org/draft/2020-12/schema",
 	"$id": "https://github.com/momentumlab-ch/mlab-forms/schema/form.schema.json",
 	"title": "MomentumLab Forms: Formular",
-	"description": "Single Source of Truth eines Formulars. Builder, Renderer, Validierung und KI arbeiten auf diesem Schema.",
+	"description": "Single Source of Truth eines Formulars. Builder, Renderer und Validierung arbeiten auf diesem Schema.",
 	"type": "object",
 	"required": [ "schema_version", "fields" ],
 	"properties": {

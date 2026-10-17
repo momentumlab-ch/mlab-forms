@@ -4,7 +4,7 @@
 
 	<file>mlab-forms.php</file>
 	<file>uninstall.php</file>
-	<file>src</file>
+	<file>inc</file>
 
 	<arg name="extensions" value="php"/>
 	<arg value="sp"/>
@@ -21,7 +21,7 @@
 
 	<!-- Basismethoden geben Signaturen für die Feldtypen vor. -->
 	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter">
-		<exclude-pattern>src/Fields/FieldType.php</exclude-pattern>
+		<exclude-pattern>inc/Fields/FieldType.php</exclude-pattern>
 	</rule>
 
 	<rule ref="WordPress.WP.I18n">

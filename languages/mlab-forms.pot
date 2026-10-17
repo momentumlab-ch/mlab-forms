@@ -1,0 +1,660 @@
+# Copyright (C) 2026 Momentum Lab
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: MomentumLab Forms 0.4.0\n"
+"Report-Msgid-Bugs-To: https://github.com/momentumlab-ch/mlab-forms/issues\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-10-17T15:07:19+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: mlab-forms\n"
+
+#. Plugin Name of the plugin
+#: mlab-forms.php:3
+#: inc/Admin/Menu.php:40
+#: inc/Admin/Menu.php:41
+msgid "MomentumLab Forms"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: mlab-forms.php:4
+msgid "https://github.com/momentumlab-ch/mlab-forms"
+msgstr ""
+
+#. Description of the plugin
+#: mlab-forms.php:5
+msgid "Anfrage- und Kontaktformulare für Kundenseiten von Momentum Lab."
+msgstr ""
+
+#. Author of the plugin
+#: mlab-forms.php:9
+msgid "Momentum Lab"
+msgstr ""
+
+#. Author URI of the plugin
+#: mlab-forms.php:10
+msgid "https://momentumlab.ch"
+msgstr ""
+
+#: inc/Admin/EntriesListTable.php:51
+msgid "Anfrage"
+msgstr ""
+
+#: inc/Admin/EntriesListTable.php:52
+#: inc/Forms/FormPostType.php:39
+msgid "Formular"
+msgstr ""
+
+#: inc/Admin/EntriesListTable.php:53
+#: inc/Admin/EntryView.php:78
+msgid "Status"
+msgstr ""
+
+#: inc/Admin/EntriesListTable.php:54
+#: inc/Admin/EntryView.php:124
+msgid "Eingegangen"
+msgstr ""
+
+#: inc/Admin/EntriesListTable.php:87
+msgid "Alle"
+msgstr ""
+
+#. translators: %s: Status
+#: inc/Admin/EntriesListTable.php:105
+#, php-format
+msgid "Status: %s"
+msgstr ""
+
+#: inc/Admin/EntriesListTable.php:107
+msgid "Endgültig löschen"
+msgstr ""
+
+#: inc/Admin/EntriesListTable.php:134
+#: inc/Admin/Menu.php:48
+#: inc/Forms/FormPostType.php:43
+msgid "Alle Formulare"
+msgstr ""
+
+#: inc/Admin/EntriesListTable.php:139
+msgid "Filtern"
+msgstr ""
+
+#: inc/Admin/EntriesListTable.php:140
+msgid "CSV exportieren"
+msgstr ""
+
+#: inc/Admin/EntriesListTable.php:192
+msgid "Keine Anfragen gefunden."
+msgstr ""
+
+#: inc/Admin/EntriesPage.php:101
+#: inc/Admin/EntriesPage.php:102
+#: inc/Admin/EntriesPage.php:128
+#: inc/Admin/FormEditor.php:229
+#: inc/Privacy/Privacy.php:78
+msgid "Anfragen"
+msgstr ""
+
+#: inc/Admin/EntriesPage.php:135
+msgid "Anfragen durchsuchen"
+msgstr ""
+
+#: inc/Admin/EntryView.php:37
+msgid "Alle Anfragen"
+msgstr ""
+
+#. translators: 1: Nummer, 2: Formular
+#: inc/Admin/EntryView.php:41
+#, php-format
+msgid "Anfrage #%1$d · %2$s"
+msgstr ""
+
+#: inc/Admin/EntryView.php:58
+msgid "Angaben"
+msgstr ""
+
+#: inc/Admin/EntryView.php:82
+msgid "Status speichern"
+msgstr ""
+
+#: inc/Admin/EntryView.php:91
+msgid "Notizen und Verlauf"
+msgstr ""
+
+#: inc/Admin/EntryView.php:95
+msgid "Noch keine Notizen."
+msgstr ""
+
+#: inc/Admin/EntryView.php:103
+msgid "System"
+msgstr ""
+
+#: inc/Admin/EntryView.php:111
+msgid "Neue Notiz (nur intern sichtbar)"
+msgstr ""
+
+#: inc/Admin/EntryView.php:113
+msgid "Notiz speichern"
+msgstr ""
+
+#: inc/Admin/EntryView.php:125
+msgid "Seite"
+msgstr ""
+
+#: inc/Admin/EntryView.php:126
+msgid "Referrer"
+msgstr ""
+
+#: inc/Admin/EntryView.php:127
+msgid "Sprache"
+msgstr ""
+
+#: inc/Admin/EntryView.php:133
+msgid "Herkunft"
+msgstr ""
+
+#: inc/Admin/FieldRenderer.php:62
+msgid "Aktiv"
+msgstr ""
+
+#: inc/Admin/FormEditor.php:47
+msgid "Formular-Schema (JSON)"
+msgstr ""
+
+#: inc/Admin/FormEditor.php:48
+msgid "Einbinden"
+msgstr ""
+
+#: inc/Admin/FormEditor.php:49
+msgid "Frühere Versionen"
+msgstr ""
+
+#: inc/Admin/FormEditor.php:64
+msgid "Das Schema beschreibt Felder, Benachrichtigungen und Einstellungen. Es wird beim Speichern geprüft."
+msgstr ""
+
+#: inc/Admin/FormEditor.php:84
+msgid "Vorlage laden …"
+msgstr ""
+
+#: inc/Admin/FormEditor.php:93
+msgid "Das aktuelle Schema durch die Vorlage ersetzen?"
+msgstr ""
+
+#: inc/Admin/FormEditor.php:109
+msgid "Nach dem Veröffentlichen kannst du das Formular mit diesem Shortcode einbinden:"
+msgstr ""
+
+#: inc/Admin/FormEditor.php:122
+msgid "Noch keine früheren Versionen."
+msgstr ""
+
+#: inc/Admin/FormEditor.php:135
+msgid "Wiederherstellen"
+msgstr ""
+
+#. translators: %s: Fehlermeldung des JSON-Parsers
+#: inc/Admin/FormEditor.php:164
+#, php-format
+msgid "Kein gültiges JSON: %s"
+msgstr ""
+
+#: inc/Admin/FormEditor.php:198
+msgid "Das Schema wurde nicht gespeichert. Bitte korrigiere diese Punkte:"
+msgstr ""
+
+#: inc/Admin/FormEditor.php:227
+msgid "Shortcode"
+msgstr ""
+
+#: inc/Admin/Menu.php:49
+#: inc/Forms/FormPostType.php:40
+msgid "Neues Formular"
+msgstr ""
+
+#: inc/Admin/SettingsPage.php:53
+#: inc/Admin/SettingsPage.php:54
+#: inc/Admin/SettingsPage.php:106
+#: inc/Admin/SettingsPage.php:178
+msgid "Einstellungen"
+msgstr ""
+
+#: inc/Admin/UpdatesTab.php:41
+msgid "Installierte Version"
+msgstr ""
+
+#: inc/Admin/UpdatesTab.php:45
+msgid "Neueste Version"
+msgstr ""
+
+#: inc/Capabilities.php:45
+msgid "Dazu fehlt dir die Berechtigung."
+msgstr ""
+
+#: inc/Entries/Status.php:26
+msgid "Neu"
+msgstr ""
+
+#: inc/Entries/Status.php:27
+msgid "In Bearbeitung"
+msgstr ""
+
+#: inc/Entries/Status.php:28
+msgid "Beantwortet"
+msgstr ""
+
+#: inc/Entries/Status.php:29
+msgid "Gebucht"
+msgstr ""
+
+#: inc/Entries/Status.php:30
+msgid "Abgelehnt"
+msgstr ""
+
+#: inc/Entries/Status.php:31
+msgid "Spam"
+msgstr ""
+
+#: inc/Fields/CheckboxField.php:55
+#: inc/Frontend/Renderer.php:279
+msgid "Bitte bestätige die Einwilligung."
+msgstr ""
+
+#: inc/Fields/CheckboxField.php:56
+#: inc/Frontend/Renderer.php:278
+msgid "Bitte setze diesen Haken."
+msgstr ""
+
+#: inc/Fields/CheckboxField.php:69
+msgid "Ja"
+msgstr ""
+
+#: inc/Fields/CheckboxField.php:69
+msgid "Nein"
+msgstr ""
+
+#: inc/Fields/CheckboxField.php:119
+msgid "Datenschutzerklärung"
+msgstr ""
+
+#: inc/Fields/ChoiceField.php:44
+msgid "Das Feld braucht «options» oder «options_source»."
+msgstr ""
+
+#: inc/Fields/ChoiceField.php:79
+msgid "Bitte wähle eine der angebotenen Möglichkeiten."
+msgstr ""
+
+#: inc/Fields/DateField.php:23
+msgid "Datum"
+msgstr ""
+
+#. translators: %s: min oder max
+#: inc/Fields/DateField.php:36
+#, php-format
+msgid "«%s» muss ein Datum (JJJJ-MM-TT) oder «today» sein."
+msgstr ""
+
+#: inc/Fields/DateField.php:70
+msgid "Bitte wähle ein späteres Datum."
+msgstr ""
+
+#: inc/Fields/DateField.php:73
+msgid "Bitte wähle ein früheres Datum."
+msgstr ""
+
+#: inc/Fields/FieldType.php:72
+#: inc/Frontend/Renderer.php:277
+msgid "Bitte fülle dieses Feld aus."
+msgstr ""
+
+#: inc/Fields/FieldTypes.php:60
+msgid "Text"
+msgstr ""
+
+#: inc/Fields/FieldTypes.php:61
+#: inc/Settings.php:35
+msgid "E-Mail"
+msgstr ""
+
+#: inc/Fields/FieldTypes.php:62
+msgid "Telefon"
+msgstr ""
+
+#: inc/Fields/FieldTypes.php:63
+msgid "Verstecktes Feld"
+msgstr ""
+
+#: inc/Fields/FieldTypes.php:67
+msgid "Auswahlliste"
+msgstr ""
+
+#: inc/Fields/FieldTypes.php:68
+msgid "Optionsfelder"
+msgstr ""
+
+#: inc/Fields/FieldTypes.php:69
+msgid "Mehrfachauswahl"
+msgstr ""
+
+#: inc/Fields/FieldTypes.php:70
+msgid "Checkbox"
+msgstr ""
+
+#: inc/Fields/FieldTypes.php:71
+msgid "Einwilligung"
+msgstr ""
+
+#: inc/Fields/FieldTypes.php:72
+msgid "Zwischentitel"
+msgstr ""
+
+#: inc/Fields/FieldTypes.php:73
+msgid "HTML"
+msgstr ""
+
+#: inc/Fields/NumberField.php:23
+msgid "Zahl"
+msgstr ""
+
+#. translators: %s: min oder max
+#: inc/Fields/NumberField.php:36
+#, php-format
+msgid "«%s» muss eine Zahl sein."
+msgstr ""
+
+#. translators: %s: kleinster Wert
+#: inc/Fields/NumberField.php:69
+#, php-format
+msgid "Der Wert muss mindestens %s sein."
+msgstr ""
+
+#. translators: %s: grösster Wert
+#: inc/Fields/NumberField.php:73
+#, php-format
+msgid "Der Wert darf höchstens %s sein."
+msgstr ""
+
+#: inc/Fields/TextareaField.php:25
+msgid "Mehrzeiliger Text"
+msgstr ""
+
+#: inc/Fields/TextField.php:45
+msgid "«pattern» ist kein gültiger regulärer Ausdruck."
+msgstr ""
+
+#: inc/Fields/TextField.php:75
+#: inc/Frontend/Renderer.php:280
+msgid "Bitte gib eine gültige E-Mail-Adresse ein."
+msgstr ""
+
+#: inc/Fields/TextField.php:78
+#: inc/Frontend/Renderer.php:281
+msgid "Das Format stimmt nicht."
+msgstr ""
+
+#: inc/Forms/Form.php:151
+msgid "Senden"
+msgstr ""
+
+#: inc/Forms/Form.php:152
+msgid "Danke! Wir haben deine Nachricht erhalten."
+msgstr ""
+
+#: inc/Forms/Form.php:165
+msgid "Neue Anfrage: {form_title}"
+msgstr ""
+
+#: inc/Forms/FormPostType.php:38
+msgid "Formulare"
+msgstr ""
+
+#: inc/Forms/FormPostType.php:41
+msgid "Neues Formular erstellen"
+msgstr ""
+
+#: inc/Forms/FormPostType.php:42
+msgid "Formular bearbeiten"
+msgstr ""
+
+#: inc/Forms/FormPostType.php:44
+msgid "Formulare durchsuchen"
+msgstr ""
+
+#: inc/Forms/FormPostType.php:45
+msgid "Keine Formulare gefunden."
+msgstr ""
+
+#: inc/Forms/FormPostType.php:46
+msgid "Keine Formulare im Papierkorb."
+msgstr ""
+
+#: inc/Forms/SchemaValidator.php:55
+msgid "Das Schema muss ein JSON-Objekt sein."
+msgstr ""
+
+#. translators: %d: erwartete Version
+#: inc/Forms/SchemaValidator.php:60
+#, php-format
+msgid "«schema_version» muss %d sein."
+msgstr ""
+
+#: inc/Forms/SchemaValidator.php:81
+msgid "Muss true oder false sein."
+msgstr ""
+
+#: inc/Forms/SchemaValidator.php:85
+msgid "«style» muss «light» oder «dark» sein."
+msgstr ""
+
+#: inc/Forms/SchemaValidator.php:100
+msgid "Muss eine Liste sein."
+msgstr ""
+
+#. translators: %s: Schlüssel
+#: inc/Forms/SchemaValidator.php:111
+#, php-format
+msgid "«%s» fehlt."
+msgstr ""
+
+#: inc/Forms/SchemaValidator.php:126
+msgid "«fields» muss eine Liste mit mindestens einem Feld sein."
+msgstr ""
+
+#: inc/Forms/SchemaValidator.php:138
+msgid "«id» muss aus Kleinbuchstaben, Ziffern und _ bestehen."
+msgstr ""
+
+#. translators: %s: Feld-ID
+#: inc/Forms/SchemaValidator.php:141
+#, php-format
+msgid "Die id «%s» kommt mehrfach vor."
+msgstr ""
+
+#. translators: %s: Typ
+#: inc/Forms/SchemaValidator.php:158
+#, php-format
+msgid "Unbekannter Feldtyp «%s»."
+msgstr ""
+
+#: inc/Forms/SchemaValidator.php:162
+msgid "«label» fehlt."
+msgstr ""
+
+#: inc/Forms/SchemaValidator.php:165
+msgid "«width» muss full, half oder third sein."
+msgstr ""
+
+#: inc/Forms/SchemaValidator.php:188
+msgid "Muss ein JSON-Objekt sein."
+msgstr ""
+
+#: inc/Forms/SchemaValidator.php:202
+msgid "Muss ein Text sein."
+msgstr ""
+
+#. translators: 1: Minimum, 2: Maximum
+#: inc/Forms/SchemaValidator.php:219
+#, php-format
+msgid "Muss eine ganze Zahl von %1$d bis %2$d sein."
+msgstr ""
+
+#: inc/Forms/Templates.php:24
+msgid "Kontakt"
+msgstr ""
+
+#: inc/Forms/Templates.php:25
+msgid "Anfrage mit Angebot und Datum"
+msgstr ""
+
+#: inc/Forms/Templates.php:26
+msgid "Gutschein"
+msgstr ""
+
+#: inc/Frontend/Renderer.php:135
+#: inc/Submission/SubmissionHandler.php:51
+msgid "Bitte prüfe die markierten Felder."
+msgstr ""
+
+#: inc/Frontend/Renderer.php:282
+msgid "Bitte prüfe diesen Wert."
+msgstr ""
+
+#: inc/Frontend/Renderer.php:283
+msgid "Das hat leider nicht geklappt. Bitte versuche es später nochmals."
+msgstr ""
+
+#: inc/Frontend/Shortcode.php:49
+msgid "MomentumLab Forms: Formular nicht gefunden oder nicht veröffentlicht."
+msgstr ""
+
+#: inc/Privacy/Privacy.php:38
+#: inc/Privacy/Privacy.php:53
+msgid "MomentumLab Forms: Anfragen"
+msgstr ""
+
+#: inc/Privacy/Privacy.php:160
+msgid ""
+"Wenn du uns über ein Formular auf dieser Website eine Anfrage sendest, speichern wir deine Angaben, um die Anfrage zu bearbeiten und dir zu antworten. Dazu gehören die Felder des Formulars, die Seite, von der du sie gesendet hast, die Sprache deines Browsers und eine verschlüsselte Kennung deiner IP-Adresse (keine IP-Adresse im Klartext). Die Kennung dient nur dem Schutz vor Spam.\n"
+"\n"
+"Du bekommst eine Bestätigung per E-Mail, falls das Formular dies vorsieht. Anfragen werden nach der festgelegten Aufbewahrungsfrist (standardmässig 365 Tage) automatisch gelöscht. Du kannst jederzeit Auskunft über deine gespeicherten Daten verlangen oder ihre Löschung beantragen.\n"
+"\n"
+"Zur Bearbeitung von Anfragen kann ein KI-Assistent eingesetzt werden. Er liest Anfragen, fasst sie zusammen und erstellt Antwortentwürfe. Diese Entwürfe prüfen wir, bevor wir sie senden; die KI versendet selbst keine Nachrichten. Rechtsgrundlage ist in der Schweiz das revDSG, für Gäste aus der EU Art. 6 Abs. 1 lit. b DSGVO (Bearbeitung deiner Anfrage)."
+msgstr ""
+
+#: inc/Settings.php:34
+msgid "Allgemein"
+msgstr ""
+
+#: inc/Settings.php:36
+msgid "Spam-Schutz"
+msgstr ""
+
+#: inc/Settings.php:37
+msgid "Datenschutz"
+msgstr ""
+
+#: inc/Settings.php:38
+msgid "Updates"
+msgstr ""
+
+#: inc/Settings.php:54
+msgid "Formular-Styling laden"
+msgstr ""
+
+#: inc/Settings.php:56
+msgid "Ausschalten, wenn das Theme die Formulare selbst gestaltet."
+msgstr ""
+
+#: inc/Settings.php:61
+msgid "Farbschema"
+msgstr ""
+
+#: inc/Settings.php:64
+msgid "Hell"
+msgstr ""
+
+#: inc/Settings.php:65
+msgid "Dunkel"
+msgstr ""
+
+#: inc/Settings.php:71
+msgid "Absendername"
+msgstr ""
+
+#: inc/Settings.php:73
+msgid "Leer lassen für den Namen der Website."
+msgstr ""
+
+#: inc/Settings.php:78
+msgid "Absenderadresse"
+msgstr ""
+
+#: inc/Settings.php:80
+msgid "Leer lassen für die Admin-Adresse. WP Mail SMTP kann diesen Wert übersteuern."
+msgstr ""
+
+#: inc/Settings.php:85
+msgid "Standard-Empfänger"
+msgstr ""
+
+#: inc/Settings.php:87
+msgid "Empfänger für neue Anfragen, wenn das Formular nichts anderes festlegt. Leer lassen für die Admin-Adresse."
+msgstr ""
+
+#: inc/Settings.php:92
+msgid "Honeypot verwenden"
+msgstr ""
+
+#: inc/Settings.php:98
+msgid "Mindestzeit zum Ausfüllen (Sekunden)"
+msgstr ""
+
+#: inc/Settings.php:102
+msgid "Schnellere Absendungen gelten als Spam. 0 schaltet die Prüfung aus."
+msgstr ""
+
+#: inc/Settings.php:107
+msgid "Maximal Anfragen pro Stunde und Absender"
+msgstr ""
+
+#: inc/Settings.php:111
+msgid "Gezählt wird pro gehashter IP-Adresse. 0 schaltet die Begrenzung aus."
+msgstr ""
+
+#: inc/Settings.php:116
+msgid "Anfragen aufbewahren (Tage)"
+msgstr ""
+
+#: inc/Settings.php:120
+msgid "Standard für neue Formulare. Ältere Anfragen werden automatisch gelöscht."
+msgstr ""
+
+#: inc/Settings.php:125
+msgid "Daten beim Löschen des Plugins behalten"
+msgstr ""
+
+#: inc/Settings.php:127
+msgid "Ausschalten, damit beim Löschen des Plugins alle Formulare, Anfragen und Einstellungen entfernt werden."
+msgstr ""
+
+#: inc/Submission/SubmissionHandler.php:36
+msgid "Dieses Formular gibt es nicht mehr."
+msgstr ""
+
+#: inc/Submission/SubmissionHandler.php:42
+msgid "Zu viele Anfragen in kurzer Zeit. Bitte versuche es später noch einmal."
+msgstr ""
+
+#: inc/Submission/SubmissionHandler.php:56
+msgid "Die Anfrage konnte nicht gespeichert werden. Bitte versuche es noch einmal."
+msgstr ""
+
+#: inc/updater.php:54
+msgid "Updates sind nicht aktiv: In wp-config.php fehlt die Konstante MLAB_FORMS_GITHUB_TOKEN."
+msgstr ""

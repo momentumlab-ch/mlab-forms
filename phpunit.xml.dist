@@ -12,7 +12,7 @@
 	</testsuites>
 	<source>
 		<include>
-			<directory>src</directory>
+			<directory>inc</directory>
 		</include>
 	</source>
 </phpunit>
