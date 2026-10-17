@@ -76,6 +76,17 @@ abstract class FieldType {
 	}
 
 	/**
+	 * Startwert des Felds beim Ausgeben.
+	 *
+	 * @param array<string, mixed> $field   Feld.
+	 * @param string|null          $prefill Wert aus der URL, falls das Feld ihn annimmt.
+	 * @return mixed
+	 */
+	public function initial_value( array $field, ?string $prefill ) {
+		return $prefill ?? ( $field['default'] ?? '' );
+	}
+
+	/**
 	 * Wert als Text für E-Mails, Liste und Export.
 	 *
 	 * @param mixed                $value Gespeicherter Wert.

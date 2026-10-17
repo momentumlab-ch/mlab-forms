@@ -21,7 +21,7 @@ final class OptionsResolver {
 	 * Optionen des Felds.
 	 *
 	 * @param array<string, mixed> $field Feld aus dem Schema.
-	 * @return list<array{value: string, label: string, group: string}>
+	 * @return list<array{value: string, label: string, group: string, default?: bool}>
 	 */
 	public static function resolve( array $field ): array {
 		$static = self::normalize( $field['options'] ?? array() );
@@ -60,7 +60,7 @@ final class OptionsResolver {
 	 * «groups» gruppiert nach einem Meta-Feld («meta:_afa_season») oder einer Taxonomie («taxonomy:saison»).
 	 *
 	 * @param array<string, mixed> $source Angaben aus «options_source».
-	 * @return list<array{value: string, label: string, group: string}>
+	 * @return list<array{value: string, label: string, group: string, default?: bool}>
 	 */
 	public static function post_type_provider( array $source ): array {
 		$post_type = (string) ( $source['post_type'] ?? '' );
@@ -111,7 +111,7 @@ final class OptionsResolver {
 	 *
 	 * @param array<string, mixed> $source Angaben aus «options_source».
 	 * @param array<string, mixed> $field  Feld.
-	 * @return list<array{value: string, label: string, group: string}>
+	 * @return list<array{value: string, label: string, group: string, default?: bool}>
 	 */
 	private static function from_provider( array $source, array $field ): array {
 		$provider = self::providers()[ (string) ( $source['provider'] ?? '' ) ] ?? null;
@@ -140,10 +140,10 @@ final class OptionsResolver {
 	}
 
 	/**
-	 * Vereinheitlicht Optionen: Strings oder Arrays mit value, label, group.
+	 * Vereinheitlicht Optionen: Strings oder Arrays mit value, label, group und default.
 	 *
 	 * @param mixed $options Optionen.
-	 * @return list<array{value: string, label: string, group: string}>
+	 * @return list<array{value: string, label: string, group: string, default?: bool}>
 	 */
 	private static function normalize( $options ): array {
 		$result = array();
@@ -153,9 +153,10 @@ final class OptionsResolver {
 				continue;
 			}
 			$result[] = array(
-				'value' => $value,
-				'label' => is_array( $option ) && isset( $option['label'] ) ? (string) $option['label'] : $value,
-				'group' => is_array( $option ) ? (string) ( $option['group'] ?? '' ) : '',
+				'value'   => $value,
+				'label'   => is_array( $option ) && isset( $option['label'] ) ? (string) $option['label'] : $value,
+				'group'   => is_array( $option ) ? (string) ( $option['group'] ?? '' ) : '',
+				'default' => is_array( $option ) && true === ( $option['default'] ?? false ),
 			);
 		}
 
@@ -165,8 +166,8 @@ final class OptionsResolver {
 	/**
 	 * Entfernt doppelte Werte, der erste gewinnt.
 	 *
-	 * @param list<array{value: string, label: string, group: string}> $options Optionen.
-	 * @return list<array{value: string, label: string, group: string}>
+	 * @param list<array{value: string, label: string, group: string, default?: bool}> $options Optionen.
+	 * @return list<array{value: string, label: string, group: string, default?: bool}>
 	 */
 	private static function unique( array $options ): array {
 		$seen = array();

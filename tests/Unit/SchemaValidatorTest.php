@@ -97,7 +97,7 @@ final class SchemaValidatorTest extends TestCase {
 		$schema             = $this->schema( array( array( 'id' => 'a', 'type' => 'text', 'label' => 'A' ) ) );
 		$schema['settings'] = array(
 			'store_entries'  => 'ja',
-			'retention_days' => 0,
+			'retention_days' => -1,
 			'style'          => 'pink',
 			'spam'           => array( 'min_seconds' => 120 ),
 			'notifications'  => array( array( 'to' => 'a@example.org' ) ),

@@ -1,6 +1,6 @@
 <?php
 /**
- * Spam-Schutz ohne externe Dienste.
+ * Spam-Schutz: eingebaute Prüfungen und optionale Dienste.
  *
  * @package MLab_Forms
  */
@@ -9,11 +9,18 @@ namespace MLab_Forms\Submission;
 
 use MLab_Forms\Forms\Form;
 use MLab_Forms\Settings;
+use MLab_Forms\Spam\Akismet;
+use MLab_Forms\Spam\Captcha;
+use MLab_Forms\Spam\Services;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Honeypot, Zeitfalle und Rate-Limit pro gehashter IP.
+ * Honeypot, Zeitfalle und Rate-Limit pro gehashter IP, dazu optional ein Captcha-Dienst
+ * und Akismet.
+ *
+ * Die Dienste werden erst nach der Feldprüfung gefragt (check_services): ein Captcha-Token
+ * gilt nur einmal und soll bei Tippfehlern nicht verbraucht sein.
  *
  * Die Zeitfalle nutzt ein signiertes Zeitstempel-Token statt eines Nonce. Es funktioniert
  * auch mit Seiten-Cache: ein altes Token ist nur «älter», also nie zu schnell.
@@ -26,6 +33,8 @@ final class SpamGuard {
 	public const OK           = 'ok';
 	public const SPAM         = 'spam';
 	public const RATE_LIMITED = 'rate_limited';
+	public const BLOCKED      = 'blocked';
+	public const UNAVAILABLE  = 'unavailable';
 
 	private const RATE_WINDOW = HOUR_IN_SECONDS;
 
@@ -66,6 +75,39 @@ final class SpamGuard {
 	}
 
 	/**
+	 * Der Captcha-Anbieter dieses Formulars: höchstens einer, und nur mit hinterlegten Schlüsseln.
+	 *
+	 * @param Form $form Formular.
+	 * @return string turnstile, recaptcha, hcaptcha oder leer.
+	 */
+	public static function provider( Form $form ): string {
+		$provider = Services::normalize( ( (array) $form->setting( 'spam' ) )['provider'] ?? '' );
+
+		return '' !== $provider && Services::configured( $provider ) ? $provider : '';
+	}
+
+	/**
+	 * Fragt die eingeschalteten Dienste (Captcha, Akismet) nach einer geprüften Absendung.
+	 *
+	 * @param Form                 $form    Formular.
+	 * @param array<string, mixed> $request Rohdaten (Token des Anbieters).
+	 * @param array<string, mixed> $values  Bereinigte Werte.
+	 * @return string OK, BLOCKED oder UNAVAILABLE (Dienst nicht erreichbar: nie durchlassen).
+	 */
+	public static function check_services( Form $form, array $request, array $values ): string {
+		$provider = self::provider( $form );
+		if ( '' !== $provider ) {
+			$field   = Services::captchas()[ $provider ]['field'];
+			$verdict = Captcha::verify( $provider, is_string( $request[ $field ] ?? null ) ? $request[ $field ] : '' );
+			if ( Captcha::VALID !== $verdict ) {
+				return Captcha::UNAVAILABLE === $verdict ? self::UNAVAILABLE : self::BLOCKED;
+			}
+		}
+
+		return self::akismet_enabled( $form ) ? self::check_akismet( $form, $request, $values ) : self::OK;
+	}
+
+	/**
 	 * Zählt eine angenommene Absendung für das Rate-Limit.
 	 *
 	 * @param string $ip_hash Gehashte IP.
@@ -78,6 +120,31 @@ final class SpamGuard {
 		$key  = self::rate_key( $ip_hash );
 		$hits = (int) get_transient( $key );
 		set_transient( $key, $hits + 1, self::RATE_WINDOW );
+	}
+
+	/**
+	 * Ist Akismet für das Formular eingeschaltet und ein Schlüssel vorhanden?
+	 *
+	 * @param Form $form Formular.
+	 */
+	private static function akismet_enabled( Form $form ): bool {
+		return ! empty( ( (array) $form->setting( 'spam' ) )['akismet'] ) && '' !== Services::akismet_key();
+	}
+
+	/**
+	 * Befragt Akismet.
+	 *
+	 * @param Form                 $form    Formular.
+	 * @param array<string, mixed> $request Rohdaten.
+	 * @param array<string, mixed> $values  Bereinigte Werte.
+	 */
+	private static function check_akismet( Form $form, array $request, array $values ): string {
+		$verdict = Akismet::check( $form, $values, $request );
+		if ( Akismet::UNAVAILABLE === $verdict ) {
+			return self::UNAVAILABLE;
+		}
+
+		return Akismet::SPAM === $verdict ? self::BLOCKED : self::OK;
 	}
 
 	/**

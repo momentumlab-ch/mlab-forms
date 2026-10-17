@@ -19,14 +19,26 @@
 				"success_message": { "type": "string" },
 				"redirect_url": { "type": "string", "description": "Danke-Seite nach dem Absenden (optional)." },
 				"store_entries": { "type": "boolean", "default": true },
-				"retention_days": { "type": "integer", "minimum": 1, "maximum": 3650, "default": 365 },
+				"retention_days": { "type": "integer", "minimum": 0, "maximum": 3650, "default": 365, "description": "Aufbewahrung in Tagen. 0 heisst unbegrenzt." },
 				"style": { "enum": [ "", "light", "dark" ], "description": "Leer: Farbschema aus den Plugin-Einstellungen." },
 				"spam": {
 					"type": "object",
 					"properties": {
 						"honeypot": { "type": "boolean" },
 						"min_seconds": { "type": "integer", "minimum": 0, "maximum": 60 },
-						"turnstile": { "type": "boolean", "description": "Ab Phase 4." }
+						"turnstile": { "type": "boolean", "description": "Nicht in Gebrauch. Den Dienst wählt «provider»." },
+						"provider": { "enum": [ "", "turnstile", "recaptcha", "hcaptcha" ], "description": "Captcha-Dienst, nur einer gleichzeitig. Leer: aus. Die Schlüssel liegen in den Plugin-Einstellungen, nie im Schema." },
+						"akismet": { "type": "boolean", "description": "Inhalt zusätzlich bei Akismet prüfen." }
+					}
+				},
+				"sender": {
+					"type": "object",
+					"description": "Überschreibt die Absender-Einstellungen des Plugins. Leere Angaben gelten als «wie in den Einstellungen».",
+					"properties": {
+						"name": { "type": "string" },
+						"email": { "type": "string", "description": "Sollte zur Domain der Website passen." },
+						"reply_to_mode": { "enum": [ "", "visitor", "fixed" ], "description": "visitor: E-Mail des Besuchers. fixed: Adresse aus reply_to." },
+						"reply_to": { "type": "string" }
 					}
 				},
 				"notifications": { "type": "array", "items": { "$ref": "#/$defs/notification" } },
@@ -57,7 +69,7 @@
 				{
 					"type": "object",
 					"required": [ "value" ],
-					"properties": { "value": { "type": "string" }, "label": { "type": "string" }, "group": { "type": "string" } }
+					"properties": { "value": { "type": "string" }, "label": { "type": "string" }, "group": { "type": "string" }, "default": { "type": "boolean", "description": "Vorausgewählte Zeile. Höchstens eine pro Feld." } }
 				}
 			]
 		},
@@ -81,6 +93,8 @@
 				"max": { "type": [ "number", "string" ] },
 				"step": { "type": "number" },
 				"pattern": { "type": "string" },
+				"format": { "enum": [ "postcode_ch", "tel" ], "description": "Eingebaute Formatprüfung für Textfelder. postcode_ch: vierstellige Schweizer Postleitzahl. Telefonfelder prüfen immer als Telefonnummer." },
+				"empty_first": { "type": "boolean", "default": true, "description": "Auswahlliste: leere erste Zeile («Bitte wählen» oder placeholder)." },
 				"rows": { "type": "integer", "minimum": 1 },
 				"content": { "type": "string", "description": "HTML für den Typ html." },
 				"link": { "type": "string", "description": "Link bei consent, z. B. {privacy_url}." },
@@ -98,6 +112,7 @@
 				"prefill": {
 					"type": "object",
 					"properties": {
+						"enabled": { "type": "boolean", "default": true, "description": "false schaltet die Vorauswahl per Link und URL für das Feld ab." },
 						"param": { "type": "string", "description": "URL-Parameter, z. B. ?angebot=…" },
 						"data_attribute": { "type": "string", "description": "Links mit diesem Attribut setzen den Wert, z. B. data-anfrage." }
 					}

@@ -33,6 +33,43 @@ final class FieldTypesTest extends TestCase {
 		$this->assertNull( $this->check( $field, 'anna@example.org' ) );
 	}
 
+	public function test_telefon(): void {
+		$field = array( 'id' => 'tel', 'type' => 'tel' );
+
+		foreach ( array( '+41 79 123 45 67', '079/123 45 67', '(044) 123-45-67', '031 123 45' ) as $valid ) {
+			$this->assertNull( $this->check( $field, $valid ), $valid );
+		}
+		foreach ( array( 'abc', '12345', '+41 79 abc 45 67', '079 123 45 67 x', '++--//', '<b>0791234567</b>x' ) as $invalid ) {
+			$this->assertSame( 'Bitte gib eine gültige Telefonnummer ein.', $this->check( $field, $invalid ), $invalid );
+		}
+	}
+
+	public function test_telefon_leer_ist_nur_bei_pflicht_ein_fehler(): void {
+		$this->assertNull( $this->check( array( 'id' => 'tel', 'type' => 'tel' ), '' ) );
+		$this->assertSame( 'Bitte fülle dieses Feld aus.', $this->check( array( 'id' => 'tel', 'type' => 'tel', 'required' => true ), '' ) );
+	}
+
+	public function test_postleitzahl_ch(): void {
+		$field = array( 'id' => 'plz', 'type' => 'text', 'format' => 'postcode_ch' );
+
+		$this->assertNull( $this->check( $field, '3800' ) );
+		foreach ( array( '380', '38000', '38a0', 'CH-3800', '3800 Interlaken' ) as $invalid ) {
+			$this->assertSame( 'Bitte gib eine gültige Postleitzahl ein.', $this->check( $field, $invalid ), $invalid );
+		}
+	}
+
+	public function test_format_wird_im_html_fuer_den_browser_ausgegeben(): void {
+		$html = $this->type( 'text' )->render( array( 'id' => 'plz', 'type' => 'text', 'label' => 'PLZ', 'format' => 'postcode_ch', 'html_id' => 'x-plz' ), '', null );
+
+		$this->assertStringContainsString( 'data-format="postcode_ch"', $html );
+		$this->assertStringContainsString( 'data-format="tel"', $this->type( 'tel' )->render( array( 'id' => 't', 'type' => 'tel', 'label' => 'T', 'html_id' => 'x-t' ), '', null ) );
+	}
+
+	public function test_unbekanntes_format_ist_ein_schemafehler(): void {
+		$this->assertNotSame( array(), $this->type( 'text' )->schema_errors( array( 'id' => 'a', 'type' => 'text', 'format' => 'plz_de' ) ) );
+		$this->assertSame( array(), $this->type( 'text' )->schema_errors( array( 'id' => 'a', 'type' => 'text', 'format' => 'postcode_ch' ) ) );
+	}
+
 	public function test_muster(): void {
 		$field = array( 'id' => 'plz', 'type' => 'text', 'pattern' => '[0-9]{4}' );
 

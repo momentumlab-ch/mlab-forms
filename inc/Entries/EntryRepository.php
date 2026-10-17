@@ -200,11 +200,15 @@ final class EntryRepository {
 	 * Markiert alte Anfragen eines Formulars als gelöscht.
 	 *
 	 * @param int $form_id Formular.
-	 * @param int $days    Aufbewahrung in Tagen.
+	 * @param int $days    Aufbewahrung in Tagen; unter 1 (unbegrenzt) wird nie etwas markiert.
 	 * @return int Anzahl.
 	 */
 	public static function soft_delete_older_than( int $form_id, int $days ): int {
 		global $wpdb;
+
+		if ( $days < 1 ) {
+			return 0;
+		}
 
 		return (int) $wpdb->query(
 			$wpdb->prepare(

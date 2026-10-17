@@ -191,6 +191,10 @@
 	cursor: progress;
 }
 
+.mlab-form__captcha {
+	margin: 0 0 1rem;
+}
+
 .mlab-form__success {
 	padding: 1rem 1.25rem;
 	border-left: 4px solid var(--mlab-form-accent);

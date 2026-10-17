@@ -10,6 +10,8 @@ namespace MLab_Forms\Privacy;
 use MLab_Forms\Entries\EntryFormatter;
 use MLab_Forms\Entries\EntryRepository;
 use MLab_Forms\Forms\FormRepository;
+use MLab_Forms\Spam\Services;
+use MLab_Forms\Spam\Usage;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -113,7 +115,7 @@ final class Privacy {
 			return;
 		}
 
-		wp_add_privacy_policy_content( 'MomentumLab Forms', wp_kses_post( wpautop( self::policy_text() ) ) );
+		wp_add_privacy_policy_content( 'MomentumLab Forms', wp_kses_post( wpautop( self::policy_text() . self::services_text( Usage::services() ) ) ) );
 	}
 
 	/**
@@ -161,5 +163,26 @@ final class Privacy {
 			"Wenn du uns über ein Formular auf dieser Website eine Anfrage sendest, speichern wir deine Angaben, um die Anfrage zu bearbeiten und dir zu antworten. Dazu gehören die Felder des Formulars, die Seite, von der du sie gesendet hast, die Sprache deines Browsers und eine verschlüsselte Kennung deiner IP-Adresse (keine IP-Adresse im Klartext). Die Kennung dient nur dem Schutz vor Spam.\n\nDu bekommst eine Bestätigung per E-Mail, falls das Formular dies vorsieht. Anfragen werden nach der festgelegten Aufbewahrungsfrist (standardmässig 365 Tage) automatisch gelöscht. Du kannst jederzeit Auskunft über deine gespeicherten Daten verlangen oder ihre Löschung beantragen.\n\nZur Bearbeitung von Anfragen kann ein KI-Assistent eingesetzt werden. Er liest Anfragen, fasst sie zusammen und erstellt Antwortentwürfe. Diese Entwürfe prüfen wir, bevor wir sie senden; die KI versendet selbst keine Nachrichten. Rechtsgrundlage ist in der Schweiz das revDSG, für Gäste aus der EU Art. 6 Abs. 1 lit. b DSGVO (Bearbeitung deiner Anfrage).",
 			'mlab-forms'
 		);
+	}
+
+	/**
+	 * Eine Zeile pro Spam-Dienst, der in Gebrauch ist. Ohne Dienste bleibt der Text leer.
+	 *
+	 * @param list<string> $services Dienste (turnstile, recaptcha, hcaptcha, akismet).
+	 */
+	public static function services_text( array $services ): string {
+		$lines = array(
+			Services::TURNSTILE => __( 'Zum Schutz vor Spam nutzen wir auf Formularen Cloudflare Turnstile. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an Cloudflare übertragen.', 'mlab-forms' ),
+			Services::RECAPTCHA => __( 'Zum Schutz vor Spam nutzen wir auf Formularen Google reCAPTCHA v3. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an Google übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA).', 'mlab-forms' ),
+			Services::HCAPTCHA  => __( 'Zum Schutz vor Spam nutzen wir auf Formularen hCaptcha. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an hCaptcha übertragen.', 'mlab-forms' ),
+			Services::AKISMET   => __( 'Den Inhalt von Anfragen prüfen wir mit Akismet auf Spam. Dazu werden dein Name, deine E-Mail-Adresse, deine Nachricht, deine IP-Adresse und Angaben deines Browsers an Akismet (Automattic) übertragen.', 'mlab-forms' ),
+		);
+
+		$text = '';
+		foreach ( array_intersect_key( $lines, array_flip( $services ) ) as $line ) {
+			$text .= "\n\n" . $line;
+		}
+
+		return $text;
 	}
 }

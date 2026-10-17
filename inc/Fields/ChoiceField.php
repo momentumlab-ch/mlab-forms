@@ -7,6 +7,7 @@
 
 namespace MLab_Forms\Fields;
 
+use MLab_Forms\Forms\Form;
 use MLab_Forms\Html;
 
 defined( 'ABSPATH' ) || exit;
@@ -44,7 +45,48 @@ class ChoiceField extends FieldType {
 			return array( __( 'Das Feld braucht «options» oder «options_source».', 'mlab-forms' ) );
 		}
 
-		return array();
+		return self::default_errors( $field );
+	}
+
+	/**
+	 * Startwert: Wert aus der URL, sonst die Standardzeile, sonst «default» des Felds, sonst leer.
+	 *
+	 * @param array<string, mixed> $field   Feld mit aufgelösten «choices».
+	 * @param string|null          $prefill Wert aus der URL.
+	 * @return string|list<string>
+	 */
+	public function initial_value( array $field, ?string $prefill ) {
+		if ( null !== $prefill && '' !== $prefill ) {
+			return $prefill;
+		}
+		foreach ( $field['choices'] ?? array() as $choice ) {
+			if ( ! empty( $choice['default'] ) ) {
+				return 'checkbox_group' === $this->type ? array( $choice['value'] ) : $choice['value'];
+			}
+		}
+
+		return parent::initial_value( $field, null );
+	}
+
+	/**
+	 * Höchstens eine Zeile darf «default: true» tragen.
+	 *
+	 * @param array<string, mixed> $field Feld.
+	 * @return list<string>
+	 */
+	private static function default_errors( array $field ): array {
+		$options = array_merge( (array) ( $field['options'] ?? array() ), (array) ( $field['options_source']['prepend'] ?? array() ) );
+		$count   = 0;
+		foreach ( $options as $option ) {
+			if ( is_array( $option ) && isset( $option['default'] ) ) {
+				if ( ! is_bool( $option['default'] ) ) {
+					return array( __( '«default» einer Option muss true oder false sein.', 'mlab-forms' ) );
+				}
+				$count += (int) $option['default'];
+			}
+		}
+
+		return $count > 1 ? array( __( 'Nur eine Option darf «default» sein.', 'mlab-forms' ) ) : array();
 	}
 
 	/**
@@ -70,7 +112,7 @@ class ChoiceField extends FieldType {
 	 */
 	public function validate( $value, array $field ): ?string {
 		$error = parent::validate( $value, $field );
-		if ( $error || $this->is_empty( $value ) || ! empty( $field['prefill'] ) ) {
+		if ( $error || $this->is_empty( $value ) || Form::prefill_enabled( $field ) ) {
 			return $error;
 		}
 
@@ -126,14 +168,15 @@ class ChoiceField extends FieldType {
 	/**
 	 * Die option-Elemente, nach «group» in optgroups.
 	 *
-	 * @param array<string, mixed>                                     $field   Feld.
-	 * @param list<array{value: string, label: string, group: string}> $choices Optionen.
-	 * @param string                                                   $value   Gewählter Wert.
+	 * @param array<string, mixed>                                                     $field   Feld.
+	 * @param list<array{value: string, label: string, group: string, default?: bool}> $choices Optionen.
+	 * @param string                                                                   $value   Gewählter Wert.
 	 */
 	private function options_html( array $field, array $choices, string $value ): string {
-		$html = '';
-		if ( ! empty( $field['placeholder'] ) ) {
-			$html .= Html::tag( 'option', array( 'value' => '' ), esc_html( (string) $field['placeholder'] ) );
+		$html  = '';
+		$empty = self::empty_label( $field );
+		if ( null !== $empty ) {
+			$html .= Html::tag( 'option', array( 'value' => '' ), esc_html( $empty ) );
 		}
 
 		$groups = array();
@@ -158,11 +201,24 @@ class ChoiceField extends FieldType {
 	}
 
 	/**
+	 * Text der leeren ersten Zeile; null, wenn «empty_first» ausgeschaltet ist.
+	 *
+	 * @param array<string, mixed> $field Feld.
+	 */
+	private static function empty_label( array $field ): ?string {
+		if ( false === ( $field['empty_first'] ?? true ) ) {
+			return null;
+		}
+
+		return '' !== (string) ( $field['placeholder'] ?? '' ) ? (string) $field['placeholder'] : __( 'Bitte wählen', 'mlab-forms' );
+	}
+
+	/**
 	 * Liste aus radio- oder checkbox-Elementen.
 	 *
-	 * @param array<string, mixed>                                     $field   Feld.
-	 * @param list<array{value: string, label: string, group: string}> $choices Optionen.
-	 * @param list<string>                                             $values  Gewählte Werte.
+	 * @param array<string, mixed>                                                     $field   Feld.
+	 * @param list<array{value: string, label: string, group: string, default?: bool}> $choices Optionen.
+	 * @param list<string>                                                             $values  Gewählte Werte.
 	 */
 	private function inputs_html( array $field, array $choices, array $values ): string {
 		$type = 'radio' === $this->type ? 'radio' : 'checkbox';

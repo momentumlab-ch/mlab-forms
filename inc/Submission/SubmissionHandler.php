@@ -51,6 +51,11 @@ final class SubmissionHandler {
 			return new SubmissionResult( SubmissionResult::INVALID, __( 'Bitte prüfe die markierten Felder.', 'mlab-forms' ), $errors, $values );
 		}
 
+		$blocked = self::service_result( SpamGuard::check_services( $form, $request, $values ), $values );
+		if ( null !== $blocked ) {
+			return $blocked;
+		}
+
 		$submission = new Submission( $form, $values, self::meta( $request, $ip_hash ) );
 		if ( ! self::store( $submission ) ) {
 			return new SubmissionResult( SubmissionResult::ERROR, __( 'Die Anfrage konnte nicht gespeichert werden. Bitte versuche es noch einmal.', 'mlab-forms' ), array(), $values );
@@ -60,6 +65,23 @@ final class SubmissionHandler {
 		Notifier::send_all( $submission );
 
 		return self::success( $form, $submission );
+	}
+
+	/**
+	 * Ergebnis, wenn ein Spam-Dienst die Absendung nicht durchlässt.
+	 *
+	 * @param string               $verdict Ergebnis von SpamGuard::check_services().
+	 * @param array<string, mixed> $values  Bereinigte Werte (zum erneuten Ausfüllen).
+	 */
+	private static function service_result( string $verdict, array $values ): ?SubmissionResult {
+		if ( SpamGuard::UNAVAILABLE === $verdict ) {
+			return new SubmissionResult( SubmissionResult::UNAVAILABLE, __( 'Der Spam-Schutz ist gerade nicht erreichbar, bitte versuche es später nochmals.', 'mlab-forms' ), array(), $values );
+		}
+		if ( SpamGuard::BLOCKED === $verdict ) {
+			return new SubmissionResult( SubmissionResult::BLOCKED, __( 'Der Spam-Schutz hat deine Anfrage nicht angenommen. Bitte lade die Seite neu und versuche es nochmals.', 'mlab-forms' ), array(), $values );
+		}
+
+		return null;
 	}
 
 	/**

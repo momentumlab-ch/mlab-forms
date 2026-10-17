@@ -7,6 +7,8 @@
 
 namespace MLab_Forms\Tests\Unit;
 
+use MLab_Forms\Admin\RetentionBox;
+use MLab_Forms\Entries\EntryRepository;
 use MLab_Forms\Entries\Retention;
 use MLab_Forms\Forms\FormRepository;
 use MLab_Forms\Settings;
@@ -32,10 +34,46 @@ final class RetentionTest extends TestCase {
 		$this->assertSame( 30, Retention::retention_days( 1 ) );
 	}
 
-	public function test_mindestens_ein_tag(): void {
+	public function test_null_heisst_unbegrenzt(): void {
 		$this->schema( 1, array( 'settings' => array( 'retention_days' => 0 ) ) );
 
-		$this->assertSame( 1, Retention::retention_days( 1 ) );
+		$this->assertSame( 0, Retention::retention_days( 1 ) );
+	}
+
+	public function test_negative_werte_werden_zu_null(): void {
+		$this->schema( 1, array( 'settings' => array( 'retention_days' => -5 ) ) );
+
+		$this->assertSame( 0, Retention::retention_days( 1 ) );
+	}
+
+	public function test_unbegrenzt_markiert_nichts_als_geloescht(): void {
+		// Ohne Datenbank: der Aufruf darf gar nicht erst abfragen.
+		$this->assertSame( 0, EntryRepository::soft_delete_older_than( 1, 0 ) );
+	}
+
+	public function test_auswahl_schreibt_tage_ins_schema(): void {
+		$schema = array( 'settings' => array( 'submit_label' => 'Los' ) );
+		$data   = array( 'mlab_form_retention' => '90', 'mlab_form_retention_initial' => '365' );
+
+		$this->assertSame( 90, RetentionBox::merge( $schema, $data )['settings']['retention_days'] );
+		$this->assertSame( 'Los', RetentionBox::merge( $schema, $data )['settings']['submit_label'] );
+		$this->assertSame( 0, RetentionBox::merge( $schema, array( 'mlab_form_retention' => '0', 'mlab_form_retention_initial' => '365' ) )['settings']['retention_days'] );
+	}
+
+	public function test_eigene_anzahl_tage(): void {
+		$data = array( 'mlab_form_retention' => 'custom', 'mlab_form_retention_custom' => '45', 'mlab_form_retention_initial' => '365' );
+
+		$this->assertSame( 45, RetentionBox::days_from_request( $data ) );
+		$this->assertSame( 3650, RetentionBox::days_from_request( array( 'mlab_form_retention_custom' => '99999' ) + $data ) );
+		$this->assertNull( RetentionBox::days_from_request( array( 'mlab_form_retention_custom' => 'viele' ) + $data ) );
+	}
+
+	public function test_unveraenderte_auswahl_laesst_das_json_gelten(): void {
+		$schema = array( 'settings' => array( 'retention_days' => 14 ) );
+		$data   = array( 'mlab_form_retention' => '365', 'mlab_form_retention_initial' => '365' );
+
+		$this->assertSame( $schema, RetentionBox::merge( $schema, $data ) );
+		$this->assertSame( $schema, RetentionBox::merge( $schema, array( 'mlab_form_retention' => 'unsinn' ) ) );
 	}
 
 	/**

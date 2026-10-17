@@ -35,12 +35,15 @@ class TextField extends FieldType {
 	}
 
 	/**
-	 * Prüft ein gültiges Muster.
+	 * Prüft ein gültiges Muster und ein bekanntes Format.
 	 *
 	 * @param array<string, mixed> $field Feld.
 	 * @return list<string>
 	 */
 	public function schema_errors( array $field ): array {
+		if ( isset( $field['format'] ) && ! in_array( $field['format'], Formats::known(), true ) ) {
+			return array( __( '«format» muss «postcode_ch» oder «tel» sein.', 'mlab-forms' ) );
+		}
 		if ( isset( $field['pattern'] ) && false === @preg_match( self::pattern_regex( (string) $field['pattern'] ), '' ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- ungültige Muster sollen nur gemeldet werden.
 			return array( __( '«pattern» ist kein gültiger regulärer Ausdruck.', 'mlab-forms' ) );
 		}
@@ -61,7 +64,7 @@ class TextField extends FieldType {
 	}
 
 	/**
-	 * Pflicht, E-Mail-Format und Muster.
+	 * Pflicht, E-Mail, Telefon, Format und Muster.
 	 *
 	 * @param mixed                $value Wert.
 	 * @param array<string, mixed> $field Feld.
@@ -74,11 +77,24 @@ class TextField extends FieldType {
 		if ( 'email' === $this->type && ! is_email( $value ) ) {
 			return __( 'Bitte gib eine gültige E-Mail-Adresse ein.', 'mlab-forms' );
 		}
+		$format = $this->format_of( $field );
+		if ( '' !== $format && ! Formats::matches( $format, (string) $value ) ) {
+			return Formats::message( $format );
+		}
 		if ( isset( $field['pattern'] ) && ! preg_match( self::pattern_regex( (string) $field['pattern'] ), (string) $value ) ) {
-			return __( 'Das Format stimmt nicht.', 'mlab-forms' );
+			return Formats::message( '' );
 		}
 
 		return null;
+	}
+
+	/**
+	 * Format des Felds: Telefonfelder prüfen immer als Telefonnummer, sonst gilt «format» aus dem Schema.
+	 *
+	 * @param array<string, mixed> $field Feld.
+	 */
+	private function format_of( array $field ): string {
+		return 'tel' === $this->type ? Formats::TEL : (string) ( $field['format'] ?? '' );
 	}
 
 	/**
@@ -104,12 +120,14 @@ class TextField extends FieldType {
 	 * @param array<string, scalar|null> $aria  aria-Attribute.
 	 */
 	protected function control( array $field, $value, array $aria ): string {
-		$attrs = array(
-			'type'      => $this->type,
-			'value'     => (string) $value,
-			'maxlength' => 'hidden' === $this->type ? null : self::MAX_LENGTH,
-			'pattern'   => isset( $field['pattern'] ) ? (string) $field['pattern'] : null,
-			'inputmode' => 'tel' === $this->type ? 'tel' : null,
+		$format = $this->format_of( $field );
+		$attrs  = array(
+			'type'        => $this->type,
+			'value'       => (string) $value,
+			'maxlength'   => 'hidden' === $this->type ? null : self::MAX_LENGTH,
+			'pattern'     => isset( $field['pattern'] ) ? (string) $field['pattern'] : null,
+			'inputmode'   => 'tel' === $this->type ? 'tel' : ( Formats::POSTCODE_CH === $format ? 'numeric' : null ),
+			'data-format' => '' === $format ? null : $format,
 		) + $this->base_attributes( $field, $aria );
 
 		return Html::tag( 'input', $attrs, null );

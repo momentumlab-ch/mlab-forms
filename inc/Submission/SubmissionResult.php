@@ -19,6 +19,8 @@ final class SubmissionResult {
 	public const RATE_LIMITED = 'rate_limited';
 	public const NOT_FOUND    = 'not_found';
 	public const ERROR        = 'error';
+	public const BLOCKED      = 'blocked';
+	public const UNAVAILABLE  = 'unavailable';
 
 	/**
 	 * Konstruktor.
@@ -56,6 +58,8 @@ final class SubmissionResult {
 			self::INVALID      => 422,
 			self::RATE_LIMITED => 429,
 			self::NOT_FOUND    => 404,
+			self::BLOCKED      => 403,
+			self::UNAVAILABLE  => 503,
 		);
 
 		return $codes[ $this->status ] ?? 500;
