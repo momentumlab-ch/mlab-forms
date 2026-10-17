@@ -22,8 +22,31 @@ final class SenderTest extends TestCase {
 		update_option( 'blogname', 'Meine Seite' );
 	}
 
-	public function test_standard_ist_seitenname_und_admin_adresse(): void {
-		$this->assertSame( 'From: Meine Seite <admin@example.org>', Sender::from_header( $this->form() ) );
+	public function test_ohne_angaben_gibt_es_keinen_from_header(): void {
+		$this->assertSame( '', Sender::from_header( $this->form() ) );
+		$this->assertSame( array( 'Content-Type: text/plain; charset=UTF-8' ), Notifier::headers( array(), $this->submission( $this->form(), array() ) ) );
+	}
+
+	public function test_nur_name_nutzt_die_wordpress_standard_adresse(): void {
+		update_option( Settings::OPTION, array( 'email_from_name' => 'Praxis Muster' ) );
+
+		$this->assertSame( 'From: Praxis Muster <wordpress@example.org>', Sender::from_header( $this->form() ) );
+	}
+
+	public function test_nur_adresse_nutzt_den_seitennamen(): void {
+		update_option( Settings::OPTION, array( 'email_from_address' => 'info@example.org' ) );
+
+		$this->assertSame( 'From: Meine Seite <info@example.org>', Sender::from_header( $this->form() ) );
+	}
+
+	public function test_fremde_domain_wird_erkannt(): void {
+		$this->assertFalse( Sender::is_foreign_address( 'info@example.org' ) );
+		$this->assertFalse( Sender::is_foreign_address( 'info@mail.example.org' ) );
+		$this->assertFalse( Sender::is_foreign_address( 'info@WWW.Example.org' ) );
+		$this->assertFalse( Sender::is_foreign_address( '' ) );
+		$this->assertTrue( Sender::is_foreign_address( 'info@gmail.com' ) );
+		$this->assertTrue( Sender::is_foreign_address( 'info@notexample.org' ) );
+		$this->assertTrue( Sender::is_foreign_address( 'info@example.org.evil.com' ) );
 	}
 
 	public function test_einstellungen_ueberschreiben_den_standard(): void {
@@ -45,13 +68,13 @@ final class SenderTest extends TestCase {
 
 		$this->assertStringNotContainsString( "\n", $header );
 		$this->assertStringNotContainsString( "\r", $header );
-		$this->assertSame( 1, preg_match( '/^From: Anna Bcc: evil@example\.org <admin@example\.org>$/', $header ) );
+		$this->assertSame( 1, preg_match( '/^From: Anna Bcc: evil@example\.org <wordpress@example\.org>$/', $header ) );
 	}
 
 	public function test_ungueltige_absenderadresse_faellt_zurueck(): void {
 		$form = $this->form( array( 'sender' => array( 'email' => "x@example.org\r\nBcc: evil@example.org" ) ) );
 
-		$this->assertSame( 'From: Meine Seite <admin@example.org>', Sender::from_header( $form ) );
+		$this->assertSame( '', Sender::from_header( $form ) );
 		$this->assertSame( '', Sender::clean_email( "a@example.org\nBcc: b@example.org" ) );
 		$this->assertSame( '', Sender::clean_email( array( 'a@example.org' ) ) );
 	}
@@ -59,7 +82,7 @@ final class SenderTest extends TestCase {
 	public function test_spitze_klammern_und_anfuehrungszeichen_im_namen_fallen_weg(): void {
 		$form = $this->form( array( 'sender' => array( 'name' => 'A <b@c.d> "X"' ) ) );
 
-		$this->assertSame( 'From: A b@c.d X <admin@example.org>', Sender::from_header( $form ) );
+		$this->assertSame( 'From: A b@c.d X <wordpress@example.org>', Sender::from_header( $form ) );
 	}
 
 	public function test_antwort_an_standard_ist_die_mail_des_besuchers(): void {
@@ -92,8 +115,10 @@ final class SenderTest extends TestCase {
 	public function test_header_der_benachrichtigung(): void {
 		$submission = $this->submission( $this->form(), array( 'email' => 'gast@example.org' ) );
 
+		update_option( Settings::OPTION, array( 'email_from_address' => 'info@example.org' ) );
+
 		$this->assertSame(
-			array( 'Content-Type: text/plain; charset=UTF-8', 'From: Meine Seite <admin@example.org>', 'Reply-To: gast@example.org' ),
+			array( 'Content-Type: text/plain; charset=UTF-8', 'From: Meine Seite <info@example.org>', 'Reply-To: gast@example.org' ),
 			Notifier::headers( array(), $submission )
 		);
 	}

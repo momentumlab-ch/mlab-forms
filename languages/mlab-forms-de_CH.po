@@ -167,6 +167,14 @@ msgstr "Verbindung testen"
 msgid "Gespeichert: %s. Leer lassen, damit er unverändert bleibt."
 msgstr "Gespeichert: %s. Leer lassen, damit er unverändert bleibt."
 
+#: inc/Admin/FieldRenderer.php:100
+msgid "Schlüssel entfernen"
+msgstr "Schlüssel entfernen"
+
+#: inc/Admin/FieldRenderer.php:48
+msgid "Diese Adresse gehört nicht zu deiner Website. Mails können im Spam landen."
+msgstr "Diese Adresse gehört nicht zu deiner Website. Mails können im Spam landen."
+
 #: inc/Admin/FieldRenderer.php:108
 msgid "Aktiv"
 msgstr "Aktiv"
@@ -634,20 +642,20 @@ msgstr ""
 "Zur Bearbeitung von Anfragen kann ein KI-Assistent eingesetzt werden. Er liest Anfragen, fasst sie zusammen und erstellt Antwortentwürfe. Diese Entwürfe prüfen wir, bevor wir sie senden; die KI versendet selbst keine Nachrichten. Rechtsgrundlage ist in der Schweiz das revDSG, für Gäste aus der EU Art. 6 Abs. 1 lit. b DSGVO (Bearbeitung deiner Anfrage)."
 
 #: inc/Privacy/Privacy.php:175
-msgid "Zum Schutz vor Spam nutzen wir auf Formularen Cloudflare Turnstile. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an Cloudflare übertragen."
-msgstr "Zum Schutz vor Spam nutzen wir auf Formularen Cloudflare Turnstile. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an Cloudflare übertragen."
+msgid "Zum Schutz vor Spam nutzen wir auf Formularen Cloudflare Turnstile. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an Cloudflare übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA)."
+msgstr "Zum Schutz vor Spam nutzen wir auf Formularen Cloudflare Turnstile. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an Cloudflare übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA)."
 
 #: inc/Privacy/Privacy.php:176
 msgid "Zum Schutz vor Spam nutzen wir auf Formularen Google reCAPTCHA v3. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an Google übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA)."
 msgstr "Zum Schutz vor Spam nutzen wir auf Formularen Google reCAPTCHA v3. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an Google übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA)."
 
 #: inc/Privacy/Privacy.php:177
-msgid "Zum Schutz vor Spam nutzen wir auf Formularen hCaptcha. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an hCaptcha übertragen."
-msgstr "Zum Schutz vor Spam nutzen wir auf Formularen hCaptcha. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an hCaptcha übertragen."
+msgid "Zum Schutz vor Spam nutzen wir auf Formularen hCaptcha. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an hCaptcha übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA)."
+msgstr "Zum Schutz vor Spam nutzen wir auf Formularen hCaptcha. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an hCaptcha übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA)."
 
 #: inc/Privacy/Privacy.php:178
-msgid "Den Inhalt von Anfragen prüfen wir mit Akismet auf Spam. Dazu werden dein Name, deine E-Mail-Adresse, deine Nachricht, deine IP-Adresse und Angaben deines Browsers an Akismet (Automattic) übertragen."
-msgstr "Den Inhalt von Anfragen prüfen wir mit Akismet auf Spam. Dazu werden dein Name, deine E-Mail-Adresse, deine Nachricht, deine IP-Adresse und Angaben deines Browsers an Akismet (Automattic) übertragen."
+msgid "Den Inhalt von Anfragen prüfen wir mit Akismet auf Spam. Dazu werden dein Name (sofern das Formular ihn als Namensfeld kennzeichnet), deine E-Mail-Adresse, deine Nachricht, deine IP-Adresse, Angaben deines Browsers, die Herkunftsseite und die Adresse der Seite (ohne Parameter) an Akismet (Automattic) übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA)."
+msgstr "Den Inhalt von Anfragen prüfen wir mit Akismet auf Spam. Dazu werden dein Name (sofern das Formular ihn als Namensfeld kennzeichnet), deine E-Mail-Adresse, deine Nachricht, deine IP-Adresse, Angaben deines Browsers, die Herkunftsseite und die Adresse der Seite (ohne Parameter) an Akismet (Automattic) übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA)."
 
 #: inc/Settings.php:34
 msgid "Allgemein"
@@ -762,16 +770,16 @@ msgid "Absendername"
 msgstr "Absendername"
 
 #: inc/options.php:43
-msgid "Leer lassen für den Namen der Website."
-msgstr "Leer lassen für den Namen der Website."
+msgid "Leer lassen für den Standard von WordPress. Ist nur die Absender-E-Mail gesetzt, gilt der Name der Website."
+msgstr "Leer lassen für den Standard von WordPress. Ist nur die Absender-E-Mail gesetzt, gilt der Name der Website."
 
 #: inc/options.php:49
 msgid "Absender-E-Mail"
 msgstr "Absender-E-Mail"
 
 #: inc/options.php:51
-msgid "Leer lassen für die Admin-Adresse. WP Mail SMTP kann diesen Wert übersteuern."
-msgstr "Leer lassen für die Admin-Adresse. WP Mail SMTP kann diesen Wert übersteuern."
+msgid "Leer lassen für den Standard von WordPress (wordpress@deine-domain). WP Mail SMTP kann diesen Wert übersteuern."
+msgstr "Leer lassen für den Standard von WordPress (wordpress@deine-domain). WP Mail SMTP kann diesen Wert übersteuern."
 
 #: inc/options.php:57
 msgid "Antwort an"
@@ -830,8 +838,8 @@ msgid "Akismet verwenden"
 msgstr "Akismet verwenden"
 
 #: inc/options.php:116
-msgid "Prüft den Inhalt jeder Anfrage bei Akismet. Dafür werden Name, E-Mail, Nachricht und IP-Adresse an Akismet gesendet."
-msgstr "Prüft den Inhalt jeder Anfrage bei Akismet. Dafür werden Name, E-Mail, Nachricht und IP-Adresse an Akismet gesendet."
+msgid "Prüft den Inhalt jeder Anfrage bei Akismet. Dafür werden Name (nur aus Feldern, die als Name gekennzeichnet sind), E-Mail, Nachricht, IP-Adresse, Browser-Angaben, Herkunftsseite und Seiten-Adresse ohne Parameter an Akismet (Automattic) gesendet, auch in die USA. Andere Textfelder bleiben aussen vor."
+msgstr "Prüft den Inhalt jeder Anfrage bei Akismet. Dafür werden Name (nur aus Feldern, die als Name gekennzeichnet sind), E-Mail, Nachricht, IP-Adresse, Browser-Angaben, Herkunftsseite und Seiten-Adresse ohne Parameter an Akismet (Automattic) gesendet, auch in die USA. Andere Textfelder bleiben aussen vor."
 
 #: inc/options.php:122
 msgid "Turnstile: Site-Key"

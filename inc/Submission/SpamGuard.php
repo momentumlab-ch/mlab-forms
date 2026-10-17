@@ -23,7 +23,14 @@ defined( 'ABSPATH' ) || exit;
  * gilt nur einmal und soll bei Tippfehlern nicht verbraucht sein.
  *
  * Die Zeitfalle nutzt ein signiertes Zeitstempel-Token statt eines Nonce. Es funktioniert
- * auch mit Seiten-Cache: ein altes Token ist nur «älter», also nie zu schnell.
+ * auch mit Seiten-Cache: ein altes Token ist nur «älter», also nie zu schnell. Damit ein Bot
+ * ein einmal erhaltenes Token nicht endlos wiederverwenden kann, gilt es höchstens 24 Stunden
+ * (Filter «mlab_forms_token_max_age»). Das ist bewusst grosszügig: Seiten-Caches erneuern
+ * ihr HTML in der Regel viel früher. Ein älteres Token wird wie ein ungültiges behandelt.
+ *
+ * Absendungen, die ein Dienst (Captcha, Akismet) ablehnt oder nicht prüfen kann, zählen im
+ * Rate-Limit mit. So löst ein Bot mit einem wiederverwendeten Token nicht beliebig viele
+ * Dienst-Aufrufe aus.
  */
 final class SpamGuard {
 
@@ -92,9 +99,26 @@ final class SpamGuard {
 	 * @param Form                 $form    Formular.
 	 * @param array<string, mixed> $request Rohdaten (Token des Anbieters).
 	 * @param array<string, mixed> $values  Bereinigte Werte.
+	 * @param string               $ip_hash Gehashte IP; eine Ablehnung zählt im Rate-Limit mit.
 	 * @return string OK, BLOCKED oder UNAVAILABLE (Dienst nicht erreichbar: nie durchlassen).
 	 */
-	public static function check_services( Form $form, array $request, array $values ): string {
+	public static function check_services( Form $form, array $request, array $values, string $ip_hash = '' ): string {
+		$verdict = self::ask_services( $form, $request, $values );
+		if ( self::OK !== $verdict ) {
+			self::count( $ip_hash );
+		}
+
+		return $verdict;
+	}
+
+	/**
+	 * Fragt Captcha und Akismet der Reihe nach.
+	 *
+	 * @param Form                 $form    Formular.
+	 * @param array<string, mixed> $request Rohdaten (Token des Anbieters).
+	 * @param array<string, mixed> $values  Bereinigte Werte.
+	 */
+	private static function ask_services( Form $form, array $request, array $values ): string {
 		$provider = self::provider( $form );
 		if ( '' !== $provider ) {
 			$field   = Services::captchas()[ $provider ]['field'];
@@ -148,7 +172,7 @@ final class SpamGuard {
 	}
 
 	/**
-	 * Ist das Token echt und alt genug?
+	 * Ist das Token echt, alt genug und nicht zu alt?
 	 *
 	 * @param int    $form_id     Formular.
 	 * @param string $token       Token aus der Anfrage.
@@ -161,7 +185,22 @@ final class SpamGuard {
 			return false;
 		}
 
-		return time() - (int) $time >= $min_seconds;
+		$age = time() - (int) $time;
+
+		return $age >= $min_seconds && $age <= self::max_age();
+	}
+
+	/**
+	 * Höchstalter eines Tokens in Sekunden (Standard 24 Stunden).
+	 */
+	private static function max_age(): int {
+		/**
+		 * Höchstalter des Zeitfallen-Tokens in Sekunden. Ältere Token werden wie ungültige behandelt.
+		 * Bei sehr lange gecachten Seiten kann der Wert erhöht werden.
+		 *
+		 * @param int $seconds Standard 86400 (24 Stunden).
+		 */
+		return max( 1, (int) apply_filters( 'mlab_forms_token_max_age', DAY_IN_SECONDS ) );
 	}
 
 	/**

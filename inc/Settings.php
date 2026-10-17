@@ -25,6 +25,15 @@ final class Settings {
 	public const TAB_KEY = '_tab';
 
 	/**
+	 * Name des Felds «Schlüssel entfernen» zu einem geheimen Schlüssel.
+	 *
+	 * @param string $key Schlüssel aus fields().
+	 */
+	public static function remove_key( string $key ): string {
+		return '_remove_' . $key;
+	}
+
+	/**
 	 * Tabs der Einstellungsseite, in Anzeigereihenfolge.
 	 *
 	 * @return array<string, string> Schlüssel => Titel.
@@ -121,7 +130,7 @@ final class Settings {
 		$result = self::all();
 
 		foreach ( $fields as $key => $field ) {
-			$result[ $key ] = self::sanitize_value( $field, $input[ $key ] ?? null, $result[ $key ] ?? null );
+			$result[ $key ] = self::sanitize_value( $field, $input[ $key ] ?? null, $result[ $key ] ?? null, ! empty( $input[ self::remove_key( $key ) ] ) );
 		}
 
 		return $result;
@@ -133,12 +142,16 @@ final class Settings {
 	 * @param array{type: string, default: mixed, options?: array<string, string>, min?: int, max?: int} $field   Feldbeschreibung.
 	 * @param mixed                                                                                      $value   Rohwert.
 	 * @param mixed                                                                                      $current Bisher gespeicherter Wert.
+	 * @param bool                                                                                       $remove  Geheimen Schlüssel löschen («Schlüssel entfernen» angehakt).
 	 * @return mixed
 	 */
-	private static function sanitize_value( array $field, $value, $current = null ) {
+	private static function sanitize_value( array $field, $value, $current = null, bool $remove = false ) {
 		switch ( $field['type'] ) {
 			case 'password':
-				// Geheime Schlüssel werden nie angezeigt: leer gelassen bleibt der gespeicherte Wert.
+				// Geheime Schlüssel werden nie angezeigt: leer gelassen bleibt der gespeicherte Wert, mit «Schlüssel entfernen» wird er gelöscht.
+				if ( $remove ) {
+					return '';
+				}
 				$secret = trim( sanitize_text_field( (string) $value ) );
 				return '' === $secret ? (string) $current : $secret;
 			case 'checkbox':

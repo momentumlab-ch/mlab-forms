@@ -7,11 +7,14 @@
 
 namespace MLab_Forms\Spam;
 
+use MLab_Forms\SiteHost;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Alle drei Dienste prüfen das Token mit demselben Ablauf (siteverify, POST mit secret und response).
  * Die IP-Adresse wird nicht mitgesendet.
+ * Nennt die Antwort einen Hostnamen, muss er zur Website gehören.
  */
 final class Captcha {
 
@@ -41,7 +44,7 @@ final class Captcha {
 			return self::UNAVAILABLE;
 		}
 
-		return ! empty( $data['success'] ) && self::score_ok( $provider, $data ) ? self::VALID : self::INVALID;
+		return ! empty( $data['success'] ) && self::hostname_ok( $data ) && self::score_ok( $provider, $data ) ? self::VALID : self::INVALID;
 	}
 
 	/**
@@ -99,6 +102,19 @@ final class Captcha {
 	}
 
 	/**
+	 * Gehört der in der Antwort genannte Hostname zur Website? Fehlt er, wird nicht abgelehnt.
+	 *
+	 * @param array<string, mixed> $data Antwort des Dienstes.
+	 */
+	private static function hostname_ok( array $data ): bool {
+		if ( ! isset( $data['hostname'] ) || '' === $data['hostname'] ) {
+			return true;
+		}
+
+		return is_string( $data['hostname'] ) && SiteHost::matches( $data['hostname'] );
+	}
+
+	/**
 	 * Bei reCAPTCHA v3 muss der Score über der Schwelle liegen und die Aktion stimmen.
 	 *
 	 * @param string               $provider Anbieter.
@@ -116,6 +132,6 @@ final class Captcha {
 		 */
 		$threshold = (float) apply_filters( 'mlab_forms_recaptcha_threshold', 0.5 );
 
-		return isset( $data['score'] ) && (float) $data['score'] >= $threshold && 'submit' === ( $data['action'] ?? 'submit' );
+		return isset( $data['score'] ) && (float) $data['score'] >= $threshold && 'submit' === ( $data['action'] ?? '' );
 	}
 }

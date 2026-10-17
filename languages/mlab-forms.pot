@@ -178,6 +178,14 @@ msgstr ""
 msgid "Gespeichert: %s. Leer lassen, damit er unverändert bleibt."
 msgstr ""
 
+#: inc/Admin/FieldRenderer.php:100
+msgid "Schlüssel entfernen"
+msgstr ""
+
+#: inc/Admin/FieldRenderer.php:48
+msgid "Diese Adresse gehört nicht zu deiner Website. Mails können im Spam landen."
+msgstr ""
+
 #: inc/Admin/FieldRenderer.php:108
 msgid "Aktiv"
 msgstr ""
@@ -653,7 +661,7 @@ msgid ""
 msgstr ""
 
 #: inc/Privacy/Privacy.php:175
-msgid "Zum Schutz vor Spam nutzen wir auf Formularen Cloudflare Turnstile. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an Cloudflare übertragen."
+msgid "Zum Schutz vor Spam nutzen wir auf Formularen Cloudflare Turnstile. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an Cloudflare übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA)."
 msgstr ""
 
 #: inc/Privacy/Privacy.php:176
@@ -661,11 +669,11 @@ msgid "Zum Schutz vor Spam nutzen wir auf Formularen Google reCAPTCHA v3. Dabei 
 msgstr ""
 
 #: inc/Privacy/Privacy.php:177
-msgid "Zum Schutz vor Spam nutzen wir auf Formularen hCaptcha. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an hCaptcha übertragen."
+msgid "Zum Schutz vor Spam nutzen wir auf Formularen hCaptcha. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an hCaptcha übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA)."
 msgstr ""
 
 #: inc/Privacy/Privacy.php:178
-msgid "Den Inhalt von Anfragen prüfen wir mit Akismet auf Spam. Dazu werden dein Name, deine E-Mail-Adresse, deine Nachricht, deine IP-Adresse und Angaben deines Browsers an Akismet (Automattic) übertragen."
+msgid "Den Inhalt von Anfragen prüfen wir mit Akismet auf Spam. Dazu werden dein Name (sofern das Formular ihn als Namensfeld kennzeichnet), deine E-Mail-Adresse, deine Nachricht, deine IP-Adresse, Angaben deines Browsers, die Herkunftsseite und die Adresse der Seite (ohne Parameter) an Akismet (Automattic) übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA)."
 msgstr ""
 
 #: inc/Settings.php:34
@@ -783,7 +791,7 @@ msgid "Absendername"
 msgstr ""
 
 #: inc/options.php:43
-msgid "Leer lassen für den Namen der Website."
+msgid "Leer lassen für den Standard von WordPress. Ist nur die Absender-E-Mail gesetzt, gilt der Name der Website."
 msgstr ""
 
 #: inc/options.php:49
@@ -791,7 +799,7 @@ msgid "Absender-E-Mail"
 msgstr ""
 
 #: inc/options.php:51
-msgid "Leer lassen für die Admin-Adresse. WP Mail SMTP kann diesen Wert übersteuern."
+msgid "Leer lassen für den Standard von WordPress (wordpress@deine-domain). WP Mail SMTP kann diesen Wert übersteuern."
 msgstr ""
 
 #: inc/options.php:57
@@ -851,7 +859,7 @@ msgid "Akismet verwenden"
 msgstr ""
 
 #: inc/options.php:116
-msgid "Prüft den Inhalt jeder Anfrage bei Akismet. Dafür werden Name, E-Mail, Nachricht und IP-Adresse an Akismet gesendet."
+msgid "Prüft den Inhalt jeder Anfrage bei Akismet. Dafür werden Name (nur aus Feldern, die als Name gekennzeichnet sind), E-Mail, Nachricht, IP-Adresse, Browser-Angaben, Herkunftsseite und Seiten-Adresse ohne Parameter an Akismet (Automattic) gesendet, auch in die USA. Andere Textfelder bleiben aussen vor."
 msgstr ""
 
 #: inc/options.php:122

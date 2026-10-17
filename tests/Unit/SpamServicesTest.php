@@ -152,6 +152,133 @@ final class SpamServicesTest extends TestCase {
 		$this->assertSame( SpamGuard::UNAVAILABLE, SpamGuard::check_services( $form, array(), array() ) );
 	}
 
+	public function test_akismet_nutzlast_ist_beschraenkt(): void {
+		$client = new FakeHttpClient( array( 'status' => 200, 'body' => 'false' ) );
+		Services::set_client( $client );
+		$_SERVER['HTTP_USER_AGENT'] = 'TestBrowser/1.0';
+		$request                    = array(
+			'mlab_source'   => 'https://example.org/kontakt/?utm_source=x&token=geheim#anker',
+			'mlab_referrer' => 'https://www.google.com/',
+		);
+
+		SpamGuard::check_services(
+			$this->form( array( 'akismet' => true ) ),
+			$request,
+			array( 'name' => 'Anna', 'firma' => 'Muster AG', 'email' => 'a@example.org', 'nachricht' => 'Hallo' )
+		);
+		unset( $_SERVER['HTTP_USER_AGENT'] );
+
+		$body = $client->calls[0]['body'];
+		$this->assertSame( 'https://example.org/kontakt/', $body['permalink'] );
+		$this->assertSame( 'https://www.google.com/', $body['referrer'] );
+		$this->assertSame( 'TestBrowser/1.0', $body['user_agent'] );
+		$this->assertSame( 'Anna', $body['comment_author'] );
+		$this->assertSame( 'Nachricht: Hallo', $body['comment_content'] );
+		$this->assertStringNotContainsString( 'Muster AG', (string) json_encode( $body ) );
+		$this->assertStringNotContainsString( 'geheim', (string) json_encode( $body ) );
+	}
+
+	public function test_akismet_name_nur_mit_autocomplete_nicht_nach_id_geraten(): void {
+		$client = new FakeHttpClient( array( 'status' => 200, 'body' => 'false' ) );
+		Services::set_client( $client );
+		$form = new Form(
+			9,
+			'Test',
+			array(
+				'schema_version' => 1,
+				'settings'       => array( 'spam' => array( 'akismet' => true ) ),
+				'fields'         => array(
+					array( 'id' => 'firmenname', 'type' => 'text', 'label' => 'Firma' ),
+					array( 'id' => 'vorname', 'type' => 'text', 'label' => 'Vorname', 'autocomplete' => 'given-name' ),
+					array( 'id' => 'nachname', 'type' => 'text', 'label' => 'Nachname', 'autocomplete' => 'family-name' ),
+					array( 'id' => 'tel', 'type' => 'text', 'label' => 'Telefon', 'autocomplete' => 'tel' ),
+				),
+			)
+		);
+
+		SpamGuard::check_services( $form, array(), array( 'firmenname' => 'Muster AG', 'vorname' => 'Anna', 'nachname' => 'Beispiel', 'tel' => '044 000 00 00' ) );
+
+		$this->assertSame( 'Anna Beispiel', $client->calls[0]['body']['comment_author'] );
+		$this->assertSame( '', $client->calls[0]['body']['comment_content'] );
+	}
+
+	public function test_abgelehnte_absendung_zaehlt_im_rate_limit(): void {
+		update_option( Settings::OPTION, array_merge( (array) get_option( Settings::OPTION ), array( 'spam_rate_limit' => 2 ) ) );
+		$form = $this->form( array( 'akismet' => true ) );
+
+		Services::set_client( new FakeHttpClient( array( 'status' => 200, 'body' => 'true' ) ) );
+		$this->assertSame( SpamGuard::BLOCKED, SpamGuard::check_services( $form, array(), array(), 'iphash' ) );
+		Services::set_client( new FakeHttpClient( null ) );
+		$this->assertSame( SpamGuard::UNAVAILABLE, SpamGuard::check_services( $form, array(), array(), 'iphash' ) );
+
+		$this->assertSame( SpamGuard::RATE_LIMITED, SpamGuard::check( $form, array( SpamGuard::TOKEN_FIELD => SpamGuard::token( 9, time() - 10 ) ), 'iphash' ) );
+	}
+
+	public function test_erfolgreiche_pruefung_zaehlt_hier_nicht(): void {
+		Services::set_client( new FakeHttpClient( array( 'status' => 200, 'body' => 'false' ) ) );
+
+		SpamGuard::check_services( $this->form( array( 'akismet' => true ) ), array(), array(), 'iphash' );
+
+		$this->assertSame( array(), $GLOBALS['mlab_test']['transients'] );
+	}
+
+	public function test_captcha_hostname_muss_zur_website_gehoeren(): void {
+		$req = array( 'cf-turnstile-response' => 'tok' );
+
+		foreach ( array( 'example.org', 'www.example.org', 'shop.example.org' ) as $host ) {
+			Services::set_client( FakeHttpClient::json( array( 'success' => true, 'hostname' => $host ) ) );
+			$this->assertSame( SpamGuard::OK, SpamGuard::check_services( $this->form( array( 'provider' => 'turnstile' ) ), $req, array() ), $host );
+		}
+		foreach ( array( 'evil.com', 'notexample.org', 'example.org.evil.com' ) as $host ) {
+			Services::set_client( FakeHttpClient::json( array( 'success' => true, 'hostname' => $host ) ) );
+			$this->assertSame( SpamGuard::BLOCKED, SpamGuard::check_services( $this->form( array( 'provider' => 'turnstile' ) ), $req, array() ), $host );
+		}
+
+		Services::set_client( FakeHttpClient::json( array( 'success' => true ) ) );
+		$this->assertSame( SpamGuard::OK, SpamGuard::check_services( $this->form( array( 'provider' => 'hcaptcha' ) ), array( 'h-captcha-response' => 'x' ), array() ), 'Ohne hostname wird nicht abgelehnt.' );
+
+		Services::set_client( FakeHttpClient::json( array( 'success' => true, 'hostname' => 'evil.com' ) ) );
+		$this->assertSame( SpamGuard::BLOCKED, SpamGuard::check_services( $this->form( array( 'provider' => 'hcaptcha' ) ), array( 'h-captcha-response' => 'x' ), array() ) );
+	}
+
+	public function test_recaptcha_hostname_und_aktion_pflicht(): void {
+		$form = $this->form( array( 'provider' => 'recaptcha' ) );
+		$req  = array( 'g-recaptcha-response' => 'tok' );
+
+		Services::set_client( FakeHttpClient::json( array( 'success' => true, 'score' => 0.9, 'action' => 'submit', 'hostname' => 'www.example.org' ) ) );
+		$this->assertSame( SpamGuard::OK, SpamGuard::check_services( $form, $req, array() ) );
+
+		Services::set_client( FakeHttpClient::json( array( 'success' => true, 'score' => 0.9, 'action' => 'submit', 'hostname' => 'evil.com' ) ) );
+		$this->assertSame( SpamGuard::BLOCKED, SpamGuard::check_services( $form, $req, array() ) );
+
+		Services::set_client( FakeHttpClient::json( array( 'success' => true, 'score' => 0.9 ) ) );
+		$this->assertSame( SpamGuard::BLOCKED, SpamGuard::check_services( $form, $req, array() ), 'Ohne action wird abgelehnt.' );
+	}
+
+	public function test_schluessel_entfernen_mit_checkbox(): void {
+		$saved = Settings::sanitize(
+			array(
+				Settings::TAB_KEY                               => 'spam',
+				'spam_turnstile_secret'                         => '',
+				Settings::remove_key( 'spam_turnstile_secret' ) => '1',
+				'spam_hcaptcha_secret'                          => '',
+			)
+		);
+
+		$this->assertSame( '', $saved['spam_turnstile_secret'] );
+		$this->assertSame( 'hc-secret', $saved['spam_hcaptcha_secret'] );
+		$this->assertSame( 'rc-secret', $saved['spam_recaptcha_secret'] );
+		$this->assertArrayNotHasKey( Settings::remove_key( 'spam_turnstile_secret' ), $saved );
+	}
+
+	public function test_datenschutztext_nennt_uebermittlung_ausserhalb_der_schweiz(): void {
+		foreach ( array( 'turnstile', 'recaptcha', 'hcaptcha', 'akismet' ) as $service ) {
+			$this->assertStringContainsString( 'USA', Privacy::services_text( array( $service ) ), $service );
+		}
+		$this->assertStringNotContainsString( 'Nachricht, IP', Privacy::services_text( array( 'akismet' ) ) );
+		$this->assertStringContainsString( 'ohne Parameter', Privacy::services_text( array( 'akismet' ) ) );
+	}
+
 	public function test_akismet_nur_wenn_eingeschaltet(): void {
 		$client = new FakeHttpClient( array( 'status' => 200, 'body' => 'true' ) );
 		Services::set_client( $client );
@@ -260,7 +387,8 @@ final class SpamServicesTest extends TestCase {
 				'schema_version' => 1,
 				'settings'       => array( 'spam' => $spam ),
 				'fields'         => array(
-					array( 'id' => 'name', 'type' => 'text', 'label' => 'Name' ),
+					array( 'id' => 'name', 'type' => 'text', 'label' => 'Name', 'autocomplete' => 'name' ),
+					array( 'id' => 'firma', 'type' => 'text', 'label' => 'Firma' ),
 					array( 'id' => 'email', 'type' => 'email', 'label' => 'E-Mail' ),
 					array( 'id' => 'nachricht', 'type' => 'textarea', 'label' => 'Nachricht' ),
 				),

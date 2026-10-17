@@ -14,7 +14,9 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Der Aufruf comment-check geht an {Schlüssel}.rest.akismet.com. Gesendet werden nur Angaben, die Akismet für die
- * Prüfung braucht: Name, E-Mail, Text, IP-Adresse und Browser. Die IP-Adresse wird nicht gespeichert.
+ * Prüfung braucht: Name (nur aus Textfeldern, die als Name gekennzeichnet sind), E-Mail-Felder, Textfelder
+ * mit mehreren Zeilen, IP-Adresse, Browser, Referrer und die Adresse der Seite ohne Query-String und Fragment.
+ * Andere Textfelder (z. B. Telefon, Firma, Betreff) gehen nicht an Akismet. Die IP-Adresse wird nicht gespeichert.
  */
 final class Akismet {
 
@@ -23,6 +25,11 @@ final class Akismet {
 	public const UNAVAILABLE = 'unavailable';
 
 	private const KEY_PATTERN = '/^[A-Za-z0-9]{6,40}$/';
+
+	/**
+	 * Werte von «autocomplete», die ein Textfeld als Namen kennzeichnen.
+	 */
+	private const NAME_AUTOCOMPLETE = array( 'name', 'given-name', 'family-name' );
 
 	/**
 	 * Prüft eine Absendung.
@@ -102,7 +109,8 @@ final class Akismet {
 			'blog'                 => home_url(),
 			'user_ip'              => IpHasher::client_ip(),
 			'user_agent'           => $agent,
-			'permalink'            => esc_url_raw( (string) ( $request['mlab_source'] ?? '' ) ),
+			'permalink'            => self::page_url( (string) ( $request['mlab_source'] ?? '' ) ),
+			'referrer'             => esc_url_raw( (string) ( $request['mlab_referrer'] ?? '' ) ),
 			'comment_type'         => 'contact-form',
 			'comment_author'       => self::author( $form, $values ),
 			'comment_author_email' => self::first_of_type( $form, $values, 'email' ),
@@ -113,7 +121,7 @@ final class Akismet {
 	}
 
 	/**
-	 * Name des Absenders: Felder mit «name» in der id, sonst leer.
+	 * Name des Absenders: nur Textfelder mit «autocomplete» name, given-name oder family-name, sonst leer.
 	 *
 	 * @param Form                 $form   Formular.
 	 * @param array<string, mixed> $values Werte.
@@ -121,12 +129,23 @@ final class Akismet {
 	private static function author( Form $form, array $values ): string {
 		$names = array();
 		foreach ( $form->input_fields() as $field ) {
-			if ( 'text' === $field['type'] && str_contains( (string) $field['id'], 'name' ) && is_string( $values[ $field['id'] ] ?? null ) ) {
+			if ( 'text' === $field['type'] && in_array( $field['autocomplete'] ?? '', self::NAME_AUTOCOMPLETE, true ) && is_string( $values[ $field['id'] ] ?? null ) ) {
 				$names[] = $values[ $field['id'] ];
 			}
 		}
 
 		return trim( implode( ' ', $names ) );
+	}
+
+	/**
+	 * Adresse der Seite ohne Query-String und Fragment (dort können Tokens oder Kampagnen-Angaben stehen).
+	 *
+	 * @param string $url Adresse aus der Anfrage.
+	 */
+	private static function page_url( string $url ): string {
+		$url = esc_url_raw( $url );
+
+		return (string) preg_replace( '/[?#].*$/s', '', $url );
 	}
 
 	/**
@@ -147,7 +166,7 @@ final class Akismet {
 	}
 
 	/**
-	 * Inhalt: alle Textfelder und Nachrichten als «Beschriftung: Wert».
+	 * Inhalt: nur Felder mit mehreren Zeilen (Nachrichten) als «Beschriftung: Wert».
 	 *
 	 * @param Form                 $form   Formular.
 	 * @param array<string, mixed> $values Werte.
@@ -156,7 +175,7 @@ final class Akismet {
 		$lines = array();
 		foreach ( $form->input_fields() as $field ) {
 			$value = $values[ $field['id'] ] ?? '';
-			if ( in_array( $field['type'], array( 'text', 'textarea' ), true ) && is_string( $value ) && '' !== $value ) {
+			if ( 'textarea' === $field['type'] && is_string( $value ) && '' !== $value ) {
 				$lines[] = (string) ( $field['label'] ?? $field['id'] ) . ': ' . $value;
 			}
 		}

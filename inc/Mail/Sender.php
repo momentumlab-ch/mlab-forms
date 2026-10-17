@@ -9,6 +9,7 @@ namespace MLab_Forms\Mail;
 
 use MLab_Forms\Forms\Form;
 use MLab_Forms\Settings;
+use MLab_Forms\SiteHost;
 use MLab_Forms\Submission\Submission;
 
 defined( 'ABSPATH' ) || exit;
@@ -16,8 +17,10 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Löst Absendername, Absender-E-Mail und Antwort-an auf.
  *
- * Reihenfolge: Angabe im Formular («settings.sender»), globale Einstellung, Seitenname
- * und Admin-Adresse. Alle Werte werden einzeilig gemacht und Adressen mit is_email
+ * Reihenfolge: Angabe im Formular («settings.sender»), globale Einstellung. Ist weder Name
+ * noch Adresse gesetzt, gibt es keinen From-Header, und WordPress verwendet seinen Standard
+ * (wordpress@domain). Ist nur der Name gesetzt, bleibt die Standard-Adresse von WordPress.
+ * Ist nur die Adresse gesetzt, ist der Seitenname der Absendername. Alle Werte werden einzeilig gemacht und Adressen mit is_email
  * geprüft, damit keine Header eingeschleust werden können.
  */
 final class Sender {
@@ -26,17 +29,23 @@ final class Sender {
 	public const MODE_FIXED   = 'fixed';
 
 	/**
-	 * Der From-Header, leer wenn keine gültige Adresse bekannt ist.
+	 * Der From-Header, leer wenn weder Name noch Adresse eingestellt sind (dann gilt der WordPress-Standard).
 	 *
 	 * @param Form $form Formular.
 	 */
 	public static function from_header( Form $form ): string {
 		$email = self::from_email( $form );
+		$name  = self::from_name( $form );
+		if ( '' === $email && '' === $name ) {
+			return '';
+		}
+
+		$email = '' !== $email ? $email : self::default_address();
 		if ( '' === $email ) {
 			return '';
 		}
 
-		$name = str_replace( array( '<', '>', '"', '\\' ), '', self::from_name( $form ) );
+		$name = str_replace( array( '<', '>', '"', '\\' ), '', '' !== $name ? $name : self::site_name() );
 
 		return '' === $name ? 'From: ' . $email : sprintf( 'From: %s <%s>', $name, $email );
 	}
@@ -52,6 +61,17 @@ final class Sender {
 		[ $mode, $fixed ] = self::reply_to_config( $form );
 
 		return self::MODE_FIXED === $mode ? $fixed : self::visitor_email( $submission );
+	}
+
+	/**
+	 * Ist die Adresse gültig, gehört aber nicht zur Domain der Website? Dann landen Mails eher im Spam.
+	 *
+	 * @param mixed $email Adresse.
+	 */
+	public static function is_foreign_address( $email ): bool {
+		$email = self::clean_email( $email );
+
+		return '' !== $email && ! SiteHost::email_matches( $email );
 	}
 
 	/**
@@ -75,20 +95,15 @@ final class Sender {
 	}
 
 	/**
-	 * Absendername: Formular, Einstellung, Name der Website.
+	 * Absendername aus Formular oder Einstellung, sonst leer.
 	 *
 	 * @param Form $form Formular.
 	 */
 	private static function from_name( Form $form ): string {
-		$candidates = array(
-			(string) ( self::own( $form )['name'] ?? '' ),
-			(string) Settings::get( 'email_from_name' ),
-			wp_specialchars_decode( (string) get_bloginfo( 'name' ), ENT_QUOTES ),
-		);
-
-		foreach ( $candidates as $name ) {
-			if ( '' !== self::single_line( $name ) ) {
-				return self::single_line( $name );
+		foreach ( array( self::own( $form )['name'] ?? '', Settings::get( 'email_from_name' ) ) as $name ) {
+			$name = is_string( $name ) ? self::single_line( $name ) : '';
+			if ( '' !== $name ) {
+				return $name;
 			}
 		}
 
@@ -96,20 +111,35 @@ final class Sender {
 	}
 
 	/**
-	 * Absender-Adresse: Formular, Einstellung, Admin-Adresse.
+	 * Absender-Adresse aus Formular oder Einstellung, sonst leer.
 	 *
 	 * @param Form $form Formular.
 	 */
 	private static function from_email( Form $form ): string {
-		$candidates = array( self::own( $form )['email'] ?? '', Settings::get( 'email_from_address' ), get_option( 'admin_email' ) );
-
-		foreach ( $candidates as $email ) {
+		foreach ( array( self::own( $form )['email'] ?? '', Settings::get( 'email_from_address' ) ) as $email ) {
 			if ( '' !== self::clean_email( $email ) ) {
 				return self::clean_email( $email );
 			}
 		}
 
 		return '';
+	}
+
+	/**
+	 * Name der Website, wenn nur eine Adresse eingestellt ist.
+	 */
+	private static function site_name(): string {
+		return self::single_line( wp_specialchars_decode( (string) get_bloginfo( 'name' ), ENT_QUOTES ) );
+	}
+
+	/**
+	 * Die Standard-Adresse von WordPress (wordpress@domain), nötig nur wenn ein Name ohne Adresse gesetzt ist.
+	 */
+	private static function default_address(): string {
+		$host = (string) wp_parse_url( home_url(), PHP_URL_HOST );
+		$host = str_starts_with( $host, 'www.' ) ? substr( $host, 4 ) : $host;
+
+		return self::clean_email( 'wordpress@' . $host );
 	}
 
 	/**

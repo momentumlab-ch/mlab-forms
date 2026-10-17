@@ -8,6 +8,7 @@
 namespace MLab_Forms\Admin;
 
 use MLab_Forms\Html;
+use MLab_Forms\Mail\Sender;
 use MLab_Forms\Settings;
 
 defined( 'ABSPATH' ) || exit;
@@ -35,7 +36,7 @@ final class FieldRenderer {
 				self::checkbox( $attrs, (bool) $value );
 				break;
 			case 'password':
-				self::password( $attrs, (string) $value );
+				self::password( $attrs, (string) $value, $args['key'] );
 				break;
 			case 'select':
 				self::select( $attrs, (string) $value, $field['options'] ?? array() );
@@ -47,6 +48,9 @@ final class FieldRenderer {
 		}
 
 		self::notes( $field );
+		if ( 'email_from_address' === $args['key'] && Sender::is_foreign_address( $value ) ) {
+			printf( '<div class="notice notice-warning inline"><p>%s</p></div>', esc_html__( 'Diese Adresse gehört nicht zu deiner Website. Mails können im Spam landen.', 'mlab-forms' ) );
+		}
 	}
 
 	/**
@@ -75,8 +79,9 @@ final class FieldRenderer {
 	 *
 	 * @param array<string, string> $attrs  id und name.
 	 * @param string                $secret Gespeicherter Schlüssel.
+	 * @param string                $key    Schlüssel der Einstellung.
 	 */
-	private static function password( array $attrs, string $secret ): void {
+	private static function password( array $attrs, string $secret, string $key ): void {
 		$mask = Settings::mask( $secret );
 
 		self::input(
@@ -91,6 +96,12 @@ final class FieldRenderer {
 		if ( '' !== $mask ) {
 			/* translators: %s: maskierter Schlüssel */
 			printf( '<p class="description">%s</p>', esc_html( sprintf( __( 'Gespeichert: %s. Leer lassen, damit er unverändert bleibt.', 'mlab-forms' ), $mask ) ) );
+			printf(
+				'<p><label><input type="checkbox" name="%s[%s]" value="1"> %s</label></p>',
+				esc_attr( Settings::OPTION ),
+				esc_attr( Settings::remove_key( $key ) ),
+				esc_html__( 'Schlüssel entfernen', 'mlab-forms' )
+			);
 		}
 	}
 

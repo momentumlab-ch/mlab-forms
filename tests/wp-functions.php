@@ -132,6 +132,10 @@ function home_url( $path = '' ) {
 	return 'https://example.org' . $path;
 }
 
+function wp_parse_url( $url, $component = -1 ) {
+	return parse_url( (string) $url, $component );
+}
+
 function get_locale() {
 	return 'de_CH';
 }

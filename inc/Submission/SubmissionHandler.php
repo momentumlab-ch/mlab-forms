@@ -51,7 +51,7 @@ final class SubmissionHandler {
 			return new SubmissionResult( SubmissionResult::INVALID, __( 'Bitte prüfe die markierten Felder.', 'mlab-forms' ), $errors, $values );
 		}
 
-		$blocked = self::service_result( SpamGuard::check_services( $form, $request, $values ), $values );
+		$blocked = self::service_result( SpamGuard::check_services( $form, $request, $values, $ip_hash ), $values );
 		if ( null !== $blocked ) {
 			return $blocked;
 		}

@@ -40,7 +40,7 @@ return array(
 		'type'        => 'text',
 		'label'       => __( 'Absendername', 'mlab-forms' ),
 		'default'     => '',
-		'description' => __( 'Leer lassen für den Namen der Website.', 'mlab-forms' ),
+		'description' => __( 'Leer lassen für den Standard von WordPress. Ist nur die Absender-E-Mail gesetzt, gilt der Name der Website.', 'mlab-forms' ),
 	),
 	'email_from_address'     => array(
 		'tab'         => 'email',
@@ -48,7 +48,7 @@ return array(
 		'type'        => 'email',
 		'label'       => __( 'Absender-E-Mail', 'mlab-forms' ),
 		'default'     => '',
-		'description' => __( 'Leer lassen für die Admin-Adresse. WP Mail SMTP kann diesen Wert übersteuern.', 'mlab-forms' ),
+		'description' => __( 'Leer lassen für den Standard von WordPress (wordpress@deine-domain). WP Mail SMTP kann diesen Wert übersteuern.', 'mlab-forms' ),
 	),
 	'email_reply_to_mode'    => array(
 		'tab'     => 'email',
@@ -113,7 +113,7 @@ return array(
 		'type'        => 'checkbox',
 		'label'       => __( 'Akismet verwenden', 'mlab-forms' ),
 		'default'     => false,
-		'description' => __( 'Prüft den Inhalt jeder Anfrage bei Akismet. Dafür werden Name, E-Mail, Nachricht und IP-Adresse an Akismet gesendet.', 'mlab-forms' ),
+		'description' => __( 'Prüft den Inhalt jeder Anfrage bei Akismet. Dafür werden Name (nur aus Feldern, die als Name gekennzeichnet sind), E-Mail, Nachricht, IP-Adresse, Browser-Angaben, Herkunftsseite und Seiten-Adresse ohne Parameter an Akismet (Automattic) gesendet, auch in die USA. Andere Textfelder bleiben aussen vor.', 'mlab-forms' ),
 	),
 	'spam_turnstile_site'    => array(
 		'tab'     => 'spam',

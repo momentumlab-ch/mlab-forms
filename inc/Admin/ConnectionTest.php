@@ -7,7 +7,6 @@
 
 namespace MLab_Forms\Admin;
 
-use MLab_Forms\Capabilities;
 use MLab_Forms\Spam\Akismet;
 use MLab_Forms\Spam\Captcha;
 use MLab_Forms\Spam\Services;
@@ -34,7 +33,7 @@ final class ConnectionTest {
 	 */
 	public function handle(): void {
 		check_ajax_referer( self::ACTION, 'nonce' );
-		if ( ! current_user_can( Capabilities::MANAGE ) ) {
+		if ( ! current_user_can( SettingsPage::CAPABILITY ) ) {
 			wp_send_json_error( array( 'message' => __( 'Dazu fehlt dir die Berechtigung.', 'mlab-forms' ) ), 403 );
 		}
 

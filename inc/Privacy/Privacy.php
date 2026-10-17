@@ -172,10 +172,10 @@ final class Privacy {
 	 */
 	public static function services_text( array $services ): string {
 		$lines = array(
-			Services::TURNSTILE => __( 'Zum Schutz vor Spam nutzen wir auf Formularen Cloudflare Turnstile. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an Cloudflare übertragen.', 'mlab-forms' ),
+			Services::TURNSTILE => __( 'Zum Schutz vor Spam nutzen wir auf Formularen Cloudflare Turnstile. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an Cloudflare übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA).', 'mlab-forms' ),
 			Services::RECAPTCHA => __( 'Zum Schutz vor Spam nutzen wir auf Formularen Google reCAPTCHA v3. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an Google übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA).', 'mlab-forms' ),
-			Services::HCAPTCHA  => __( 'Zum Schutz vor Spam nutzen wir auf Formularen hCaptcha. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an hCaptcha übertragen.', 'mlab-forms' ),
-			Services::AKISMET   => __( 'Den Inhalt von Anfragen prüfen wir mit Akismet auf Spam. Dazu werden dein Name, deine E-Mail-Adresse, deine Nachricht, deine IP-Adresse und Angaben deines Browsers an Akismet (Automattic) übertragen.', 'mlab-forms' ),
+			Services::HCAPTCHA  => __( 'Zum Schutz vor Spam nutzen wir auf Formularen hCaptcha. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an hCaptcha übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA).', 'mlab-forms' ),
+			Services::AKISMET   => __( 'Den Inhalt von Anfragen prüfen wir mit Akismet auf Spam. Dazu werden dein Name (sofern das Formular ihn als Namensfeld kennzeichnet), deine E-Mail-Adresse, deine Nachricht, deine IP-Adresse, Angaben deines Browsers, die Herkunftsseite und die Adresse der Seite (ohne Parameter) an Akismet (Automattic) übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA).', 'mlab-forms' ),
 		);
 
 		$text = '';
