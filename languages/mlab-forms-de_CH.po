@@ -559,39 +559,39 @@ msgstr "Datenschutz"
 msgid "Updates"
 msgstr "Updates"
 
-#: inc/Settings.php:54
+#: inc/options.php:16
 msgid "Formular-Styling laden"
 msgstr "Formular-Styling laden"
 
-#: inc/Settings.php:56
+#: inc/options.php:18
 msgid "Ausschalten, wenn das Theme die Formulare selbst gestaltet."
 msgstr "Ausschalten, wenn das Theme die Formulare selbst gestaltet."
 
-#: inc/Settings.php:61
+#: inc/options.php:23
 msgid "Farbschema"
 msgstr "Farbschema"
 
-#: inc/Settings.php:64
+#: inc/options.php:26
 msgid "Hell"
 msgstr "Hell"
 
-#: inc/Settings.php:65
+#: inc/options.php:27
 msgid "Dunkel"
 msgstr "Dunkel"
 
-#: inc/Settings.php:71
+#: inc/options.php:33
 msgid "Absendername"
 msgstr "Absendername"
 
-#: inc/Settings.php:73
+#: inc/options.php:35
 msgid "Leer lassen für den Namen der Website."
 msgstr "Leer lassen für den Namen der Website."
 
-#: inc/Settings.php:78
+#: inc/options.php:40
 msgid "Absenderadresse"
 msgstr "Absenderadresse"
 
-#: inc/Settings.php:80
+#: inc/options.php:34
 msgid ""
 "Leer lassen für die Admin-Adresse. WP Mail SMTP kann diesen Wert "
 "übersteuern."
@@ -599,11 +599,11 @@ msgstr ""
 "Leer lassen für die Admin-Adresse. WP Mail SMTP kann diesen Wert "
 "übersteuern."
 
-#: inc/Settings.php:85
+#: inc/options.php:47
 msgid "Standard-Empfänger"
 msgstr "Standard-Empfänger"
 
-#: inc/Settings.php:87
+#: inc/options.php:34
 msgid ""
 "Empfänger für neue Anfragen, wenn das Formular nichts anderes festlegt. Leer"
 " lassen für die Admin-Adresse."
@@ -611,41 +611,41 @@ msgstr ""
 "Empfänger für neue Anfragen, wenn das Formular nichts anderes festlegt. Leer"
 " lassen für die Admin-Adresse."
 
-#: inc/Settings.php:92
+#: inc/options.php:54
 msgid "Honeypot verwenden"
 msgstr "Honeypot verwenden"
 
-#: inc/Settings.php:98
+#: inc/options.php:60
 msgid "Mindestzeit zum Ausfüllen (Sekunden)"
 msgstr "Mindestzeit zum Ausfüllen (Sekunden)"
 
-#: inc/Settings.php:102
+#: inc/options.php:64
 msgid "Schnellere Absendungen gelten als Spam. 0 schaltet die Prüfung aus."
 msgstr "Schnellere Absendungen gelten als Spam. 0 schaltet die Prüfung aus."
 
-#: inc/Settings.php:107
+#: inc/options.php:69
 msgid "Maximal Anfragen pro Stunde und Absender"
 msgstr "Maximal Anfragen pro Stunde und Absender"
 
-#: inc/Settings.php:111
+#: inc/options.php:73
 msgid "Gezählt wird pro gehashter IP-Adresse. 0 schaltet die Begrenzung aus."
 msgstr "Gezählt wird pro gehashter IP-Adresse. 0 schaltet die Begrenzung aus."
 
-#: inc/Settings.php:116
+#: inc/options.php:78
 msgid "Anfragen aufbewahren (Tage)"
 msgstr "Anfragen aufbewahren (Tage)"
 
-#: inc/Settings.php:120
+#: inc/options.php:34
 msgid ""
 "Standard für neue Formulare. Ältere Anfragen werden automatisch gelöscht."
 msgstr ""
 "Standard für neue Formulare. Ältere Anfragen werden automatisch gelöscht."
 
-#: inc/Settings.php:125
+#: inc/options.php:87
 msgid "Daten beim Löschen des Plugins behalten"
 msgstr "Daten beim Löschen des Plugins behalten"
 
-#: inc/Settings.php:127
+#: inc/options.php:34
 msgid ""
 "Ausschalten, damit beim Löschen des Plugins alle Formulare, Anfragen und "
 "Einstellungen entfernt werden."

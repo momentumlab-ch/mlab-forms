@@ -24,3 +24,4 @@ phpstan.neon.dist
 phpunit.xml.dist
 .phpunit.cache
 .phpunit.result.cache
+.gitkeep
