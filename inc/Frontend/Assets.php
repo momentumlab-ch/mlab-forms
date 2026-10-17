@@ -31,10 +31,10 @@ final class Assets {
 	 * Sonst lädt der Renderer sie beim Ausgeben (Styles landen dann im Footer).
 	 */
 	public function register_assets(): void {
-		wp_register_style( self::HANDLE, plugins_url( 'assets/form.css', MLAB_FORMS_FILE ), array(), MLAB_FORMS_VERSION );
+		wp_register_style( self::HANDLE, plugins_url( 'assets/css/form.css', MLAB_FORMS_FILE ), array(), MLAB_FORMS_VERSION );
 		wp_register_script(
 			self::HANDLE,
-			plugins_url( 'assets/form.js', MLAB_FORMS_FILE ),
+			plugins_url( 'assets/js/form.js', MLAB_FORMS_FILE ),
 			array(),
 			MLAB_FORMS_VERSION,
 			array(

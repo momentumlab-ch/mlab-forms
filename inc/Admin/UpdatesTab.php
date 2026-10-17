@@ -78,6 +78,13 @@ final class UpdatesTab {
 			return;
 		}
 
+		$this->render_auto_update_toggle();
+	}
+
+	/**
+	 * Zustand und Knopf, der wie in der Plugin-Liste umschaltet.
+	 */
+	private function render_auto_update_toggle(): void {
 		$enabled = in_array( Plugin::basename(), (array) get_site_option( 'auto_update_plugins', array() ), true );
 		$url     = add_query_arg(
 			array(

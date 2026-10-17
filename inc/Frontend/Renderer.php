@@ -166,8 +166,14 @@ final class Renderer {
 			);
 		}
 
-		// Honeypot: für Menschen unsichtbar und nicht per Tab erreichbar.
-		$honeypot = Html::tag(
+		return $html . self::honeypot();
+	}
+
+	/**
+	 * Honeypot: für Menschen unsichtbar und nicht per Tab erreichbar.
+	 */
+	private static function honeypot(): string {
+		$input = Html::tag(
 			'input',
 			array(
 				'type'         => 'text',
@@ -179,13 +185,13 @@ final class Renderer {
 			null
 		);
 
-		return $html . Html::tag(
+		return Html::tag(
 			'div',
 			array(
 				'class'       => 'mlab-form__hp',
 				'aria-hidden' => 'true',
 			),
-			$honeypot
+			$input
 		);
 	}
 

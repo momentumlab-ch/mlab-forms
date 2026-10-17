@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 0.4.1 =
+* Interne Aufräumarbeiten nach den MomentumLab-Standards. Für Websites ändert sich nichts.
+* Die readme beschreibt jetzt alle Filter und Actions.
+
 = 0.4.0 =
 * Updates laufen über den Plugin Update Checker; das Release-ZIP heisst jetzt immer `mlab-forms.zip`.
 * Das Plugin bringt alles mit, was es braucht, und läuft auch aus einem frisch heruntergeladenen ZIP.

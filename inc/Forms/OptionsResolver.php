@@ -68,9 +68,29 @@ final class OptionsResolver {
 			return array();
 		}
 
-		// Meta und Terme nur vorladen, wenn «groups» sie braucht.
-		$groups = (string) ( $source['groups'] ?? '' );
-		$posts  = get_posts(
+		$groups  = (string) ( $source['groups'] ?? '' );
+		$options = array();
+		foreach ( self::published_posts( $post_type, $groups ) as $post ) {
+			$title     = html_entity_decode( get_the_title( $post ), ENT_QUOTES, 'UTF-8' );
+			$options[] = array(
+				'value' => $title,
+				'label' => $title,
+				'group' => self::group_of( $post->ID, $groups ),
+			);
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Veröffentlichte Beiträge eines Post-Typs, sortiert wie im Backend.
+	 *
+	 * @param string $post_type Post-Typ.
+	 * @param string $groups    Gruppierung; Meta und Terme werden nur vorgeladen, wenn sie gebraucht werden.
+	 * @return \WP_Post[]
+	 */
+	private static function published_posts( string $post_type, string $groups ): array {
+		return get_posts(
 			array(
 				'post_type'              => $post_type,
 				'post_status'            => 'publish',
@@ -84,18 +104,6 @@ final class OptionsResolver {
 				'update_post_term_cache' => str_starts_with( $groups, 'taxonomy:' ),
 			)
 		);
-
-		$options = array();
-		foreach ( $posts as $post ) {
-			$title     = html_entity_decode( get_the_title( $post ), ENT_QUOTES, 'UTF-8' );
-			$options[] = array(
-				'value' => $title,
-				'label' => $title,
-				'group' => self::group_of( $post->ID, $groups ),
-			);
-		}
-
-		return $options;
 	}
 
 	/**

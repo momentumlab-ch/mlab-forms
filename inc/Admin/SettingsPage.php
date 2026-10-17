@@ -105,11 +105,7 @@ final class SettingsPage {
 		<div class="wrap">
 			<h1><?php esc_html_e( 'Einstellungen', 'mlab-forms' ); ?></h1>
 			<?php $this->render_notices(); ?>
-			<nav class="nav-tab-wrapper">
-				<?php foreach ( Settings::tabs() as $key => $title ) : ?>
-					<a href="<?php echo esc_url( self::url( $key ) ); ?>" class="nav-tab <?php echo $key === $tab ? 'nav-tab-active' : ''; ?>"><?php echo esc_html( $title ); ?></a>
-				<?php endforeach; ?>
-			</nav>
+			<?php $this->render_tabs( $tab ); ?>
 			<?php if ( $this->tab_has_fields( $tab ) ) : ?>
 				<form action="options.php" method="post">
 					<?php
@@ -127,6 +123,21 @@ final class SettingsPage {
 			do_action( "mlab_forms_settings_tab_{$tab}" );
 			?>
 		</div>
+		<?php
+	}
+
+	/**
+	 * Tab-Leiste.
+	 *
+	 * @param string $current Aktiver Tab.
+	 */
+	private function render_tabs( string $current ): void {
+		?>
+		<nav class="nav-tab-wrapper">
+			<?php foreach ( Settings::tabs() as $key => $title ) : ?>
+				<a href="<?php echo esc_url( self::url( $key ) ); ?>" class="nav-tab <?php echo $key === $current ? 'nav-tab-active' : ''; ?>"><?php echo esc_html( $title ); ?></a>
+			<?php endforeach; ?>
+		</nav>
 		<?php
 	}
 
