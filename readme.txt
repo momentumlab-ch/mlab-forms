@@ -36,8 +36,10 @@ Updates kommen aus den GitHub-Releases von momentumlab-ch/mlab-forms und erschei
 == Neue Version veröffentlichen ==
 
 1. Version an drei Stellen erhöhen: Plugin-Header und Konstante in `mlab-forms.php`, «Stable tag» in `readme.txt`.
-2. Auf main mergen, dann ein Release mit dem Tag `vX.Y.Z` anlegen.
-3. Der Workflow baut das ZIP und hängt es an das Release. Ab dann sehen die Websites das Update.
+2. Auf main mergen.
+3. Unter GitHub › Actions › «Plugin-ZIP bauen» › «Run workflow» (Branch main) starten. Der Workflow legt das Release `vX.Y.Z` an und hängt das ZIP an. Ab dann sehen die Websites das Update.
+
+Alternativ ein Release mit dem Tag `vX.Y.Z` von Hand anlegen; das ZIP hängt der Workflow dann selbst an.
 
 == Changelog ==
 
