@@ -32,9 +32,9 @@ jobs:
         id: version
         run: |
           header=$(sed -n 's/^ \* Version:[[:space:]]*//p' mlab-forms.php)
-          constant=$(sed -n "s/^define( 'MLAB_MEDIA_FOLDER_VERSION', '\(.*\)' );/\1/p" mlab-forms.php)
+          constant=$(sed -n "s/^define( 'MLAB_FORMS_VERSION', '\(.*\)' );/\1/p" mlab-forms.php)
           if [ "$header" != "$constant" ]; then
-            echo "::error::Plugin header version $header and MLAB_MEDIA_FOLDER_VERSION $constant differ."
+            echo "::error::Plugin header version $header and MLAB_FORMS_VERSION $constant differ."
             exit 1
           fi
           tag="v$header"
