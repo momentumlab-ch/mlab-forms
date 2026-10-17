@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * Die Zeitfalle nutzt ein signiertes Zeitstempel-Token statt eines Nonce. Es funktioniert
  * auch mit Seiten-Cache: ein altes Token ist nur «älter», also nie zu schnell. Damit ein Bot
- * ein einmal erhaltenes Token nicht endlos wiederverwenden kann, gilt es höchstens 24 Stunden
+ * ein einmal erhaltenes Token nicht endlos wiederverwenden kann, gilt es höchstens 7 Tage
  * (Filter «mlab_forms_token_max_age»). Das ist bewusst grosszügig: Seiten-Caches erneuern
  * ihr HTML in der Regel viel früher. Ein älteres Token wird wie ein ungültiges behandelt.
  *
@@ -191,16 +191,16 @@ final class SpamGuard {
 	}
 
 	/**
-	 * Höchstalter eines Tokens in Sekunden (Standard 24 Stunden).
+	 * Höchstalter eines Tokens in Sekunden (Standard 7 Tage).
 	 */
 	private static function max_age(): int {
 		/**
 		 * Höchstalter des Zeitfallen-Tokens in Sekunden. Ältere Token werden wie ungültige behandelt.
 		 * Bei sehr lange gecachten Seiten kann der Wert erhöht werden.
 		 *
-		 * @param int $seconds Standard 86400 (24 Stunden).
+		 * @param int $seconds Standard 604800 (7 Tage).
 		 */
-		return max( 1, (int) apply_filters( 'mlab_forms_token_max_age', DAY_IN_SECONDS ) );
+		return max( 1, (int) apply_filters( 'mlab_forms_token_max_age', WEEK_IN_SECONDS ) );
 	}
 
 	/**
