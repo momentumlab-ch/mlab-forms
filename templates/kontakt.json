@@ -5,7 +5,7 @@
 		"submit_label": "Nachricht senden",
 		"success_message": "Danke für deine Nachricht! Wir melden uns bald.",
 		"notifications": [
-			{ "id": "admin", "to": "{site_admin_email}", "reply_to": "{field:email}", "subject": "Neue Nachricht von {field:name}", "body": "{all_fields}" }
+			{ "id": "admin", "to": "{default_recipient}", "reply_to": "{field:email}", "subject": "Neue Nachricht von {field:name}", "body": "{all_fields}" }
 		]
 	},
 	"fields": [

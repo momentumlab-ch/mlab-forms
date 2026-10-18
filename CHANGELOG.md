@@ -1,5 +1,20 @@
 == Changelog ==
 
+= 0.7.1 =
+* Jedes Formular kann an eine eigene Adresse senden. Im Builder unter «Einstellungen › Empfänger» trägst du eine oder mehrere Adressen ein (z. B. verkauf@firma.ch, info@firma.ch). Ist das Feld leer, gehen die Anfragen wie bisher an den Standard-Empfänger. Eine ungültige Adresse meldet der Builder sofort am Feld; der Server lehnt sie beim Speichern mit einer verständlichen Meldung ab.
+* Der Standard-Empfänger in den Einstellungen (Tab «E-Mail», Abschnitt «Absender») darf jetzt mehrere Adressen enthalten. Ist er leer, gilt die Admin-E-Mail der Website.
+* Die Bestätigungsmail an den Besucher bleibt unverändert. Bestehende Formulare funktionieren weiter und können die neue Einstellung ebenfalls nutzen.
+* Mails an die Empfänger der Seite erscheinen in der Standardsprache des Formulars, auch wenn ein Formular eigene Empfänger hat.
+* Für Entwickler: neues Merge-Tag `{default_recipient}` und optionales Schema-Feld `settings.recipients`. Besucher-Eingaben (`{field:…}`) werden als Empfänger nie aufgelöst.
+
+= 0.7.0 =
+* Mehrsprachige Formulare: Beschriftungen, Platzhalter, Hilfetexte, Einträge von Auswahllisten, Text des Absende-Buttons und Erfolgsmeldung lassen sich pro Sprache pflegen. Im Builder wählst du oben die Sprache (DE, FR, EN …) oder fügst eine hinzu (Deutsch, Französisch, Italienisch, Englisch, Rätoromanisch, Spanisch, Portugiesisch, Niederländisch). In einer weiteren Sprache siehst du nur die Texte, mit dem Standardtext darunter; ein leeres Feld zeigt den Standardtext. Der Zähler «12 von 14 übersetzt» und die Markierung «Noch nicht übersetzt» an den Feldern zeigen, was noch fehlt. Eine Sprache entfernen fragt zuerst nach und lässt sich kurz rückgängig machen. Die Vorschau hat einen eigenen Umschalter.
+* Die Seite bestimmt die Sprache: WPML, Polylang oder die Sprache der Website. Pflegt das Formular die Sprache nicht, erscheint die Standardsprache (die erste Sprache). Erfolgsmeldung, Fehlermeldungen und die Mail an den Besucher kommen in der Sprache, in der das Formular ausgefüllt wurde. Mails an die Admin-Adresse erscheinen immer in der Standardsprache des Formulars. Gespeichert wird der Wert einer Auswahl, nicht ihre Übersetzung, damit Anfragen und Auswertungen vergleichbar bleiben. Die Sprache steht in der Detailansicht der Anfrage.
+* Betreff und Text der Benachrichtigungen übersetzt du in der Experten-Ansicht (JSON) unter «i18n» der Benachrichtigung; einen Editor dafür gibt es im Builder noch nicht.
+* Bestehende Formulare bleiben unverändert. Das Schema bleibt bei Version 1, alles Neue ist optional («languages» und «i18n»).
+* Die Plugin-Oberfläche gibt es zusätzlich auf Englisch (en_US), damit Seiten auf Englisch englische Meldungen zeigen.
+* Für Entwickler: neuer Filter `mlab_forms_current_language`, um die erkannte Sprache zu überschreiben.
+
 = 0.6.0 =
 * Neuer Formular-Builder: Felder werden links aus Bausteinen gewählt, in der Mitte angeordnet und rechts bearbeitet. Reiter «Felder», «Einstellungen» und «Vorschau»; am Handy als Zeile mit Bausteinen und Eigenschaften als Blatt von unten. Alles lässt sich per Tastatur bedienen, Felder verschiebst du mit den Pfeilen.
 * Fertige Bausteine mit passender Prüfung und Autofill: Vorname, Nachname, E-Mail, Telefon, Firma, Adresse, PLZ, Ort, Land, Nachricht, Datum, Auswahlliste, Mehrfachauswahl, Einwilligung und Zwischentitel. Dazu «Eigenes Feld» mit frei wählbarer Art. Interne Feldnamen vergibt das System und lassen sich später ohne Folgen für gespeicherte Anfragen umbeschriften.

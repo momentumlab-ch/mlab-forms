@@ -17,9 +17,11 @@ use MLab_Forms\Fields\NumberField;
 use MLab_Forms\Fields\TextareaField;
 use MLab_Forms\Fields\TextField;
 use MLab_Forms\Forms\FormPostType;
+use MLab_Forms\Forms\Language;
 use MLab_Forms\Forms\Presets;
 use MLab_Forms\Forms\Templates;
 use MLab_Forms\Html;
+use MLab_Forms\Mail\Recipients;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -39,6 +41,7 @@ final class Builder {
 	private const SCRIPTS = array(
 		'core'      => 'assets/js/builder/core.js',
 		'dom'       => 'assets/js/builder/dom.js',
+		'languages' => 'assets/js/builder/languages.js',
 		'fields'    => 'assets/js/builder/fields.js',
 		'inspector' => 'assets/js/builder/inspector.js',
 		'panels'    => 'assets/js/builder/panels.js',
@@ -116,24 +119,44 @@ final class Builder {
 	 */
 	public static function config( bool $is_new ): array {
 		return array(
-			'fieldId'   => FormEditor::FIELD,
-			'isNew'     => $is_new,
-			'presets'   => Presets::all(),
-			'starter'   => Presets::starter_keys(),
-			'typeList'  => self::type_list(),
-			'typeHints' => self::type_hints(),
-			'templates' => self::templates(),
-			'defaults'  => array(
+			'fieldId'      => FormEditor::FIELD,
+			'isNew'        => $is_new,
+			'presets'      => Presets::all(),
+			'starter'      => Presets::starter_keys(),
+			'typeList'     => self::type_list(),
+			'typeHints'    => self::type_hints(),
+			'templates'    => self::templates(),
+			'languageList' => self::language_list(),
+			'siteLanguage' => Language::normalize( determine_locale() ),
+			'defaults'     => array(
 				'submitLabel'    => __( 'Senden', 'mlab-forms' ),
 				'successMessage' => __( 'Danke! Wir haben deine Nachricht erhalten.', 'mlab-forms' ),
+				'recipients'     => implode( ', ', Recipients::defaults() ),
 			),
-			'preview'   => array(
+			'preview'      => array(
 				'url'    => admin_url( 'admin-ajax.php' ),
 				'action' => Preview::ACTION,
 				'nonce'  => wp_create_nonce( Preview::ACTION ),
 			),
-			'texts'     => BuilderTexts::all(),
+			'texts'        => BuilderTexts::all(),
 		);
+	}
+
+	/**
+	 * Wählbare Sprachen für den Builder.
+	 *
+	 * @return list<array{code: string, name: string}>
+	 */
+	private static function language_list(): array {
+		$list = array();
+		foreach ( BuilderTexts::language_names() as $code => $name ) {
+			$list[] = array(
+				'code' => (string) $code,
+				'name' => $name,
+			);
+		}
+
+		return $list;
 	}
 
 	/**

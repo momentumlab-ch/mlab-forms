@@ -8,7 +8,7 @@
 		"retention_days": 365,
 		"spam": { "honeypot": true, "min_seconds": 3 },
 		"notifications": [
-			{ "id": "admin", "to": "{site_admin_email}", "reply_to": "{field:email}", "subject": "Neue Anfrage: {field:angebot}", "body": "{all_fields}" },
+			{ "id": "admin", "to": "{default_recipient}", "reply_to": "{field:email}", "subject": "Neue Anfrage: {field:angebot}", "body": "{all_fields}" },
 			{ "id": "guest", "to": "{field:email}", "subject": "Deine Anfrage bei {site_name}", "body": "Hoi {field:name}\n\nDanke für deine Anfrage. Wir melden uns innert 24 Stunden mit einem Vorschlag.\n\n{all_fields}\n\nLiebe Grüsse\n{site_name}", "enabled": true }
 		],
 		"tracking": { "ga4_event": "generate_lead", "ga4_params": { "angebot": "{field:angebot}" } }

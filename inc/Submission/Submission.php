@@ -34,6 +34,23 @@ final class Submission {
 	}
 
 	/**
+	 * Dieselbe Absendung mit den Texten des Formulars in einer anderen Sprache.
+	 *
+	 * @param string $lang Sprachcode.
+	 */
+	public function in_language( string $lang ): self {
+		$form = $this->form->localized( $lang );
+		if ( $form === $this->form ) {
+			return $this;
+		}
+
+		$copy           = new self( $form, $this->values, $this->meta );
+		$copy->entry_id = $this->entry_id;
+
+		return $copy;
+	}
+
+	/**
 	 * Wert eines Felds als Text.
 	 *
 	 * @param string $id Feld-ID.

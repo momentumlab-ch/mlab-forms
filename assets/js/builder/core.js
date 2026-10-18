@@ -135,6 +135,10 @@
 		return 'string' === typeof option.label ? option.label : option.value || '';
 	}
 
+	function optionValue( option ) {
+		return 'string' === typeof option ? option : String( option.value || '' );
+	}
+
 	function optionIsDefault( option ) {
 		return 'object' === typeof option && true === option.default;
 	}
@@ -206,6 +210,351 @@
 			delete out.default;
 		}
 		return 1 === Object.keys( out ).length && 'string' === typeof out.value ? out.value : out;
+	}
+
+	/* ---------- Sprachen und Übersetzungen ---------- */
+
+	var LANG_PATTERN = /^[a-z]{2,3}$/;
+	var FIELD_TEXT_KEYS = [ 'label', 'placeholder', 'help', 'content' ];
+	var SETTING_TEXT_KEYS = [ 'submit_label', 'success_message' ];
+
+	/**
+	 * Gültige, einmalige Sprachcodes des Schemas; die erste ist die Standardsprache.
+	 */
+	function languages( schema ) {
+		var list = schema && Array.isArray( schema.languages ) ? schema.languages : [];
+
+		return list.filter( function ( code, index ) {
+			return 'string' === typeof code && LANG_PATTERN.test( code ) && index === list.indexOf( code );
+		} );
+	}
+
+	function isMultilingual( schema ) {
+		return languages( schema ).length > 1;
+	}
+
+	function defaultLanguage( schema ) {
+		return isMultilingual( schema ) ? languages( schema )[ 0 ] : '';
+	}
+
+	/**
+	 * Alles, was «i18n» trägt: Einstellungen, Benachrichtigungen und Felder.
+	 */
+	function holders( schema ) {
+		var settings = schema.settings && 'object' === typeof schema.settings ? schema.settings : null;
+		var list = settings ? [ settings ] : [];
+
+		( settings && Array.isArray( settings.notifications ) ? settings.notifications : [] ).forEach( function ( notification ) {
+			if ( notification && 'object' === typeof notification ) {
+				list.push( notification );
+			}
+		} );
+		return list.concat( ( schema.fields || [] ).filter( Boolean ) );
+	}
+
+	/**
+	 * Fügt eine Sprache hinzu. Hat das Formular noch keine, wird defaultCode die Standardsprache.
+	 *
+	 * @return {boolean} false bei ungültigem oder vorhandenem Code.
+	 */
+	function addLanguage( schema, code, defaultCode ) {
+		var list = languages( schema );
+
+		if ( ! LANG_PATTERN.test( code ) || -1 !== list.indexOf( code ) ) {
+			return false;
+		}
+		if ( ! list.length ) {
+			if ( ! LANG_PATTERN.test( defaultCode ) || defaultCode === code ) {
+				return false;
+			}
+			list = [ defaultCode ];
+		}
+		schema.languages = list.concat( code );
+		return true;
+	}
+
+	/**
+	 * Alle Texte einer Sprache (ohne leere).
+	 */
+	function countTranslations( schema, code ) {
+		var count = 0;
+
+		holders( schema ).forEach( function ( holder ) {
+			var bundle = holder.i18n && holder.i18n[ code ] ? holder.i18n[ code ] : {};
+
+			Object.keys( bundle ).forEach( function ( key ) {
+				if ( 'options' === key && bundle.options && 'object' === typeof bundle.options ) {
+					count += Object.keys( bundle.options ).filter( function ( value ) {
+						return '' !== String( bundle.options[ value ] ).trim();
+					} ).length;
+				} else if ( 'string' === typeof bundle[ key ] && '' !== bundle[ key ].trim() ) {
+					count += 1;
+				}
+			} );
+		} );
+		return count;
+	}
+
+	function dropEmptyI18n( holder ) {
+		if ( holder.i18n && ! Object.keys( holder.i18n ).length ) {
+			delete holder.i18n;
+		}
+	}
+
+	/**
+	 * Entfernt eine Sprache samt Übersetzungen. Mit nur einer Sprache wird das Formular wieder einsprachig.
+	 * Die Standardsprache lässt sich nicht entfernen.
+	 *
+	 * @return {boolean} false bei Standardsprache oder unbekanntem Code.
+	 */
+	function removeLanguage( schema, code ) {
+		var list = languages( schema );
+
+		if ( list.indexOf( code ) < 1 ) {
+			return false;
+		}
+		holders( schema ).forEach( function ( holder ) {
+			if ( holder.i18n ) {
+				delete holder.i18n[ code ];
+				dropEmptyI18n( holder );
+			}
+		} );
+		list.splice( list.indexOf( code ), 1 );
+		if ( list.length > 1 ) {
+			schema.languages = list;
+		} else {
+			delete schema.languages;
+		}
+		return true;
+	}
+
+	/**
+	 * Übersetzung eines Texts oder leer.
+	 */
+	function getText( holder, lang, key ) {
+		var bundle = holder.i18n && holder.i18n[ lang ] ? holder.i18n[ lang ] : null;
+
+		return bundle && 'string' === typeof bundle[ key ] ? bundle[ key ] : '';
+	}
+
+	/**
+	 * Setzt eine Übersetzung; ein leerer Text löscht sie und räumt leere Hüllen auf.
+	 */
+	function setText( holder, lang, key, text ) {
+		var empty = '' === String( text ).trim();
+		var bundle;
+
+		if ( empty ) {
+			if ( holder.i18n && holder.i18n[ lang ] ) {
+				delete holder.i18n[ lang ][ key ];
+				if ( ! Object.keys( holder.i18n[ lang ] ).length ) {
+					delete holder.i18n[ lang ];
+				}
+				dropEmptyI18n( holder );
+			}
+			return;
+		}
+		holder.i18n = holder.i18n || {};
+		bundle = holder.i18n[ lang ] = holder.i18n[ lang ] || {};
+		bundle[ key ] = text;
+	}
+
+	function getOptionLabel( field, lang, value ) {
+		var labels = field.i18n && field.i18n[ lang ] ? field.i18n[ lang ].options : null;
+
+		return labels && 'string' === typeof labels[ value ] ? labels[ value ] : '';
+	}
+
+	/**
+	 * Setzt die Beschriftung einer Option in einer Sprache (der Wert der Option bleibt); leer löscht sie.
+	 */
+	function setOptionLabel( field, lang, value, text ) {
+		var bundle;
+
+		if ( '' === String( text ).trim() ) {
+			if ( field.i18n && field.i18n[ lang ] && field.i18n[ lang ].options ) {
+				delete field.i18n[ lang ].options[ value ];
+				if ( ! Object.keys( field.i18n[ lang ].options ).length ) {
+					setText( field, lang, 'options', '' );
+				}
+			}
+			return;
+		}
+		field.i18n = field.i18n || {};
+		bundle = field.i18n[ lang ] = field.i18n[ lang ] || {};
+		bundle.options = bundle.options || {};
+		bundle.options[ value ] = text;
+	}
+
+	function forEachOptionLabels( field, fn ) {
+		Object.keys( field.i18n || {} ).forEach( function ( lang ) {
+			if ( field.i18n[ lang ] && field.i18n[ lang ].options ) {
+				fn( field.i18n[ lang ].options, lang );
+			}
+		} );
+	}
+
+	/**
+	 * Ändert den Text einer Option in der Standardsprache. Die Übersetzungen bleiben unberührt;
+	 * sie wandern erst mit moveOptionLabels(), wenn die Eingabe abgeschlossen ist.
+	 *
+	 * @return {string} Der Wert der Option vor der Änderung.
+	 */
+	function renameOption( field, index, text ) {
+		var before = optionValue( field.options[ index ] );
+
+		setOptionText( field.options, index, text );
+		return before;
+	}
+
+	/**
+	 * Lässt die Übersetzungen dem neuen Wert einer Option folgen, wenn der Text zugleich der Wert ist.
+	 * Nichts wird verschoben oder überschrieben, wenn der neue Wert schon zu einer anderen Option gehört
+	 * oder schon als Übersetzungsschlüssel vorkommt.
+	 *
+	 * @return {boolean} true, wenn Übersetzungen verschoben wurden.
+	 */
+	function moveOptionLabels( field, before, index ) {
+		var after = optionValue( field.options[ index ] );
+		var owned = Object.prototype.hasOwnProperty;
+		var taken = field.options.some( function ( option, i ) {
+			return i !== index && optionValue( option ) === after;
+		} );
+		var clash = false;
+		var moved = false;
+
+		if ( before === after || taken ) {
+			return false;
+		}
+		forEachOptionLabels( field, function ( labels ) {
+			clash = clash || owned.call( labels, after );
+		} );
+		if ( clash ) {
+			return false;
+		}
+		forEachOptionLabels( field, function ( labels ) {
+			if ( owned.call( labels, before ) ) {
+				labels[ after ] = labels[ before ];
+				delete labels[ before ];
+				moved = true;
+			}
+		} );
+		return moved;
+	}
+
+	/**
+	 * Entfernt einen Eintrag samt seinen Übersetzungen (ausser ein anderer Eintrag hat denselben Wert).
+	 */
+	function removeOption( field, index ) {
+		var value = optionValue( field.options[ index ] );
+
+		field.options.splice( index, 1 );
+		if ( field.options.some( function ( option ) {
+			return optionValue( option ) === value;
+		} ) ) {
+			return;
+		}
+		Object.keys( field.i18n || {} ).forEach( function ( lang ) {
+			setOptionLabel( field, lang, value, '' );
+		} );
+	}
+
+	/**
+	 * Zu übersetzende Texte eines Felds: Beschriftung, Platzhalter, Hilfetext, Inhalt und Einträge,
+	 * jeweils nur wenn der Standardtext nicht leer ist.
+	 *
+	 * @return {Array<{key: string, source: string, value?: string}>}
+	 */
+	function fieldSlots( field, type ) {
+		var p = props( field, type );
+		var flags = { label: p.label, placeholder: p.placeholder, help: p.help, content: p.content };
+		var slots = [];
+
+		FIELD_TEXT_KEYS.forEach( function ( key ) {
+			var source = String( field[ key ] || '' );
+			if ( flags[ key ] && '' !== source.trim() ) {
+				slots.push( { key: key, source: source } );
+			}
+		} );
+		if ( p.options ) {
+			allOptions( field ).forEach( function ( option ) {
+				var source = optionText( option );
+				if ( '' !== source.trim() ) {
+					slots.push( { key: 'options', value: optionValue( option ), source: source } );
+				}
+			} );
+		}
+		return slots;
+	}
+
+	function settingSlots( schema, defaults ) {
+		var settings = schema.settings || {};
+		var fallback = { submit_label: defaults.submitLabel, success_message: defaults.successMessage };
+
+		return SETTING_TEXT_KEYS.map( function ( key ) {
+			return { key: key, source: String( settings[ key ] || fallback[ key ] || '' ) };
+		} );
+	}
+
+	function slotTranslated( holder, lang, slot ) {
+		var value = 'options' === slot.key ? getOptionLabel( holder, lang, slot.value ) : getText( holder, lang, slot.key );
+
+		return '' !== value.trim();
+	}
+
+	/**
+	 * Wie viele Texte in der Sprache übersetzt sind.
+	 *
+	 * @return {{done: number, total: number}}
+	 */
+	function translationStatus( schema, lang, types, defaults ) {
+		var status = { done: 0, total: 0 };
+		var count = function ( holder, slots ) {
+			slots.forEach( function ( slot ) {
+				status.total += 1;
+				status.done += slotTranslated( holder, lang, slot ) ? 1 : 0;
+			} );
+		};
+
+		count( schema.settings || {}, settingSlots( schema, defaults ) );
+		( schema.fields || [] ).forEach( function ( field ) {
+			count( field, fieldSlots( field, types[ field.type ] ) );
+		} );
+		return status;
+	}
+
+	/**
+	 * Anzahl der Texte eines Felds, die in der Sprache noch fehlen.
+	 */
+	function missingTranslations( field, type, lang ) {
+		return fieldSlots( field, type ).filter( function ( slot ) {
+			return ! slotTranslated( field, lang, slot );
+		} ).length;
+	}
+
+	/**
+	 * Kopie des Felds mit den Texten der Sprache, für die Anzeige in der Formular-Ansicht.
+	 * Nicht übersetzte Texte bleiben Standardtexte.
+	 */
+	function localizedField( field, lang ) {
+		var view = Object.assign( {}, field );
+
+		FIELD_TEXT_KEYS.forEach( function ( key ) {
+			if ( '' !== getText( field, lang, key ).trim() ) {
+				view[ key ] = getText( field, lang, key );
+			}
+		} );
+		if ( Array.isArray( field.options ) ) {
+			view.options = field.options.map( function ( option ) {
+				var label = getOptionLabel( field, lang, optionValue( option ) );
+
+				if ( '' === label.trim() ) {
+					return option;
+				}
+				return Object.assign( {}, 'string' === typeof option ? { value: option } : option, { label: label } );
+			} );
+		}
+		return view;
 	}
 
 	/* ---------- Eigenschaften je Feldtyp ---------- */
@@ -281,6 +630,59 @@
 		} );
 	}
 
+	/* ---------- Empfänger ---------- */
+
+	var MAX_RECIPIENTS = 10;
+	var EMAIL_PATTERN = /^[A-Za-z0-9!#$%&'*+\/=?^_`{|}~-]+(\.[A-Za-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@([A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?$/;
+
+	/**
+	 * Zerlegt die Eingabe (Komma, Semikolon oder Zeilenumbruch) in gültige und ungültige Angaben.
+	 *
+	 * @return {{valid: string[], invalid: string[], tooMany: boolean}}
+	 */
+	function parseAddresses( text ) {
+		var seen = {};
+		var result = { valid: [], invalid: [], tooMany: false };
+
+		String( text || '' ).split( /[,;\r\n]+/ ).forEach( function ( part ) {
+			var item = part.trim();
+			var key = item.toLowerCase();
+
+			if ( ! item || seen[ key ] ) {
+				return;
+			}
+			seen[ key ] = true;
+			( EMAIL_PATTERN.test( item ) ? result.valid : result.invalid ).push( item );
+		} );
+		result.tooMany = result.valid.length > MAX_RECIPIENTS;
+		return result;
+	}
+
+	/**
+	 * Setzt «settings.recipients». Leer entfernt die Eigenschaft (und «settings», wenn nichts übrig bleibt).
+	 */
+	function setRecipients( schema, text ) {
+		var settings = schema.settings && 'object' === typeof schema.settings ? schema.settings : {};
+
+		setValue( settings, 'recipients', String( text || '' ).trim() );
+		if ( Object.keys( settings ).length ) {
+			schema.settings = settings;
+		} else {
+			delete schema.settings;
+		}
+	}
+
+	/**
+	 * Gibt es eine Benachrichtigung an den Besucher (Adresse aus einem Feld)?
+	 */
+	function hasVisitorMail( schema ) {
+		var list = schema.settings && Array.isArray( schema.settings.notifications ) ? schema.settings.notifications : [];
+
+		return list.some( function ( notification ) {
+			return !! notification && 'string' === typeof notification.to && -1 !== notification.to.indexOf( '{field:' );
+		} );
+	}
+
 	function prefillEnabled( field ) {
 		return !! field.prefill && false !== field.prefill.enabled;
 	}
@@ -352,14 +754,37 @@
 		move: move,
 		setValue: setValue,
 		optionText: optionText,
+		optionValue: optionValue,
 		optionIsDefault: optionIsDefault,
 		setOptionText: setOptionText,
+		renameOption: renameOption,
+		moveOptionLabels: moveOptionLabels,
+		removeOption: removeOption,
+		languages: languages,
+		isMultilingual: isMultilingual,
+		defaultLanguage: defaultLanguage,
+		addLanguage: addLanguage,
+		removeLanguage: removeLanguage,
+		countTranslations: countTranslations,
+		getText: getText,
+		setText: setText,
+		getOptionLabel: getOptionLabel,
+		setOptionLabel: setOptionLabel,
+		fieldSlots: fieldSlots,
+		settingSlots: settingSlots,
+		slotTranslated: slotTranslated,
+		translationStatus: translationStatus,
+		missingTranslations: missingTranslations,
+		localizedField: localizedField,
 		toggleDefault: toggleDefault,
 		props: props,
 		prefillEnabled: prefillEnabled,
 		toggleLink: toggleLink,
 		toggleFuture: toggleFuture,
 		usedInNotifications: usedInNotifications,
+		parseAddresses: parseAddresses,
+		setRecipients: setRecipients,
+		hasVisitorMail: hasVisitorMail,
 		optionProblems: optionProblems,
 		setPrefill: setPrefill,
 		problems: problems,

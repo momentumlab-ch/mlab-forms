@@ -9,6 +9,7 @@ namespace MLab_Forms\Frontend;
 
 use MLab_Forms\Fields\Formats;
 use MLab_Forms\Forms\Form;
+use MLab_Forms\Forms\Language;
 use MLab_Forms\Html;
 use MLab_Forms\Settings;
 use MLab_Forms\Spam\Widget;
@@ -41,6 +42,8 @@ final class Renderer {
 		Assets::enqueue();
 		++self::$instance;
 
+		$form = $form->localized( Language::current( $form->languages() ) );
+
 		$result = PostHandler::recall( $form->id );
 		if ( $result && $result->ok() ) {
 			return self::wrap(
@@ -64,10 +67,13 @@ final class Renderer {
 	 *
 	 * Gibt nichts aus, speichert nichts und lädt keine Assets.
 	 *
-	 * @param Form $form Formular (auch ungespeichert, mit ID 0).
+	 * @param Form   $form Formular (auch ungespeichert, mit ID 0).
+	 * @param string $lang Sprache der Vorschau; leer oder unbekannt: Standardsprache.
 	 */
-	public static function preview( Form $form ): string {
+	public static function preview( Form $form, string $lang = '' ): string {
 		++self::$instance;
+
+		$form = $form->localized( $lang );
 
 		return self::wrap( $form, self::fields_html( $form, null ) . self::submit_button( $form ) );
 	}
@@ -97,9 +103,19 @@ final class Renderer {
 				'class' => 'mlab-form mlab-form--' . sanitize_html_class( self::style_of( $form ) ),
 				'id'    => 1 === self::$instance ? 'mlab-form-' . $form->id : 'mlab-form-' . $form->id . '-' . self::$instance,
 				'style' => Assets::style_vars(),
+				'lang'  => self::lang_attribute( $form ),
 			),
 			$inner
 		);
+	}
+
+	/**
+	 * Sprache für das lang-Attribut, wenn sie von der Seite abweicht.
+	 *
+	 * @param Form $form Formular in seiner Sprache.
+	 */
+	private static function lang_attribute( Form $form ): ?string {
+		return '' !== $form->language() && Language::page() !== $form->language() ? $form->language() : null;
 	}
 
 	/**
@@ -198,6 +214,9 @@ final class Renderer {
 			'mlab_source'          => self::current_url(),
 			'mlab_referrer'        => '',
 		);
+		if ( '' !== $form->language() ) {
+			$hidden['mlab_lang'] = $form->language();
+		}
 
 		$html = '';
 		foreach ( $hidden as $name => $value ) {

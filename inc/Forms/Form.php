@@ -42,15 +42,70 @@ final class Form {
 	private ?array $prepared = null;
 
 	/**
+	 * Schema ohne angewendete Sprache, Grundlage von localized().
+	 *
+	 * @var array<string, mixed>
+	 */
+	private array $source;
+
+	/**
+	 * Sprachen des Formulars, die erste ist die Standardsprache. Leer bei einsprachigen Formularen.
+	 *
+	 * @var list<string>
+	 */
+	private array $languages;
+
+	/**
 	 * Konstruktor.
 	 *
-	 * @param int                  $id     Post-ID.
-	 * @param string               $title  Titel.
-	 * @param array<string, mixed> $schema Geprüftes Schema.
+	 * @param int                  $id       Post-ID.
+	 * @param string               $title    Titel.
+	 * @param array<string, mixed> $schema   Geprüftes Schema.
+	 * @param string               $language Sprache der Texte; leer für die Texte, wie sie im Schema stehen.
 	 */
-	public function __construct( public readonly int $id, public readonly string $title, array $schema ) {
-		$this->settings = self::with_defaults( (array) ( $schema['settings'] ?? array() ) );
-		$this->fields   = array_values( array_filter( (array) ( $schema['fields'] ?? array() ), static fn( $field ) => is_array( $field ) && null !== FieldTypes::get( (string) ( $field['type'] ?? '' ) ) ) );
+	public function __construct( public readonly int $id, public readonly string $title, array $schema, private string $language = '' ) {
+		$this->source    = $schema;
+		$this->languages = self::languages_of( $schema );
+		$texts           = '' !== $language && ( $this->languages[0] ?? '' ) !== $language ? Localizer::apply( $schema, $language ) : $schema;
+		$this->settings  = self::with_defaults( (array) ( $texts['settings'] ?? array() ) );
+		$this->fields    = array_values( array_filter( (array) ( $texts['fields'] ?? array() ), static fn( $field ) => is_array( $field ) && null !== FieldTypes::get( (string) ( $field['type'] ?? '' ) ) ) );
+	}
+
+	/**
+	 * Sprachen des Formulars. Leer oder mit nur einer Sprache ist das Formular einsprachig.
+	 *
+	 * @return list<string>
+	 */
+	public function languages(): array {
+		return $this->languages;
+	}
+
+	/**
+	 * Standardsprache: die erste in «languages», leer bei einsprachigen Formularen.
+	 */
+	public function default_language(): string {
+		return count( $this->languages ) < 2 ? '' : $this->languages[0];
+	}
+
+	/**
+	 * Sprache, in der dieses Formular seine Texte liefert; leer bei einsprachigen Formularen.
+	 */
+	public function language(): string {
+		return $this->language;
+	}
+
+	/**
+	 * Dasselbe Formular mit den Texten einer Sprache. Eine unbekannte Sprache ergibt die Standardsprache.
+	 *
+	 * @param string $lang Sprachcode.
+	 */
+	public function localized( string $lang ): self {
+		if ( count( $this->languages ) < 2 ) {
+			return $this;
+		}
+		$lang = Language::resolve( $lang, $this->languages );
+
+		return $lang === $this->language ? $this : new self( $this->id, $this->title, $this->source, $lang );
 	}
 
 	/**
@@ -142,13 +197,25 @@ final class Form {
 	 */
 	private static function prepare( array $field ): array {
 		if ( isset( $field['options'] ) || isset( $field['options_source'] ) ) {
-			$field['choices'] = OptionsResolver::resolve( $field );
+			$field['choices'] = Localizer::choices( OptionsResolver::resolve( $field ), (array) ( $field['option_labels'] ?? array() ) );
 		}
 		if ( isset( $field['link'] ) ) {
 			$field['link'] = MergeTags::replace( (string) $field['link'] );
 		}
 
 		return $field;
+	}
+
+	/**
+	 * Gültige, einmalige Sprachcodes aus dem Schema.
+	 *
+	 * @param array<string, mixed> $schema Schema.
+	 * @return list<string>
+	 */
+	private static function languages_of( array $schema ): array {
+		$list = is_array( $schema['languages'] ?? null ) ? $schema['languages'] : array();
+
+		return array_values( array_unique( array_filter( $list, array( Language::class, 'is_code' ) ) ) );
 	}
 
 	/**
@@ -176,7 +243,7 @@ final class Form {
 			'notifications'   => array(
 				array(
 					'id'       => 'admin',
-					'to'       => '{site_admin_email}',
+					'to'       => '{default_recipient}',
 					'subject'  => __( 'Neue Anfrage: {form_title}', 'mlab-forms' ),
 					'body'     => '{all_fields}',
 					'reply_to' => '',

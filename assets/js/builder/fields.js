@@ -131,6 +131,8 @@
 		var type = app.config.types[ field.type ];
 		var selected = field.id === app.selectedId;
 		var hint = hints[ field.id ];
+		var view = app.translating() ? Core.localizedField( field, app.lang ) : field;
+		var missing = app.translating() ? Core.missingTranslations( field, type, app.lang ) : 0;
 		var cls = 'mlab-b-row mlab-b-w-' + ( field.width || 'full' ) + ( selected ? ' is-selected' : '' ) + ( 'content' === ( type && type.kind ) ? ' is-content' : '' );
 
 		return h( 'li', { class: cls, 'data-id': field.id }, [
@@ -139,16 +141,17 @@
 				class: 'mlab-b-row-main',
 				'data-focus': 'select:' + field.id,
 				'aria-current': selected ? 'true' : null,
-				'aria-label': app.t( 'field' ) + ' ' + ( field.label || field.id ) + ( hint ? '. ' + hint : '' ),
+				'aria-label': app.t( 'field' ) + ' ' + ( view.label || field.id ) + ( hint ? '. ' + hint : '' ) + ( missing ? '. ' + app.t( 'notTranslated' ) : '' ),
 				onclick: function () {
 					app.select( field.id, true );
 				},
 			}, [
 				h( 'span', { class: 'mlab-b-row-top' }, [
-					h( 'span', { class: 'mlab-b-row-label' }, rowTitle( field, type ) ),
+					h( 'span', { class: 'mlab-b-row-label' }, rowTitle( view, type ) ),
+					missing ? h( 'span', { class: 'mlab-b-tag mlab-b-tag-warn' }, app.t( 'notTranslated' ) ) : null,
 					h( 'span', { class: 'mlab-b-tag' }, type ? type.label : field.type ),
 				] ),
-				fakeControl( app, field, type ),
+				fakeControl( app, view, type ),
 				hint ? h( 'span', { class: 'mlab-b-row-warn' }, hint ) : null,
 			] ),
 			h( 'span', { class: 'mlab-b-row-btns' }, [ 'up', 'down', 'copy', 'trash' ].map( function ( action ) {

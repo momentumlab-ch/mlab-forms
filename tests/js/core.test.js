@@ -185,3 +185,202 @@ test( 'Benachrichtigungen: Feld wird erkannt', () => {
 	assert.equal( Core.usedInNotifications( schema, 'email' ), false );
 	assert.equal( Core.usedInNotifications( {}, 'name' ), false );
 } );
+
+/* ---------- Sprachen und Übersetzungen ---------- */
+
+const DEFAULTS = { submitLabel: 'Senden', successMessage: 'Danke!' };
+const ALL_TYPES = Object.assign( {}, TYPES, { email: { key: 'email', label: 'E-Mail', kind: 'text', input: true } } );
+
+function multi() {
+	return {
+		schema_version: 1,
+		languages: [ 'de', 'fr', 'en' ],
+		settings: { submit_label: 'Senden', i18n: { fr: { submit_label: 'Envoyer' } } },
+		fields: [
+			{ id: 'name', type: 'text', label: 'Name', placeholder: 'z. B. Anna', i18n: { fr: { label: 'Nom' } } },
+			{ id: 'ort', type: 'select', label: 'Ort', options: [ 'Basel', { value: 'bern', label: 'Bern' } ], i18n: { fr: { options: { Basel: 'Bâle' } } } },
+		],
+	};
+}
+
+test( 'languages: nur gültige, einmalige Codes; Standardsprache ist die erste', () => {
+	assert.deepEqual( Core.languages( { languages: [ 'de', 'FR', 'fr', 'fr', 5, 'deutsch' ] } ), [ 'de', 'fr' ] );
+	assert.deepEqual( Core.languages( {} ), [] );
+	assert.equal( Core.defaultLanguage( multi() ), 'de' );
+	assert.equal( Core.defaultLanguage( { languages: [ 'de' ] } ), '' );
+	assert.equal( Core.isMultilingual( { languages: [ 'de' ] } ), false );
+	assert.equal( Core.isMultilingual( multi() ), true );
+} );
+
+test( 'addLanguage: erste Sprache legt die Standardsprache fest, Doppelte und Ungültige werden abgelehnt', () => {
+	const schema = { fields: [] };
+
+	assert.equal( Core.addLanguage( schema, 'fr', 'de' ), true );
+	assert.deepEqual( schema.languages, [ 'de', 'fr' ] );
+	assert.equal( Core.addLanguage( schema, 'en', 'xx' ), true );
+	assert.deepEqual( schema.languages, [ 'de', 'fr', 'en' ] );
+	assert.equal( Core.addLanguage( schema, 'fr', 'de' ), false );
+	assert.equal( Core.addLanguage( schema, 'FR', 'de' ), false );
+	assert.equal( Core.addLanguage( schema, '../', 'de' ), false );
+	assert.deepEqual( schema.languages, [ 'de', 'fr', 'en' ] );
+	assert.equal( Core.addLanguage( { fields: [] }, 'de', 'de' ), false );
+	assert.equal( Core.addLanguage( { fields: [] }, 'fr', 'Deutsch' ), false );
+} );
+
+test( 'setText: setzt, leert und räumt leere Hüllen auf', () => {
+	const field = { id: 'a', label: 'A' };
+
+	Core.setText( field, 'fr', 'label', 'Ah' );
+	assert.deepEqual( field.i18n, { fr: { label: 'Ah' } } );
+	Core.setText( field, 'fr', 'help', 'Aide' );
+	Core.setText( field, 'fr', 'label', '' );
+	assert.deepEqual( field.i18n, { fr: { help: 'Aide' } } );
+	Core.setText( field, 'fr', 'help', '   ' );
+	assert.equal( 'i18n' in field, false );
+	Core.setText( field, 'fr', 'label', '' ); // nichts zu löschen, kein Fehler
+	assert.equal( 'i18n' in field, false );
+	assert.equal( Core.getText( multi().fields[ 0 ], 'fr', 'label' ), 'Nom' );
+	assert.equal( Core.getText( multi().fields[ 0 ], 'en', 'label' ), '' );
+} );
+
+test( 'setOptionLabel: Beschriftung pro Wert, leer löscht und räumt auf', () => {
+	const field = { id: 'o', options: [ 'Basel' ] };
+
+	Core.setOptionLabel( field, 'fr', 'Basel', 'Bâle' );
+	assert.deepEqual( field.i18n, { fr: { options: { Basel: 'Bâle' } } } );
+	assert.equal( Core.getOptionLabel( field, 'fr', 'Basel' ), 'Bâle' );
+	Core.setOptionLabel( field, 'fr', 'Basel', '' );
+	assert.equal( 'i18n' in field, false );
+} );
+
+test( 'renameOption und moveOptionLabels: Übersetzungen folgen dem Wert erst nach der Eingabe', () => {
+	const field = multi().fields[ 1 ];
+	let before = Core.renameOption( field, 0, 'Basel-Stadt' );
+
+	assert.equal( before, 'Basel' );
+	assert.equal( field.options[ 0 ], 'Basel-Stadt' );
+	assert.deepEqual( field.i18n.fr.options, { Basel: 'Bâle' }, 'beim Tippen bleibt alles stehen' );
+	assert.equal( Core.moveOptionLabels( field, before, 0 ), true );
+	assert.deepEqual( field.i18n.fr.options, { 'Basel-Stadt': 'Bâle' } );
+
+	before = Core.renameOption( field, 1, 'Berne' ); // Objekt mit label: der Wert bleibt
+	assert.equal( field.options[ 1 ].value, 'bern' );
+	assert.equal( field.options[ 1 ].label, 'Berne' );
+	assert.equal( Core.moveOptionLabels( field, before, 1 ), false );
+} );
+
+test( 'moveOptionLabels: «AB» → «A» (existiert) → «AB» verliert nichts', () => {
+	const field = { id: 'o', type: 'select', options: [ 'A', 'AB' ], i18n: { fr: { options: { A: 'Un', AB: 'Un-B' } } } };
+	let before = Core.renameOption( field, 1, 'A' );
+
+	assert.equal( Core.moveOptionLabels( field, before, 1 ), false );
+	assert.deepEqual( field.i18n.fr.options, { A: 'Un', AB: 'Un-B' } );
+	before = Core.renameOption( field, 1, 'AB' );
+	assert.equal( Core.moveOptionLabels( field, before, 1 ), false );
+	assert.deepEqual( field.i18n.fr.options, { A: 'Un', AB: 'Un-B' } );
+} );
+
+test( 'moveOptionLabels: überschreibt keinen vorhandenen Übersetzungsschlüssel', () => {
+	const field = { id: 'o', options: [ 'X' ], i18n: { fr: { options: { X: 'x', Y: 'y' } } } };
+	const before = Core.renameOption( field, 0, 'Y' );
+
+	assert.equal( Core.moveOptionLabels( field, before, 0 ), false );
+	assert.deepEqual( field.i18n.fr.options, { X: 'x', Y: 'y' } );
+} );
+
+test( 'removeOption: löscht auch die Übersetzungen des Werts', () => {
+	const field = multi().fields[ 1 ];
+
+	Core.removeOption( field, 0 );
+	assert.deepEqual( field.options, [ { value: 'bern', label: 'Bern' } ] );
+	assert.equal( 'i18n' in field, false );
+} );
+
+test( 'removeLanguage: Standardsprache bleibt, Übersetzungen verschwinden ohne leere Hüllen', () => {
+	const schema = multi();
+
+	assert.equal( Core.countTranslations( schema, 'fr' ), 3 );
+	assert.equal( Core.countTranslations( schema, 'en' ), 0 );
+	assert.equal( Core.removeLanguage( schema, 'de' ), false );
+	assert.equal( Core.removeLanguage( schema, 'it' ), false );
+	assert.equal( Core.removeLanguage( schema, 'fr' ), true );
+	assert.deepEqual( schema.languages, [ 'de', 'en' ] );
+	assert.equal( JSON.stringify( schema ).includes( 'i18n' ), false );
+	assert.equal( 'i18n' in schema.settings, false );
+} );
+
+test( 'removeLanguage: mit nur einer übrigen Sprache wird das Formular wieder einsprachig', () => {
+	const schema = multi();
+
+	Core.removeLanguage( schema, 'fr' );
+	Core.removeLanguage( schema, 'en' );
+	assert.equal( 'languages' in schema, false );
+	assert.equal( JSON.stringify( schema ).includes( 'i18n' ), false );
+} );
+
+test( 'translationStatus: zählt Beschriftungen, Platzhalter, Einträge und Einstellungen', () => {
+	const schema = multi();
+
+	// Einstellungen: 2, name: label + placeholder, ort: label + 2 Einträge = 7.
+	assert.deepEqual( Core.translationStatus( schema, 'fr', ALL_TYPES, DEFAULTS ), { done: 3, total: 7 } );
+	assert.deepEqual( Core.translationStatus( schema, 'en', ALL_TYPES, DEFAULTS ), { done: 0, total: 7 } );
+	Core.setText( schema.fields[ 0 ], 'fr', 'placeholder', 'p. ex. Anne' );
+	assert.equal( Core.translationStatus( schema, 'fr', ALL_TYPES, DEFAULTS ).done, 4 );
+} );
+
+test( 'translationStatus: Texte ohne Standardtext zählen nicht, versteckte Felder haben keine', () => {
+	const schema = { languages: [ 'de', 'fr' ], fields: [
+		{ id: 'a', type: 'text', label: 'A' },
+		{ id: 'h', type: 'hidden', label: 'Intern', default: 'x' },
+	], settings: { submit_label: '', success_message: 'Merci' } };
+	const types = Object.assign( {}, ALL_TYPES, { hidden: { key: 'hidden', label: 'Versteckt', kind: 'hidden', input: true } } );
+
+	assert.deepEqual( Core.translationStatus( schema, 'fr', types, DEFAULTS ), { done: 0, total: 3 } );
+} );
+
+test( 'missingTranslations und localizedField', () => {
+	const field = multi().fields[ 1 ];
+	const view = Core.localizedField( field, 'fr' );
+
+	assert.equal( Core.missingTranslations( field, ALL_TYPES.select, 'fr' ), 2 );
+	assert.equal( Core.missingTranslations( field, ALL_TYPES.select, 'en' ), 3 );
+	assert.equal( Core.optionText( view.options[ 0 ] ), 'Bâle' );
+	assert.equal( Core.optionValue( view.options[ 0 ] ), 'Basel' );
+	assert.equal( Core.optionText( view.options[ 1 ] ), 'Bern' );
+	assert.equal( field.options[ 0 ], 'Basel', 'das Original bleibt unverändert' );
+	assert.equal( Core.localizedField( multi().fields[ 0 ], 'fr' ).label, 'Nom' );
+	assert.equal( Core.localizedField( multi().fields[ 0 ], 'fr' ).placeholder, 'z. B. Anna' );
+} );
+
+test( 'parseAddresses: Trenner, Duplikate, ungültige und zu viele Adressen', () => {
+	const parsed = Core.parseAddresses( 'a@firma.ch; B@firma.ch,\nkaputt, a@FIRMA.ch,, x@y' );
+
+	assert.deepEqual( parsed.valid, [ 'a@firma.ch', 'B@firma.ch' ] );
+	assert.deepEqual( parsed.invalid, [ 'kaputt', 'x@y' ] );
+	assert.equal( parsed.tooMany, false );
+	assert.deepEqual( Core.parseAddresses( '' ), { valid: [], invalid: [], tooMany: false } );
+	assert.deepEqual( Core.parseAddresses( 'a@firma.ch\nBcc: x@firma.ch' ).invalid, [ 'Bcc: x@firma.ch' ] );
+
+	const many = Array.from( { length: 11 }, ( _, i ) => 'p' + i + '@firma.ch' ).join( ', ' );
+	assert.equal( Core.parseAddresses( many ).tooMany, true );
+} );
+
+test( 'setRecipients: setzen, leeren ohne leere Hülle', () => {
+	const schema = { fields: [] };
+
+	Core.setRecipients( schema, '  verkauf@firma.ch ' );
+	assert.deepEqual( schema.settings, { recipients: 'verkauf@firma.ch' } );
+
+	Core.setRecipients( schema, '   ' );
+	assert.equal( 'settings' in schema, false );
+
+	const other = { settings: { submit_label: 'Los', recipients: 'a@b.ch' } };
+	Core.setRecipients( other, '' );
+	assert.deepEqual( other.settings, { submit_label: 'Los' } );
+} );
+
+test( 'hasVisitorMail: nur mit Benachrichtigung an eine Feld-Adresse', () => {
+	assert.equal( Core.hasVisitorMail( {} ), false );
+	assert.equal( Core.hasVisitorMail( { settings: { notifications: [ { to: '{default_recipient}' } ] } } ), false );
+	assert.equal( Core.hasVisitorMail( { settings: { notifications: [ { to: '{default_recipient}' }, { to: '{field:email}' } ] } } ), true );
+} );

@@ -44,7 +44,7 @@ final class FieldRenderer {
 			default:
 				$attrs         += array_intersect_key( $field, array_flip( array( 'min', 'max' ) ) );
 				$attrs['class'] = 'number' === $field['type'] ? 'small-text' : 'regular-text';
-				self::input( $field['type'], $attrs, (string) $value );
+				self::input( 'emails' === $field['type'] ? 'text' : $field['type'], $attrs, (string) $value );
 		}
 
 		self::notes( $field );

@@ -8,6 +8,7 @@
 namespace MLab_Forms\Forms;
 
 use MLab_Forms\Fields\FieldTypes;
+use MLab_Forms\Mail\Recipients;
 use MLab_Forms\Settings;
 use MLab_Forms\Spam\Services;
 
@@ -64,6 +65,7 @@ final class SchemaValidator {
 			$this->check_settings( $schema['settings'] );
 		}
 		$this->check_fields( $schema['fields'] ?? null );
+		$this->errors = array_merge( $this->errors, I18nValidator::validate( $schema ) );
 	}
 
 	/**
@@ -89,7 +91,31 @@ final class SchemaValidator {
 		if ( isset( $settings['sender'] ) && $this->is_object( $settings['sender'], 'settings.sender' ) ) {
 			$this->check_sender( $settings['sender'] );
 		}
+		$this->check_recipients( $settings );
 		$this->check_notifications( $settings['notifications'] ?? array() );
+	}
+
+	/**
+	 * Eigene Empfänger des Formulars: feste Adressen, höchstens zehn. Leer heisst «Standard-Empfänger».
+	 *
+	 * @param array<string, mixed> $settings Einstellungen.
+	 */
+	private function check_recipients( array $settings ): void {
+		if ( ! isset( $settings['recipients'] ) ) {
+			return;
+		}
+		if ( ! is_string( $settings['recipients'] ) ) {
+			$this->error( 'settings.recipients', __( 'Muss ein Text sein.', 'mlab-forms' ) );
+			return;
+		}
+		$invalid = Recipients::invalid( $settings['recipients'] );
+		if ( $invalid ) {
+			/* translators: %s: ungültige Angabe */
+			$this->error( 'settings.recipients', sprintf( __( 'Diese Adresse sieht nicht richtig aus: %s', 'mlab-forms' ), implode( ', ', $invalid ) ) );
+		} elseif ( Recipients::too_many( $settings['recipients'] ) ) {
+			/* translators: %d: Höchstzahl */
+			$this->error( 'settings.recipients', sprintf( __( 'Es sind höchstens %d Adressen möglich.', 'mlab-forms' ), Recipients::MAX ) );
+		}
 	}
 
 	/**

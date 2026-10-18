@@ -96,6 +96,7 @@
 	function optionLine( app, field, index, count ) {
 		var options = field.options;
 		var isDefault = Core.optionIsDefault( options[ index ] );
+		var committed = Core.optionValue( options[ index ] );
 		var input = h( 'input', {
 			class: 'mlab-b-in',
 			value: Core.optionText( options[ index ] ),
@@ -103,7 +104,12 @@
 			'data-focus': 'opt-in:' + index,
 			autocomplete: 'off',
 			oninput: function () {
-				Core.setOptionText( options, index, input.value );
+				Core.renameOption( field, index, input.value );
+				app.change( 'text' );
+			},
+			onchange: function () {
+				Core.moveOptionLabels( field, committed, index );
+				committed = Core.optionValue( options[ index ] );
 				app.change( 'text' );
 			},
 		} );
@@ -152,7 +158,7 @@
 					var snapshot = app.snapshot( 'opt-in:' + index );
 					var name = Core.optionText( options[ index ] ) || String( index + 1 );
 
-					options.splice( index, 1 );
+					Core.removeOption( field, index );
 					app.change( 'structure' );
 					app.offerUndo( app.t( 'entryRemoved' ).replace( '%s', name ), snapshot );
 				},
@@ -222,6 +228,82 @@
 			return app.t( 'checkPostcode' );
 		}
 		return { date: app.t( 'checkDate' ), number: app.t( 'checkNumber' ) }[ kind ] || '';
+	}
+
+	/* ---------- Übersetzen ---------- */
+
+	function shorten( source ) {
+		return source.length > 160 ? source.slice( 0, 157 ) + '…' : source;
+	}
+
+	/**
+	 * Eingabe für die Übersetzung eines Texts. Darunter steht der Standardtext, leer heisst «Standardtext verwenden».
+	 */
+	function translationRow( app, labelText, source, current, write, opts ) {
+		var id = ns.Dom.uid();
+		var warn = h( 'span', { class: 'mlab-b-tag mlab-b-tag-warn', hidden: '' !== current.trim() }, app.t( 'notTranslated' ) );
+		var control = h( opts && opts.multiline ? 'textarea' : 'input', {
+			id: id,
+			class: 'mlab-b-in',
+			rows: opts && opts.multiline ? 4 : null,
+			value: current,
+			lang: app.lang,
+			'data-focus': opts && opts.focus,
+			autocomplete: 'off',
+			oninput: function () {
+				write( control.value );
+				warn.hidden = '' !== control.value.trim();
+				app.change( 'text' );
+			},
+		} );
+
+		return h( 'div', { class: 'mlab-b-field' }, [
+			h( 'label', { for: id }, [ labelText, ' ', warn ] ),
+			control,
+			h( 'div', { class: 'mlab-b-muted mlab-b-small mlab-b-source' }, app.t( 'sourceText' ).replace( '%s', shorten( source ) ) ),
+		] );
+	}
+
+	function slotLabel( app, field, slot ) {
+		if ( 'label' === slot.key ) {
+			return 'content' === ( app.config.types[ field.type ] || {} ).kind ? app.t( 'titleText' ) : app.t( 'label' );
+		}
+		if ( 'placeholder' === slot.key ) {
+			return 'select' === field.type ? app.t( 'emptyLabel' ) : app.t( 'placeholder' );
+		}
+		return { help: app.t( 'help' ), content: app.t( 'htmlContent' ) }[ slot.key ];
+	}
+
+	/**
+	 * Eigenschaften in einer weiteren Sprache: nur Texte, jeweils mit dem Standardtext darunter.
+	 */
+	function translations( app, field, type, box ) {
+		var slots = Core.fieldSlots( field, type );
+		var plain = slots.filter( function ( slot ) {
+			return 'options' !== slot.key;
+		} );
+		var entries = slots.filter( function ( slot ) {
+			return 'options' === slot.key;
+		} );
+
+		box.appendChild( h( 'p', { class: 'mlab-b-info' }, app.t( 'translatingNote' ).replace( '%s', ns.Languages.nameOf( app, app.lang ) ) ) );
+		plain.forEach( function ( slot ) {
+			box.appendChild( translationRow( app, slotLabel( app, field, slot ), slot.source, Core.getText( field, app.lang, slot.key ), function ( value ) {
+				Core.setText( field, app.lang, slot.key, value );
+			}, { multiline: 'content' === slot.key, focus: 'tr:' + slot.key } ) );
+		} );
+		if ( entries.length ) {
+			box.appendChild( h( 'div', { class: 'mlab-b-hr' } ) );
+			box.appendChild( h( 'div', { class: 'mlab-b-lbl' }, app.t( 'entries' ) ) );
+			entries.forEach( function ( slot, index ) {
+				box.appendChild( translationRow( app, app.t( 'entry' ) + ' ' + ( index + 1 ), slot.source, Core.getOptionLabel( field, app.lang, slot.value ), function ( value ) {
+					Core.setOptionLabel( field, app.lang, slot.value, value );
+				}, { focus: 'tr-opt:' + index } ) );
+			} );
+		}
+		if ( ! slots.length ) {
+			box.appendChild( h( 'p', { class: 'mlab-b-muted' }, app.t( 'nothingToTranslate' ) ) );
+		}
 	}
 
 	/* ---------- Zusammenbau ---------- */
@@ -345,8 +427,12 @@
 				return;
 			}
 			var p = Core.props( field, type );
-			basics( app, field, p, type, box );
-			behaviour( app, field, p, type, box );
+			if ( app.translating() ) {
+				translations( app, field, type, box );
+			} else {
+				basics( app, field, p, type, box );
+				behaviour( app, field, p, type, box );
+			}
 			el.appendChild( box );
 		}, [ 'opt-add', 'sheet-close' ] );
 	}

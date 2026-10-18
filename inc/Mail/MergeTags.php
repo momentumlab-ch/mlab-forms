@@ -8,13 +8,12 @@
 namespace MLab_Forms\Mail;
 
 use MLab_Forms\Admin\EntriesPage;
-use MLab_Forms\Settings;
 use MLab_Forms\Submission\Submission;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Ersetzt {field:id}, {all_fields}, {site_name} usw. Unbekannte Platzhalter bleiben stehen.
+ * Ersetzt {field:id}, {all_fields}, {site_name}, {default_recipient} usw. Unbekannte Platzhalter bleiben stehen.
  */
 final class MergeTags {
 
@@ -33,15 +32,6 @@ final class MergeTags {
 	}
 
 	/**
-	 * Admin-Adresse: Standard-Empfänger aus den Einstellungen oder die WordPress-Admin-Adresse.
-	 */
-	public static function admin_email(): string {
-		$email = (string) Settings::get( 'email_admin_to' );
-
-		return is_email( $email ) ? $email : (string) get_option( 'admin_email' );
-	}
-
-	/**
 	 * Wert eines Platzhalters oder null, wenn unbekannt.
 	 *
 	 * @param string          $tag        Name.
@@ -55,7 +45,9 @@ final class MergeTags {
 			case 'site_url':
 				return home_url( '/' );
 			case 'site_admin_email':
-				return self::admin_email();
+				return implode( ', ', Recipients::defaults() );
+			case 'default_recipient':
+				return implode( ', ', Recipients::for_form( $submission ? $submission->form : null ) );
 			case 'privacy_url':
 				return get_privacy_policy_url();
 			case 'date':
