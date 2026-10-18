@@ -1,6 +1,6 @@
 <?php
 /**
- * Bearbeiten eines Formulars als JSON.
+ * Bearbeiten eines Formulars.
  *
  * @package MLab_Forms
  */
@@ -17,15 +17,15 @@ use MLab_Forms\Html;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Metaboxen «Schema (JSON)», «Einbinden» und «Revisionen».
+ * Metaboxen «Formular» (Builder), «Aufbewahrung», «Einbinden» und «Frühere Versionen».
  *
- * In Phase 1 wird das Schema direkt als JSON bearbeitet; der Drag-&-Drop-Builder folgt.
- * Ungültiges JSON wird nicht gespeichert, sondern mit Fehlern wieder angezeigt.
+ * Der Builder schreibt das Schema als JSON in ein Textfeld, das beim Speichern geprüft wird.
+ * Ungültige Schemas werden nicht gespeichert, sondern mit Fehlern wieder angezeigt.
  */
 final class FormEditor {
 
-	private const NONCE          = 'mlab_forms_schema';
-	private const FIELD          = 'mlab_form_schema';
+	public const NONCE           = 'mlab_forms_schema';
+	public const FIELD           = 'mlab_form_schema';
 	private const RESTORE_ACTION = 'mlab_forms_restore_revision';
 
 	/**
@@ -44,14 +44,14 @@ final class FormEditor {
 	 * Registriert die Metaboxen.
 	 */
 	public function add_meta_boxes(): void {
-		add_meta_box( 'mlab-form-schema', __( 'Formular-Schema (JSON)', 'mlab-forms' ), array( $this, 'render_schema_box' ), null, 'normal', 'high' );
+		add_meta_box( 'mlab-form-schema', __( 'Formular', 'mlab-forms' ), array( $this, 'render_schema_box' ), null, 'normal', 'high' );
 		add_meta_box( 'mlab-form-retention', __( 'Aufbewahrung', 'mlab-forms' ), array( new RetentionBox(), 'render' ), null, 'side' );
 		add_meta_box( 'mlab-form-embed', __( 'Einbinden', 'mlab-forms' ), array( $this, 'render_embed_box' ), null, 'side' );
 		add_meta_box( 'mlab-form-revisions', __( 'Frühere Versionen', 'mlab-forms' ), array( $this, 'render_revisions_box' ), null, 'side' );
 	}
 
 	/**
-	 * Textfeld mit dem Schema und Auswahl einer Vorlage.
+	 * Der Builder samt Schema-Textfeld.
 	 *
 	 * @param \WP_Post $post Formular.
 	 */
@@ -59,45 +59,11 @@ final class FormEditor {
 		wp_nonce_field( self::NONCE, self::NONCE );
 
 		$draft  = get_transient( $this->draft_key( $post->ID ) );
-		$schema = FormRepository::schema( $post->ID ) ?? Templates::get( 'kontakt' );
+		$stored = FormRepository::schema( $post->ID );
+		$schema = $stored ?? Templates::get( 'kontakt' );
 		$json   = is_string( $draft ) ? $draft : self::pretty( (array) $schema );
 
-		echo '<p>' . esc_html__( 'Das Schema beschreibt Felder, Benachrichtigungen und Einstellungen. Es wird beim Speichern geprüft.', 'mlab-forms' ) . '</p>';
-		$this->render_template_select();
-		$textarea = Html::tag(
-			'textarea',
-			array(
-				'id'         => self::FIELD,
-				'name'       => self::FIELD,
-				'rows'       => 30,
-				'class'      => 'large-text code',
-				'spellcheck' => 'false',
-			),
-			esc_textarea( $json )
-		);
-		echo $textarea; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Html::tag escapt.
-	}
-
-	/**
-	 * Auswahl «Vorlage laden», füllt das Textfeld per JavaScript.
-	 */
-	private function render_template_select(): void {
-		$options = Html::tag( 'option', array( 'value' => '' ), esc_html__( 'Vorlage laden …', 'mlab-forms' ) );
-		foreach ( Templates::all() as $key => $title ) {
-			$options .= Html::tag( 'option', array( 'value' => self::pretty( (array) Templates::get( $key ) ) ), esc_html( $title ) );
-		}
-
-		echo '<p>' . Html::tag( 'select', array( 'id' => 'mlab-form-template' ), $options ) . '</p>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Html::tag escapt.
-		?>
-		<script>
-			document.getElementById( 'mlab-form-template' ).addEventListener( 'change', function () {
-				if ( this.value && window.confirm( <?php echo wp_json_encode( __( 'Das aktuelle Schema durch die Vorlage ersetzen?', 'mlab-forms' ) ); ?> ) ) {
-					document.getElementById( <?php echo wp_json_encode( self::FIELD ); ?> ).value = this.value;
-				}
-				this.value = '';
-			} );
-		</script>
-		<?php
+		Builder::render( $json, null === $stored && ! is_string( $draft ) );
 	}
 
 	/**

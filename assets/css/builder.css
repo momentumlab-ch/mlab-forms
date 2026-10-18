@@ -1,0 +1,793 @@
+/* MomentumLab Forms: Formular-Builder im Backend. Farben folgen dem WordPress-Farbschema. */
+
+.mlab-b {
+	--mb-accent: var(--wp-admin-theme-color, #2271b1);
+	--mb-accent-soft: color-mix(in srgb, var(--mb-accent) 12%, #fff);
+	--mb-bg: #f6f7f7;
+	--mb-surface: #fff;
+	--mb-fill: #f0f0f1;
+	--mb-fill-2: #dcdcde;
+	--mb-fg: #1d2327;
+	--mb-muted: #50575e;
+	--mb-line: #c3c4c7;
+	--mb-ok: #1a7f37;
+	--mb-danger: #b32d2e;
+	--mb-danger-soft: #fcf0f1;
+	--mb-shadow: rgba(0, 0, 0, 0.16);
+
+	color: var(--mb-fg);
+	font-size: 14px;
+	line-height: 1.45;
+	min-width: 0;
+}
+
+.mlab-b *,
+.mlab-b *::before,
+.mlab-b *::after {
+	box-sizing: border-box;
+}
+
+.mlab-b [hidden] {
+	display: none !important;
+}
+
+.mlab-b :focus-visible {
+	outline: 3px solid var(--mb-accent);
+	outline-offset: 2px;
+}
+
+.mlab-b button,
+.mlab-b input,
+.mlab-b select,
+.mlab-b textarea {
+	font: inherit;
+	color: inherit;
+}
+
+.mlab-b-muted {
+	color: var(--mb-muted);
+}
+
+.mlab-b-small {
+	font-size: 13px;
+}
+
+.mlab-b-center {
+	text-align: center;
+}
+
+.mlab-b-sr {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+/* Textfeld der Experten-Ansicht: ohne JavaScript immer sichtbar. */
+.mlab-b-json {
+	width: 100%;
+	min-height: 420px;
+	font-size: 14px;
+}
+
+/* Bis das Skript läuft, bleibt nur das Textfeld. */
+.mlab-b:not(.is-ready) > .mlab-b-bar {
+	display: none;
+}
+
+/* ---------- Leiste ---------- */
+
+.mlab-b-bar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 16px;
+	margin-bottom: 16px;
+}
+
+.mlab-b-spacer {
+	flex: 1 1 0;
+}
+
+.mlab-b-seg {
+	display: inline-flex;
+	background: var(--mb-fill-2);
+	border-radius: 10px;
+	padding: 2px;
+	gap: 2px;
+}
+
+.mlab-b-seg button {
+	min-height: 40px;
+	padding: 6px 16px;
+	border: 0;
+	border-radius: 8px;
+	background: transparent;
+	cursor: pointer;
+}
+
+.mlab-b-seg button[aria-pressed="true"] {
+	background: var(--mb-surface);
+	box-shadow: 0 1px 3px var(--mb-shadow);
+	font-weight: 600;
+}
+
+.mlab-b-link {
+	min-height: 44px;
+	padding: 4px 8px;
+	border: 0;
+	background: none;
+	color: var(--mb-accent);
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.mlab-b-bar .mlab-b-template {
+	display: inline-block;
+	width: auto;
+	max-width: 100%;
+}
+
+.mlab-b-alert {
+	margin: 0 0 16px;
+	padding: 10px 14px;
+	border-left: 4px solid var(--mb-danger);
+	border-radius: 4px;
+	background: var(--mb-danger-soft);
+	color: var(--mb-danger);
+}
+
+.mlab-b-btn {
+	min-height: 44px;
+	padding: 6px 16px;
+	border: 1px solid var(--mb-line);
+	border-radius: 10px;
+	background: var(--mb-surface);
+	cursor: pointer;
+}
+
+.mlab-b-btn:hover {
+	background: var(--mb-fill);
+}
+
+.mlab-b-foot {
+	margin: 16px 0 0;
+}
+
+/* ---------- Raster ---------- */
+
+.mlab-b-grid {
+	display: grid;
+	grid-template-columns: 200px minmax(0, 1fr) 300px;
+	gap: 16px;
+	align-items: start;
+}
+
+.mlab-b-panel {
+	padding: 14px;
+	border: 1px solid var(--mb-line);
+	border-radius: 12px;
+	background: var(--mb-surface);
+}
+
+.mlab-b-panel h2 {
+	margin: 0 0 12px;
+	padding: 0;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--mb-muted);
+}
+
+/* ---------- Palette ---------- */
+
+.mlab-b-pal {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.mlab-b-pal-item {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	min-height: 44px;
+	padding: 6px 12px;
+	border: 0;
+	border-radius: 10px;
+	background: var(--mb-fill);
+	text-align: left;
+	cursor: pointer;
+}
+
+.mlab-b-pal-item:hover {
+	background: var(--mb-accent-soft);
+}
+
+.mlab-b-pal-item span {
+	font-size: 12px;
+	color: var(--mb-muted);
+}
+
+.mlab-b-pal-custom {
+	background: transparent;
+	border: 1px dashed var(--mb-line);
+}
+
+/* ---------- Formular-Ansicht ---------- */
+
+.mlab-b-main {
+	min-width: 0;
+}
+
+.mlab-b-canvas {
+	display: grid;
+	grid-template-columns: repeat(6, minmax(0, 1fr));
+	gap: 10px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.mlab-b-row {
+	position: relative;
+	grid-column: span 6;
+	margin: 0;
+	border: 2px solid transparent;
+	border-radius: 12px;
+	background: var(--mb-surface);
+	box-shadow: 0 0 0 1px var(--mb-line);
+	min-width: 0;
+}
+
+.mlab-b-row.mlab-b-w-half {
+	grid-column: span 3;
+}
+
+.mlab-b-row.mlab-b-w-third {
+	grid-column: span 2;
+}
+
+.mlab-b-row.is-selected {
+	border-color: var(--mb-accent);
+	box-shadow: none;
+}
+
+.mlab-b-row-main {
+	display: block;
+	width: 100%;
+	min-height: 44px;
+	padding: 12px 12px 12px 14px;
+	border: 0;
+	border-radius: 10px;
+	background: transparent;
+	text-align: left;
+	cursor: pointer;
+}
+
+.mlab-b-row-top {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 4px 8px;
+	padding-right: 148px;
+}
+
+.mlab-b-row-label {
+	font-weight: 600;
+	overflow-wrap: anywhere;
+}
+
+.mlab-b-row.is-content .mlab-b-row-label {
+	font-size: 16px;
+}
+
+.mlab-b-tag {
+	padding: 1px 8px;
+	border-radius: 6px;
+	background: var(--mb-fill);
+	font-size: 11px;
+	color: var(--mb-muted);
+}
+
+.mlab-b-fake {
+	display: block;
+	margin-top: 8px;
+	min-height: 36px;
+	padding: 7px 10px;
+	overflow: hidden;
+	border-radius: 9px;
+	background: var(--mb-fill);
+	color: var(--mb-muted);
+	font-size: 14px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.mlab-b-fake.is-tall {
+	min-height: 68px;
+}
+
+.mlab-b-fake.is-select::after {
+	content: " ▾";
+}
+
+.mlab-b-row-warn {
+	display: block;
+	margin-top: 6px;
+	color: var(--mb-danger);
+	font-size: 13px;
+}
+
+.mlab-b-row-btns {
+	position: absolute;
+	top: 4px;
+	right: 4px;
+	display: flex;
+}
+
+/* Schmale Felder: Knöpfe unter dem Inhalt statt daneben. */
+.mlab-b-row.mlab-b-w-half .mlab-b-row-btns,
+.mlab-b-row.mlab-b-w-third .mlab-b-row-btns {
+	position: static;
+	justify-content: flex-end;
+	padding: 0 4px 4px;
+}
+
+.mlab-b-row.mlab-b-w-half .mlab-b-row-top,
+.mlab-b-row.mlab-b-w-third .mlab-b-row-top {
+	padding-right: 0;
+}
+
+.mlab-b-icon-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 auto;
+	width: 36px;
+	height: 44px;
+	padding: 0;
+	border: 0;
+	border-radius: 8px;
+	background: transparent;
+	color: var(--mb-muted);
+	cursor: pointer;
+}
+
+.mlab-b-icon-btn:hover:not([disabled]) {
+	background: var(--mb-fill);
+	color: var(--mb-fg);
+}
+
+.mlab-b-icon-btn[disabled] {
+	opacity: 0.35;
+	cursor: default;
+}
+
+.mlab-b-empty {
+	padding: 40px 10px;
+	text-align: center;
+	color: var(--mb-muted);
+}
+
+/* ---------- Eigenschaften ---------- */
+
+.mlab-b-sheet-close {
+	display: none;
+	float: right;
+}
+
+.mlab-b-field {
+	margin-bottom: 14px;
+}
+
+.mlab-b-field > label,
+.mlab-b-lbl,
+.mlab-b-li > label {
+	display: block;
+	margin-bottom: 4px;
+	font-size: 13px;
+	font-weight: 600;
+}
+
+.mlab-b-in {
+	display: block;
+	width: 100%;
+	max-width: none;
+	min-height: 44px;
+	padding: 8px 12px;
+	border: 1px solid var(--mb-line);
+	border-radius: 10px;
+	background: var(--mb-surface);
+	font-size: 16px;
+	line-height: 1.4;
+}
+
+textarea.mlab-b-in {
+	resize: vertical;
+}
+
+.mlab-b-in[aria-invalid="true"] {
+	border-color: var(--mb-danger);
+	border-width: 2px;
+}
+
+.mlab-b-err {
+	margin-top: 4px;
+	color: var(--mb-danger);
+	font-size: 13px;
+}
+
+.mlab-b-info {
+	margin-bottom: 14px;
+	padding: 8px 12px;
+	border-radius: 10px;
+	background: var(--mb-accent-soft);
+	font-size: 13px;
+}
+
+.mlab-b-hr {
+	height: 1px;
+	margin: 14px 0;
+	background: var(--mb-line);
+}
+
+.mlab-b-toggle {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	min-height: 44px;
+}
+
+.mlab-b-toggle-text {
+	min-width: 0;
+}
+
+.mlab-b-toggle-text .mlab-b-lbl {
+	margin: 0;
+}
+
+.mlab-b-sw {
+	position: relative;
+	flex: 0 0 auto;
+	width: 51px;
+	height: 31px;
+}
+
+.mlab-b-sw input {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	opacity: 0;
+	cursor: pointer;
+}
+
+.mlab-b-sw i {
+	position: absolute;
+	inset: 0;
+	border-radius: 16px;
+	background: var(--mb-fill-2);
+	transition: background 0.2s;
+}
+
+.mlab-b-sw i::after {
+	content: "";
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	width: 27px;
+	height: 27px;
+	border-radius: 50%;
+	background: #fff;
+	box-shadow: 0 1px 3px var(--mb-shadow);
+	transition: transform 0.2s;
+}
+
+.mlab-b-sw input:checked + i {
+	background: var(--mb-ok);
+}
+
+.mlab-b-sw input:checked + i::after {
+	transform: translateX(20px);
+}
+
+.mlab-b-sw input:focus-visible + i {
+	outline: 3px solid var(--mb-accent);
+	outline-offset: 2px;
+}
+
+.mlab-b-opts {
+	margin: 6px 0 10px;
+	padding: 0;
+	list-style: none;
+}
+
+.mlab-b-opt {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+	margin: 0 0 6px;
+}
+
+.mlab-b-opt .mlab-b-in {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.mlab-b-star[aria-pressed="true"] {
+	color: var(--mb-accent);
+}
+
+.mlab-b-star[aria-pressed="false"] svg path {
+	fill: none;
+}
+
+/* ---------- Einstellungen ---------- */
+
+.mlab-b-set-wrap {
+	max-width: 640px;
+	margin: 0 auto;
+}
+
+.mlab-b-group {
+	margin: 24px 12px 6px;
+	padding: 0;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--mb-muted);
+}
+
+.mlab-b-inset {
+	overflow: hidden;
+	border: 1px solid var(--mb-line);
+	border-radius: 12px;
+	background: var(--mb-surface);
+}
+
+.mlab-b-li {
+	padding: 12px 16px;
+	border-top: 1px solid var(--mb-line);
+}
+
+.mlab-b-li:first-child {
+	border-top: 0;
+}
+
+/* ---------- Vorschau ---------- */
+
+.mlab-b-pv-bar {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 8px;
+}
+
+.mlab-b-pv-status {
+	max-width: 720px;
+	margin: 0 auto 12px;
+	text-align: center;
+	color: var(--mb-muted);
+}
+
+.mlab-b-pv-status.is-error {
+	padding: 12px 16px;
+	border-radius: 12px;
+	background: var(--mb-danger-soft);
+	color: var(--mb-danger);
+	text-align: left;
+}
+
+.mlab-b-pv-wrap {
+	max-width: 720px;
+	margin: 0 auto;
+	overflow: hidden;
+	border: 1px solid var(--mb-line);
+	border-radius: 16px;
+	background: #fff;
+}
+
+.mlab-b-pv-wrap.is-phone {
+	max-width: 390px;
+}
+
+.mlab-b-pv-frame {
+	display: block;
+	width: 100%;
+	height: 320px;
+	border: 0;
+}
+
+/* ---------- Dialog «Eigenes Feld» ---------- */
+
+.mlab-b-dialog {
+	width: min(560px, calc(100vw - 32px));
+	padding: 20px;
+	border: 0;
+	border-radius: 16px;
+	box-shadow: 0 20px 60px var(--mb-shadow);
+}
+
+.mlab-b-dialog h2 {
+	margin: 0 0 4px;
+	font-size: 20px;
+}
+
+.mlab-b-dialog::backdrop {
+	background: rgba(0, 0, 0, 0.4);
+}
+
+.mlab-b-types {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	gap: 8px;
+	margin: 14px 0;
+}
+
+.mlab-b-type {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	min-height: 56px;
+	padding: 8px 12px;
+	border: 1px solid var(--mb-line);
+	border-radius: 10px;
+	background: var(--mb-surface);
+	text-align: left;
+	cursor: pointer;
+}
+
+.mlab-b-type:hover {
+	background: var(--mb-accent-soft);
+}
+
+.mlab-b-type span {
+	font-size: 12px;
+	color: var(--mb-muted);
+}
+
+/* ---------- Schmale Breite: Palette als Chip-Zeile, Eigenschaften als Blatt von unten ---------- */
+
+.mlab-b-scrim {
+	position: fixed;
+	inset: 0;
+	z-index: 99998;
+	background: rgba(0, 0, 0, 0.35);
+}
+
+.mlab-b.is-narrow .mlab-b-grid {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+.mlab-b.is-narrow .mlab-b-pal-panel {
+	padding: 0;
+	border: 0;
+	background: transparent;
+}
+
+.mlab-b.is-narrow .mlab-b-pal {
+	flex-direction: row;
+	padding-bottom: 6px;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+.mlab-b.is-narrow .mlab-b-pal-item {
+	flex: 0 0 auto;
+	justify-content: center;
+	white-space: nowrap;
+}
+
+.mlab-b.is-narrow .mlab-b-pal-item span {
+	display: none;
+}
+
+.mlab-b.is-narrow .mlab-b-row,
+.mlab-b.is-narrow .mlab-b-row.mlab-b-w-half,
+.mlab-b.is-narrow .mlab-b-row.mlab-b-w-third {
+	grid-column: 1 / -1;
+}
+
+.mlab-b.is-narrow .mlab-b-row.mlab-b-w-half .mlab-b-row-btns,
+.mlab-b.is-narrow .mlab-b-row.mlab-b-w-third .mlab-b-row-btns {
+	position: absolute;
+	padding: 0;
+}
+
+.mlab-b.is-narrow .mlab-b-row.mlab-b-w-half .mlab-b-row-top,
+.mlab-b.is-narrow .mlab-b-row.mlab-b-w-third .mlab-b-row-top {
+	padding-right: 148px;
+}
+
+.mlab-b.is-narrow .mlab-b-insp {
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 99999;
+	max-height: 80vh;
+	padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+	overflow: auto;
+	border-radius: 18px 18px 0 0;
+	box-shadow: 0 -8px 30px var(--mb-shadow);
+	transform: translateY(105%);
+	visibility: hidden;
+}
+
+.mlab-b.is-settled.is-narrow .mlab-b-insp {
+	transition: transform 0.25s, visibility 0.25s;
+}
+
+.mlab-b.is-narrow.is-sheet-open .mlab-b-insp {
+	transform: none;
+	visibility: visible;
+}
+
+.mlab-b.is-narrow .mlab-b-sheet-close {
+	display: inline-flex;
+	align-items: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.mlab-b *,
+	.mlab-b *::before,
+	.mlab-b *::after {
+		transition: none !important;
+	}
+}
+
+/* ---------- Rückgängig und Rückfrage ---------- */
+
+.mlab-b-undo {
+	position: fixed;
+	bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+	left: 50%;
+	z-index: 100001;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	max-width: calc(100vw - 32px);
+	padding: 6px 6px 6px 16px;
+	border-radius: 12px;
+	background: var(--mb-fg);
+	color: #fff;
+	box-shadow: 0 8px 30px var(--mb-shadow);
+	transform: translateX(-50%);
+}
+
+.mlab-b-undo .mlab-b-btn {
+	flex: 0 0 auto;
+	border-color: transparent;
+	color: var(--mb-fg);
+}
+
+.mlab-b-dialog-text {
+	margin: 0 0 16px;
+	font-size: 16px;
+}
+
+.mlab-b-dialog-actions {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	gap: 8px;
+}
+
+.mlab-b-btn.mlab-b-btn-danger {
+	border-color: var(--mb-danger);
+	background: var(--mb-danger);
+	color: #fff;
+}
+
+.mlab-b-btn.mlab-b-btn-danger:hover {
+	background: var(--mb-danger);
+	filter: brightness(1.1);
+}

@@ -60,19 +60,41 @@ final class Renderer {
 	}
 
 	/**
+	 * Vorschau für den Builder: Felder und Absende-Knopf ohne technische Felder, Spam-Schutz und Zustand.
+	 *
+	 * Gibt nichts aus, speichert nichts und lädt keine Assets.
+	 *
+	 * @param Form $form Formular (auch ungespeichert, mit ID 0).
+	 */
+	public static function preview( Form $form ): string {
+		++self::$instance;
+
+		return self::wrap( $form, self::fields_html( $form, null ) . self::submit_button( $form ) );
+	}
+
+	/**
+	 * Farbschema des Formulars: eigene Angabe, sonst die Einstellung des Plugins.
+	 *
+	 * @param Form $form Formular.
+	 * @return string light, dark oder leer.
+	 */
+	public static function style_of( Form $form ): string {
+		$style = (string) $form->setting( 'style' );
+
+		return '' !== $style ? $style : (string) Settings::get( 'style_preset' );
+	}
+
+	/**
 	 * Umschliessender Container mit Farbschema.
 	 *
 	 * @param Form   $form  Formular.
 	 * @param string $inner Escapter Inhalt.
 	 */
 	private static function wrap( Form $form, string $inner ): string {
-		$style = (string) $form->setting( 'style' );
-		$style = '' !== $style ? $style : (string) Settings::get( 'style_preset' );
-
 		return Html::tag(
 			'div',
 			array(
-				'class' => 'mlab-form mlab-form--' . sanitize_html_class( $style ),
+				'class' => 'mlab-form mlab-form--' . sanitize_html_class( self::style_of( $form ) ),
 				'id'    => 1 === self::$instance ? 'mlab-form-' . $form->id : 'mlab-form-' . $form->id . '-' . self::$instance,
 				'style' => Assets::style_vars(),
 			),
@@ -87,26 +109,13 @@ final class Renderer {
 	 * @param SubmissionResult|null $result Ergebnis nach Absenden ohne JS.
 	 */
 	private static function form_html( Form $form, ?SubmissionResult $result ): string {
-		$errors = $result ? $result->errors : array();
-		$fields = '';
-		foreach ( self::fields_with_values( $form, $result ? $result->values : null ) as [ $field, $value ] ) {
-			$fields .= Form::type_of( $field )->render( $field, $value, $errors[ $field['id'] ] ?? null );
-		}
-
 		Assets::enqueue_captcha( $form );
 
 		$inner = self::summary( $result )
 			. self::hidden_inputs( $form )
-			. Html::tag( 'div', array( 'class' => 'mlab-form__fields' ), $fields )
+			. self::fields_html( $form, $result )
 			. Widget::html( $form )
-			. Html::tag(
-				'button',
-				array(
-					'type'  => 'submit',
-					'class' => 'mlab-form__submit',
-				),
-				esc_html( (string) $form->setting( 'submit_label' ) )
-			);
+			. self::submit_button( $form );
 
 		return Html::tag(
 			'form',
@@ -119,6 +128,38 @@ final class Renderer {
 				'data-messages'  => wp_json_encode( self::client_messages() ),
 			) + Widget::form_attributes( $form ),
 			$inner
+		);
+	}
+
+	/**
+	 * Container mit allen Feldern.
+	 *
+	 * @param Form                  $form   Formular.
+	 * @param SubmissionResult|null $result Ergebnis nach Absenden ohne JS.
+	 */
+	private static function fields_html( Form $form, ?SubmissionResult $result ): string {
+		$errors = $result ? $result->errors : array();
+		$fields = '';
+		foreach ( self::fields_with_values( $form, $result ? $result->values : null ) as [ $field, $value ] ) {
+			$fields .= Form::type_of( $field )->render( $field, $value, $errors[ $field['id'] ] ?? null );
+		}
+
+		return Html::tag( 'div', array( 'class' => 'mlab-form__fields' ), $fields );
+	}
+
+	/**
+	 * Absende-Knopf.
+	 *
+	 * @param Form $form Formular.
+	 */
+	private static function submit_button( Form $form ): string {
+		return Html::tag(
+			'button',
+			array(
+				'type'  => 'submit',
+				'class' => 'mlab-form__submit',
+			),
+			esc_html( (string) $form->setting( 'submit_label' ) )
 		);
 	}
 
