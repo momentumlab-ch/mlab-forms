@@ -351,3 +351,36 @@ test( 'missingTranslations und localizedField', () => {
 	assert.equal( Core.localizedField( multi().fields[ 0 ], 'fr' ).label, 'Nom' );
 	assert.equal( Core.localizedField( multi().fields[ 0 ], 'fr' ).placeholder, 'z. B. Anna' );
 } );
+
+test( 'parseAddresses: Trenner, Duplikate, ungültige und zu viele Adressen', () => {
+	const parsed = Core.parseAddresses( 'a@firma.ch; B@firma.ch,\nkaputt, a@FIRMA.ch,, x@y' );
+
+	assert.deepEqual( parsed.valid, [ 'a@firma.ch', 'B@firma.ch' ] );
+	assert.deepEqual( parsed.invalid, [ 'kaputt', 'x@y' ] );
+	assert.equal( parsed.tooMany, false );
+	assert.deepEqual( Core.parseAddresses( '' ), { valid: [], invalid: [], tooMany: false } );
+	assert.deepEqual( Core.parseAddresses( 'a@firma.ch\nBcc: x@firma.ch' ).invalid, [ 'Bcc: x@firma.ch' ] );
+
+	const many = Array.from( { length: 11 }, ( _, i ) => 'p' + i + '@firma.ch' ).join( ', ' );
+	assert.equal( Core.parseAddresses( many ).tooMany, true );
+} );
+
+test( 'setRecipients: setzen, leeren ohne leere Hülle', () => {
+	const schema = { fields: [] };
+
+	Core.setRecipients( schema, '  verkauf@firma.ch ' );
+	assert.deepEqual( schema.settings, { recipients: 'verkauf@firma.ch' } );
+
+	Core.setRecipients( schema, '   ' );
+	assert.equal( 'settings' in schema, false );
+
+	const other = { settings: { submit_label: 'Los', recipients: 'a@b.ch' } };
+	Core.setRecipients( other, '' );
+	assert.deepEqual( other.settings, { submit_label: 'Los' } );
+} );
+
+test( 'hasVisitorMail: nur mit Benachrichtigung an eine Feld-Adresse', () => {
+	assert.equal( Core.hasVisitorMail( {} ), false );
+	assert.equal( Core.hasVisitorMail( { settings: { notifications: [ { to: '{default_recipient}' } ] } } ), false );
+	assert.equal( Core.hasVisitorMail( { settings: { notifications: [ { to: '{default_recipient}' }, { to: '{field:email}' } ] } } ), true );
+} );

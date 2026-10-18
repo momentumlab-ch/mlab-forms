@@ -243,7 +243,7 @@ final class Form {
 			'notifications'   => array(
 				array(
 					'id'       => 'admin',
-					'to'       => '{site_admin_email}',
+					'to'       => '{default_recipient}',
 					'subject'  => __( 'Neue Anfrage: {form_title}', 'mlab-forms' ),
 					'body'     => '{all_fields}',
 					'reply_to' => '',

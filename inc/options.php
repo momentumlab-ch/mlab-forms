@@ -27,12 +27,13 @@ return array(
 			'dark'  => __( 'Dunkel', 'mlab-forms' ),
 		),
 	),
-	'email_admin_to'         => array(
+	'default_recipient'      => array(
 		'tab'         => 'email',
-		'type'        => 'email',
+		'section'     => 'sender',
+		'type'        => 'emails',
 		'label'       => __( 'Standard-Empfänger', 'mlab-forms' ),
 		'default'     => '',
-		'description' => __( 'Empfänger für neue Anfragen, wenn das Formular nichts anderes festlegt. Leer lassen für die Admin-Adresse.', 'mlab-forms' ),
+		'description' => __( 'An diese Adresse(n) gehen die Anfragen, wenn ein Formular keine eigene Adresse hat. Mehrere Adressen trennst du mit Komma. Leer lassen für die Admin-E-Mail der Website.', 'mlab-forms' ),
 	),
 	'email_from_name'        => array(
 		'tab'         => 'email',

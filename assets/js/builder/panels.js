@@ -39,6 +39,64 @@
 	}
 
 	/**
+	 * Meldung zu einer Adressliste, leer wenn sie in Ordnung ist.
+	 */
+	function recipientsProblem( app, text ) {
+		var parsed = Core.parseAddresses( text );
+
+		if ( parsed.invalid.length ) {
+			return app.t( 'recipientsInvalid' ).replace( '%s', parsed.invalid.join( ', ' ) );
+		}
+		return parsed.tooMany ? app.t( 'recipientsTooMany' ).replace( '%s', '10' ) : '';
+	}
+
+	/**
+	 * Abschnitt «Empfänger»: eigene Adresse(n) statt des Standard-Empfängers, mit Prüfung beim Tippen.
+	 */
+	function recipientsSection( app ) {
+		var id = ns.Dom.uid();
+		var errorId = id + '-err';
+		var current = ( app.schema.settings || {} ).recipients;
+		var error = h( 'div', { class: 'mlab-b-err', id: errorId, role: 'alert', hidden: true } );
+		var control = h( 'textarea', {
+			id: id,
+			class: 'mlab-b-in',
+			rows: 2,
+			value: 'string' === typeof current ? current : '',
+			placeholder: app.t( 'recipientsExample' ),
+			autocomplete: 'off',
+			spellcheck: false,
+			'aria-describedby': errorId,
+			oninput: function () {
+				Core.setRecipients( app.schema, control.value );
+				paint();
+				app.change( 'text' );
+			},
+		} );
+
+		function paint() {
+			var message = recipientsProblem( app, control.value );
+
+			error.textContent = message;
+			error.hidden = ! message;
+			control.setAttribute( 'aria-invalid', message ? 'true' : 'false' );
+		}
+
+		paint();
+
+		return [
+			h( 'h2', { class: 'mlab-b-group' }, app.t( 'recipientsGroup' ) ),
+			h( 'div', { class: 'mlab-b-inset' }, h( 'div', { class: 'mlab-b-li' }, [
+				h( 'label', { for: id }, app.t( 'recipientsLabel' ) ),
+				control,
+				error,
+				h( 'div', { class: 'mlab-b-muted mlab-b-small' }, app.t( 'recipientsEmptyHint' ).replace( '%s', app.config.defaults.recipients || '' ) ),
+				Core.hasVisitorMail( app.schema ) ? h( 'div', { class: 'mlab-b-muted mlab-b-small' }, app.t( 'recipientsGuestNote' ) ) : null,
+			] ) ),
+		];
+	}
+
+	/**
 	 * Übersetzung von Button-Text oder Erfolgsmeldung; darunter steht der Standardtext.
 	 */
 	function settingTranslation( app, slot, labelText, multiline ) {
@@ -100,9 +158,10 @@
 				settingInput( app, 'success_message', app.t( 'successMessage' ), { multiline: true, placeholder: defaults.successMessage } ),
 				settingInput( app, 'redirect_url', app.t( 'thanksPage' ), { type: 'url', placeholder: 'https://', hint: app.t( 'thanksPageHint' ) } ),
 			] ),
+		].concat( recipientsSection( app ), [
 			h( 'h2', { class: 'mlab-b-group' }, app.t( 'retention' ) ),
 			h( 'div', { class: 'mlab-b-inset' }, h( 'div', { class: 'mlab-b-li mlab-b-muted' }, app.t( 'retentionHint' ) ) ),
-		] ) );
+		] ) ) );
 	}
 
 	/* ---------- Vorschau ---------- */

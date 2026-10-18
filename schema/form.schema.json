@@ -49,6 +49,7 @@
 						"reply_to": { "type": "string" }
 					}
 				},
+				"recipients": { "type": "string", "description": "Eigene Empfänger des Formulars: feste E-Mail-Adressen, durch Komma, Semikolon oder Zeilenumbruch getrennt (höchstens 10). Leer oder fehlend: Standard-Empfänger aus den Plugin-Einstellungen. Gilt für Benachrichtigungen mit «to» gleich {site_admin_email} oder {default_recipient}. Merge-Tags wie {field:email} werden hier nicht aufgelöst." },
 				"i18n": {
 					"type": "object",
 					"description": "Texte in weiteren Sprachen, Schlüssel ist der Sprachcode aus «languages». Leere Texte gelten als nicht übersetzt.",
@@ -73,7 +74,7 @@
 			"required": [ "to", "subject" ],
 			"properties": {
 				"id": { "type": "string" },
-				"to": { "type": "string", "description": "Adressen, durch Komma getrennt. Merge-Tags wie {site_admin_email} oder {field:email}." },
+				"to": { "type": "string", "description": "Adressen, durch Komma getrennt. Merge-Tags wie {default_recipient} (Empfänger des Formulars), {site_admin_email} oder {field:email}." },
 				"reply_to": { "type": "string", "description": "Nur gültige Adressen aus E-Mail-Feldern oder feste Adressen." },
 				"subject": { "type": "string" },
 				"body": { "type": "string", "description": "Text mit Merge-Tags, z. B. {all_fields}." },
@@ -143,6 +144,7 @@
 						"data_attribute": { "type": "string", "description": "Links mit diesem Attribut setzen den Wert, z. B. data-anfrage." }
 					}
 				},
+				"recipients": { "type": "string", "description": "Eigene Empfänger des Formulars: feste E-Mail-Adressen, durch Komma, Semikolon oder Zeilenumbruch getrennt (höchstens 10). Leer oder fehlend: Standard-Empfänger aus den Plugin-Einstellungen. Gilt für Benachrichtigungen mit «to» gleich {site_admin_email} oder {default_recipient}. Merge-Tags wie {field:email} werden hier nicht aufgelöst." },
 				"i18n": {
 					"type": "object",
 					"description": "Texte in weiteren Sprachen, Schlüssel ist der Sprachcode aus «languages». Leere Texte gelten als nicht übersetzt; «options» ordnet dem Wert einer Option ihre Beschriftung zu (die Werte bleiben in allen Sprachen gleich).",

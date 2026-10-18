@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MomentumLab Forms 0.7.0\n"
+"Project-Id-Version: MomentumLab Forms 0.7.1\n"
 "Report-Msgid-Bugs-To: https://github.com/momentumlab-ch/mlab-forms/issues\n"
-"POT-Creation-Date: 2026-10-18T06:30:13+00:00\n"
-"PO-Revision-Date: 2026-10-18T06:30:13+00:00\n"
+"POT-Creation-Date: 2026-10-18T11:17:13+00:00\n"
+"PO-Revision-Date: 2026-10-18T11:17:13+00:00\n"
 "Last-Translator: Momentum Lab\n"
 "Language-Team: German (Switzerland)\n"
 "Language: de_CH\n"
@@ -149,7 +149,7 @@ msgstr "Seite"
 msgid "Referrer"
 msgstr "Referrer"
 
-#: inc/Admin/BuilderTexts.php:182 inc/Admin/EntryView.php:127
+#: inc/Admin/BuilderTexts.php:192 inc/Admin/EntryView.php:127
 msgid "Sprache"
 msgstr "Sprache"
 
@@ -179,7 +179,7 @@ msgstr "Diese Adresse gehört nicht zu deiner Website. Mails können im Spam lan
 msgid "Aktiv"
 msgstr "Aktiv"
 
-#: inc/Admin/BuilderTexts.php:170 inc/Admin/FormEditor.php:48
+#: inc/Admin/BuilderTexts.php:180 inc/Admin/FormEditor.php:48
 msgid "Aufbewahrung"
 msgstr "Aufbewahrung"
 
@@ -208,7 +208,7 @@ msgid "Wiederherstellen"
 msgstr "Wiederherstellen"
 
 #. translators: %s: Fehlermeldung des JSON-Parsers
-#: inc/Admin/BuilderTexts.php:244 inc/Admin/FormEditor.php:132
+#: inc/Admin/BuilderTexts.php:254 inc/Admin/FormEditor.php:132
 #, php-format
 msgid "Kein gültiges JSON: %s"
 msgstr "Kein gültiges JSON: %s"
@@ -453,15 +453,15 @@ msgstr "«pattern» ist kein gültiger regulärer Ausdruck."
 msgid "Bitte gib eine gültige E-Mail-Adresse ein."
 msgstr "Bitte gib eine gültige E-Mail-Adresse ein."
 
-#: inc/Admin/Builder.php:210 inc/Fields/TextareaField.php:25 inc/Forms/Presets.php:213
+#: inc/Admin/Builder.php:212 inc/Fields/TextareaField.php:25 inc/Forms/Presets.php:213
 msgid "Mehrzeiliger Text"
 msgstr "Mehrzeiliger Text"
 
-#: inc/Admin/Builder.php:131 inc/Forms/Form.php:230
+#: inc/Admin/Builder.php:132 inc/Forms/Form.php:230
 msgid "Senden"
 msgstr "Senden"
 
-#: inc/Admin/Builder.php:132 inc/Forms/Form.php:231
+#: inc/Admin/Builder.php:133 inc/Forms/Form.php:231
 msgid "Danke! Wir haben deine Nachricht erhalten."
 msgstr "Danke! Wir haben deine Nachricht erhalten."
 
@@ -493,84 +493,84 @@ msgstr "Keine Formulare gefunden."
 msgid "Keine Formulare im Papierkorb."
 msgstr "Keine Formulare im Papierkorb."
 
-#: inc/Admin/BuilderTexts.php:245 inc/Forms/SchemaValidator.php:56
+#: inc/Admin/BuilderTexts.php:255 inc/Forms/SchemaValidator.php:57
 msgid "Das Schema muss ein JSON-Objekt sein."
 msgstr "Das Schema muss ein JSON-Objekt sein."
 
 #. translators: %d: erwartete Version
-#: inc/Forms/SchemaValidator.php:61
+#: inc/Forms/SchemaValidator.php:62
 #, php-format
 msgid "«schema_version» muss %d sein."
 msgstr "«schema_version» muss %d sein."
 
-#: inc/Forms/SchemaValidator.php:85
+#: inc/Forms/SchemaValidator.php:86
 msgid "«style» muss «light» oder «dark» sein."
 msgstr "«style» muss «light» oder «dark» sein."
 
-#: inc/Forms/SchemaValidator.php:104
+#: inc/Forms/SchemaValidator.php:129
 msgid "«provider» muss leer, «turnstile», «recaptcha» oder «hcaptcha» sein. Es ist nur ein Dienst gleichzeitig möglich."
 msgstr "«provider» muss leer, «turnstile», «recaptcha» oder «hcaptcha» sein. Es ist nur ein Dienst gleichzeitig möglich."
 
-#: inc/Forms/SchemaValidator.php:120
+#: inc/Forms/SchemaValidator.php:145
 msgid "Das ist keine gültige E-Mail-Adresse."
 msgstr "Das ist keine gültige E-Mail-Adresse."
 
-#: inc/Forms/SchemaValidator.php:124
+#: inc/Forms/SchemaValidator.php:149
 msgid "«reply_to_mode» muss leer, «visitor» oder «fixed» sein."
 msgstr "«reply_to_mode» muss leer, «visitor» oder «fixed» sein."
 
-#: inc/Forms/SchemaValidator.php:135
+#: inc/Forms/SchemaValidator.php:160
 msgid "Muss eine Liste sein."
 msgstr "Muss eine Liste sein."
 
 #. translators: %s: Schlüssel
-#: inc/Forms/SchemaValidator.php:146
+#: inc/Forms/SchemaValidator.php:171
 #, php-format
 msgid "«%s» fehlt."
 msgstr "«%s» fehlt."
 
-#: inc/Forms/SchemaValidator.php:161
+#: inc/Forms/SchemaValidator.php:186
 msgid "«fields» muss eine Liste mit mindestens einem Feld sein."
 msgstr "«fields» muss eine Liste mit mindestens einem Feld sein."
 
-#: inc/Forms/SchemaValidator.php:173
+#: inc/Forms/SchemaValidator.php:198
 msgid "«id» muss aus Kleinbuchstaben, Ziffern und _ bestehen."
 msgstr "«id» muss aus Kleinbuchstaben, Ziffern und _ bestehen."
 
 #. translators: %s: Feld-ID
-#: inc/Forms/SchemaValidator.php:176
+#: inc/Forms/SchemaValidator.php:201
 #, php-format
 msgid "Die id «%s» kommt mehrfach vor."
 msgstr "Die id «%s» kommt mehrfach vor."
 
 #. translators: %s: Typ
-#: inc/Forms/SchemaValidator.php:193
+#: inc/Forms/SchemaValidator.php:218
 #, php-format
 msgid "Unbekannter Feldtyp «%s»."
 msgstr "Unbekannter Feldtyp «%s»."
 
-#: inc/Forms/SchemaValidator.php:197
+#: inc/Forms/SchemaValidator.php:222
 msgid "«label» fehlt."
 msgstr "«label» fehlt."
 
-#: inc/Forms/SchemaValidator.php:200
+#: inc/Forms/SchemaValidator.php:225
 msgid "«width» muss full, half oder third sein."
 msgstr "«width» muss full, half oder third sein."
 
-#: inc/Forms/I18nValidator.php:127 inc/Forms/I18nValidator.php:136 inc/Forms/I18nValidator.php:178 inc/Forms/SchemaValidator.php:224
+#: inc/Forms/I18nValidator.php:127 inc/Forms/I18nValidator.php:136 inc/Forms/I18nValidator.php:178 inc/Forms/SchemaValidator.php:249
 msgid "Muss ein JSON-Objekt sein."
 msgstr "Muss ein JSON-Objekt sein."
 
-#: inc/Forms/I18nValidator.php:160 inc/Forms/I18nValidator.php:184 inc/Forms/SchemaValidator.php:238
+#: inc/Forms/I18nValidator.php:160 inc/Forms/I18nValidator.php:184 inc/Forms/SchemaValidator.php:108 inc/Forms/SchemaValidator.php:263
 msgid "Muss ein Text sein."
 msgstr "Muss ein Text sein."
 
-#: inc/Forms/SchemaValidator.php:251
+#: inc/Forms/SchemaValidator.php:276
 msgid "Muss true oder false sein."
 msgstr "Muss true oder false sein."
 
 #. translators: 1: Minimum, 2: Maximum
-#: inc/Forms/SchemaValidator.php:268
+#: inc/Forms/SchemaValidator.php:293
 #, php-format
 msgid "Muss eine ganze Zahl von %1$d bis %2$d sein."
 msgstr "Muss eine ganze Zahl von %1$d bis %2$d sein."
@@ -745,139 +745,135 @@ msgstr "Hell"
 msgid "Dunkel"
 msgstr "Dunkel"
 
-#: inc/options.php:33
+#: inc/options.php:34
 msgid "Standard-Empfänger"
 msgstr "Standard-Empfänger"
 
-#: inc/options.php:35
-msgid "Empfänger für neue Anfragen, wenn das Formular nichts anderes festlegt. Leer lassen für die Admin-Adresse."
-msgstr "Empfänger für neue Anfragen, wenn das Formular nichts anderes festlegt. Leer lassen für die Admin-Adresse."
-
-#: inc/options.php:41
+#: inc/options.php:42
 msgid "Absendername"
 msgstr "Absendername"
 
-#: inc/options.php:43
+#: inc/options.php:44
 msgid "Leer lassen für den Standard von WordPress. Ist nur die Absender-E-Mail gesetzt, gilt der Name der Website."
 msgstr "Leer lassen für den Standard von WordPress. Ist nur die Absender-E-Mail gesetzt, gilt der Name der Website."
 
-#: inc/options.php:49
+#: inc/options.php:50
 msgid "Absender-E-Mail"
 msgstr "Absender-E-Mail"
 
-#: inc/options.php:51
+#: inc/options.php:52
 msgid "Leer lassen für den Standard von WordPress (wordpress@deine-domain). WP Mail SMTP kann diesen Wert übersteuern."
 msgstr "Leer lassen für den Standard von WordPress (wordpress@deine-domain). WP Mail SMTP kann diesen Wert übersteuern."
 
-#: inc/options.php:57
+#: inc/options.php:58
 msgid "Antwort an"
 msgstr "Antwort an"
 
-#: inc/options.php:60
+#: inc/options.php:61
 msgid "E-Mail des Besuchers"
 msgstr "E-Mail des Besuchers"
 
-#: inc/options.php:61
+#: inc/options.php:62
 msgid "Feste Adresse"
 msgstr "Feste Adresse"
 
-#: inc/options.php:68
+#: inc/options.php:69
 msgid "Feste Antwort-Adresse"
 msgstr "Feste Antwort-Adresse"
 
-#: inc/options.php:70
+#: inc/options.php:71
 msgid "Wird nur bei «Feste Adresse» verwendet."
 msgstr "Wird nur bei «Feste Adresse» verwendet."
 
-#: inc/options.php:75
+#: inc/options.php:76
 msgid "Honeypot verwenden"
 msgstr "Honeypot verwenden"
 
-#: inc/options.php:81
+#: inc/options.php:82
 msgid "Mindestzeit zum Ausfüllen (Sekunden)"
 msgstr "Mindestzeit zum Ausfüllen (Sekunden)"
 
-#: inc/options.php:85
+#: inc/options.php:86
 msgid "Schnellere Absendungen gelten als Spam. 0 schaltet die Prüfung aus."
 msgstr "Schnellere Absendungen gelten als Spam. 0 schaltet die Prüfung aus."
 
-#: inc/options.php:90
+#: inc/options.php:91
 msgid "Maximal Anfragen pro Stunde und Absender"
 msgstr "Maximal Anfragen pro Stunde und Absender"
 
-#: inc/options.php:94
+#: inc/options.php:95
 msgid "Gezählt wird pro gehashter IP-Adresse. 0 schaltet die Begrenzung aus."
 msgstr "Gezählt wird pro gehashter IP-Adresse. 0 schaltet die Begrenzung aus."
 
-#: inc/options.php:100
+#: inc/options.php:101
 msgid "Spam-Dienst"
 msgstr "Spam-Dienst"
 
-#: inc/options.php:103
+#: inc/options.php:104
 msgid "Keiner"
 msgstr "Keiner"
 
-#: inc/options.php:108
+#: inc/options.php:109
 msgid "Es kann nur ein Dienst gleichzeitig aktiv sein. Jedes Formular darf das im Schema («settings.spam.provider») übersteuern."
 msgstr "Es kann nur ein Dienst gleichzeitig aktiv sein. Jedes Formular darf das im Schema («settings.spam.provider») übersteuern."
 
-#: inc/options.php:114
+#: inc/options.php:115
 msgid "Akismet verwenden"
 msgstr "Akismet verwenden"
 
-#: inc/options.php:116
+#: inc/options.php:117
 msgid "Prüft den Inhalt jeder Anfrage bei Akismet. Dafür werden Name (nur aus Feldern, die als Name gekennzeichnet sind), E-Mail, Nachricht, IP-Adresse, Browser-Angaben, Herkunftsseite und Seiten-Adresse ohne Parameter an Akismet (Automattic) gesendet, auch in die USA. Andere Textfelder bleiben aussen vor."
 msgstr "Prüft den Inhalt jeder Anfrage bei Akismet. Dafür werden Name (nur aus Feldern, die als Name gekennzeichnet sind), E-Mail, Nachricht, IP-Adresse, Browser-Angaben, Herkunftsseite und Seiten-Adresse ohne Parameter an Akismet (Automattic) gesendet, auch in die USA. Andere Textfelder bleiben aussen vor."
 
-#: inc/options.php:122
+#: inc/options.php:123
 msgid "Turnstile: Site-Key"
 msgstr "Turnstile: Site-Key"
 
-#: inc/options.php:129
+#: inc/options.php:130
 msgid "Turnstile: Secret-Key"
 msgstr "Turnstile: Secret-Key"
 
-#: inc/options.php:137
+#: inc/options.php:138
 msgid "reCAPTCHA: Site-Key"
 msgstr "reCAPTCHA: Site-Key"
 
-#: inc/options.php:139
+#: inc/options.php:140
 msgid "Datenschutz: Google reCAPTCHA überträgt Daten deiner Besucher (u. a. IP-Adresse und Browser-Angaben) an Google, auch in die USA. Nimm den Dienst in die Datenschutzerklärung auf und prüfe, ob du eine Einwilligung brauchst. Er ist standardmässig aus."
 msgstr "Datenschutz: Google reCAPTCHA überträgt Daten deiner Besucher (u. a. IP-Adresse und Browser-Angaben) an Google, auch in die USA. Nimm den Dienst in die Datenschutzerklärung auf und prüfe, ob du eine Einwilligung brauchst. Er ist standardmässig aus."
 
-#: inc/options.php:145
+#: inc/options.php:146
 msgid "reCAPTCHA: Secret-Key"
 msgstr "reCAPTCHA: Secret-Key"
 
-#: inc/options.php:153
+#: inc/options.php:154
 msgid "hCaptcha: Site-Key"
 msgstr "hCaptcha: Site-Key"
 
-#: inc/options.php:160
+#: inc/options.php:161
 msgid "hCaptcha: Secret-Key"
 msgstr "hCaptcha: Secret-Key"
 
-#: inc/options.php:168
+#: inc/options.php:169
 msgid "Akismet: API-Schlüssel"
 msgstr "Akismet: API-Schlüssel"
 
-#: inc/options.php:170
+#: inc/options.php:171
 msgid "Leer lassen, wenn das Akismet-Plugin aktiv ist: dann wird dessen Schlüssel verwendet."
 msgstr "Leer lassen, wenn das Akismet-Plugin aktiv ist: dann wird dessen Schlüssel verwendet."
 
-#: inc/options.php:176
+#: inc/options.php:177
 msgid "Anfragen aufbewahren (Tage)"
 msgstr "Anfragen aufbewahren (Tage)"
 
-#: inc/options.php:180
+#: inc/options.php:181
 msgid "Standard für Formulare ohne eigene Angabe. 0 heisst unbegrenzt. Ältere Anfragen kommen zuerst in den Papierkorb und werden nach 30 Tagen endgültig gelöscht."
 msgstr "Standard für Formulare ohne eigene Angabe. 0 heisst unbegrenzt. Ältere Anfragen kommen zuerst in den Papierkorb und werden nach 30 Tagen endgültig gelöscht."
 
-#: inc/options.php:185
+#: inc/options.php:186
 msgid "Daten beim Löschen des Plugins behalten"
 msgstr "Daten beim Löschen des Plugins behalten"
 
-#: inc/options.php:187
+#: inc/options.php:188
 msgid "Ausschalten, damit beim Löschen des Plugins alle Formulare, Anfragen und Einstellungen entfernt werden."
 msgstr "Ausschalten, damit beim Löschen des Plugins alle Formulare, Anfragen und Einstellungen entfernt werden."
 
@@ -885,59 +881,59 @@ msgstr "Ausschalten, damit beim Löschen des Plugins alle Formulare, Anfragen un
 msgid "Updates sind nicht aktiv: In wp-config.php fehlt die Konstante MLAB_FORMS_GITHUB_TOKEN."
 msgstr "Updates sind nicht aktiv: In wp-config.php fehlt die Konstante MLAB_FORMS_GITHUB_TOKEN."
 
-#: inc/Admin/Builder.php:206 inc/Forms/Presets.php:129 inc/Forms/Presets.php:130 inc/Forms/Presets.php:154 inc/Forms/Presets.php:179
+#: inc/Admin/Builder.php:208 inc/Forms/Presets.php:129 inc/Forms/Presets.php:130 inc/Forms/Presets.php:154 inc/Forms/Presets.php:179
 msgid "Kurzer Text"
 msgstr "Kurzer Text"
 
-#: inc/Admin/Builder.php:207 inc/Forms/Presets.php:134
+#: inc/Admin/Builder.php:209 inc/Forms/Presets.php:134
 msgid "Prüft das Format"
 msgstr "Prüft das Format"
 
-#: inc/Admin/Builder.php:208 inc/Forms/Presets.php:147
+#: inc/Admin/Builder.php:210 inc/Forms/Presets.php:147
 msgid "Prüft die Nummer"
 msgstr "Prüft die Nummer"
 
-#: inc/Admin/Builder.php:209
+#: inc/Admin/Builder.php:211
 msgid "Nicht sichtbar, mit festem Wert"
 msgstr "Nicht sichtbar, mit festem Wert"
 
-#: inc/Admin/Builder.php:211
+#: inc/Admin/Builder.php:213
 msgid "Nur Zahlen"
 msgstr "Nur Zahlen"
 
-#: inc/Admin/Builder.php:212 inc/Forms/Presets.php:214
+#: inc/Admin/Builder.php:214 inc/Forms/Presets.php:214
 msgid "Prüft das Datum"
 msgstr "Prüft das Datum"
 
-#: inc/Admin/Builder.php:213
+#: inc/Admin/Builder.php:215
 msgid "Eine Option aus einer Liste"
 msgstr "Eine Option aus einer Liste"
 
-#: inc/Admin/Builder.php:214
+#: inc/Admin/Builder.php:216
 msgid "Eine Option, alle sichtbar"
 msgstr "Eine Option, alle sichtbar"
 
-#: inc/Admin/Builder.php:215 inc/Forms/Presets.php:228
+#: inc/Admin/Builder.php:217 inc/Forms/Presets.php:228
 msgid "Mehrere Optionen wählen"
 msgstr "Mehrere Optionen wählen"
 
-#: inc/Admin/Builder.php:216
+#: inc/Admin/Builder.php:218
 msgid "Einzelnes Häkchen"
 msgstr "Einzelnes Häkchen"
 
-#: inc/Admin/Builder.php:217
+#: inc/Admin/Builder.php:219
 msgid "Pflicht-Häkchen mit Datenschutz-Link"
 msgstr "Pflicht-Häkchen mit Datenschutz-Link"
 
-#: inc/Admin/Builder.php:218 inc/Forms/Presets.php:248
+#: inc/Admin/Builder.php:220 inc/Forms/Presets.php:248
 msgid "Nur eine Überschrift"
 msgstr "Nur eine Überschrift"
 
-#: inc/Admin/Builder.php:219
+#: inc/Admin/Builder.php:221
 msgid "Eigener Text mit Formatierung"
 msgstr "Eigener Text mit Formatierung"
 
-#: inc/Admin/Builder.php:93
+#: inc/Admin/Builder.php:94
 msgid "Formular als JSON"
 msgstr "Formular als JSON"
 
@@ -1103,43 +1099,43 @@ msgstr "Danke-Seite (Adresse)"
 msgid "Optional. Wenn du eine Adresse einträgst, geht es nach dem Absenden dort weiter."
 msgstr "Optional. Wenn du eine Adresse einträgst, geht es nach dem Absenden dort weiter."
 
-#: inc/Admin/BuilderTexts.php:171
+#: inc/Admin/BuilderTexts.php:181
 msgid "Wie lange gesendete Anfragen gespeichert bleiben, stellst du im Kasten «Aufbewahrung» rechts ein."
 msgstr "Wie lange gesendete Anfragen gespeichert bleiben, stellst du im Kasten «Aufbewahrung» rechts ein."
 
-#: inc/Admin/BuilderTexts.php:235
+#: inc/Admin/BuilderTexts.php:245
 msgid "Vorschau des Formulars"
 msgstr "Vorschau des Formulars"
 
-#: inc/Admin/BuilderTexts.php:236
+#: inc/Admin/BuilderTexts.php:246
 msgid "Grösse der Vorschau"
 msgstr "Grösse der Vorschau"
 
-#: inc/Admin/BuilderTexts.php:237
+#: inc/Admin/BuilderTexts.php:247
 msgid "So sieht das Formular auf deiner Seite aus. Absenden ist hier ausgeschaltet."
 msgstr "So sieht das Formular auf deiner Seite aus. Absenden ist hier ausgeschaltet."
 
-#: inc/Admin/BuilderTexts.php:238
+#: inc/Admin/BuilderTexts.php:248
 msgid "Vorschau wird geladen …"
 msgstr "Vorschau wird geladen …"
 
-#: inc/Admin/BuilderTexts.php:239
+#: inc/Admin/BuilderTexts.php:249
 msgid "Die Vorschau ist noch nicht möglich. Bitte korrigiere:"
 msgstr "Die Vorschau ist noch nicht möglich. Bitte korrigiere:"
 
-#: inc/Admin/BuilderTexts.php:240
+#: inc/Admin/BuilderTexts.php:250
 msgid "Die Vorschau konnte nicht geladen werden. Bitte versuche es nochmals."
 msgstr "Die Vorschau konnte nicht geladen werden. Bitte versuche es nochmals."
 
-#: inc/Admin/BuilderTexts.php:241
+#: inc/Admin/BuilderTexts.php:251
 msgid "Handy"
 msgstr "Handy"
 
-#: inc/Admin/BuilderTexts.php:242
+#: inc/Admin/BuilderTexts.php:252
 msgid "Computer"
 msgstr "Computer"
 
-#: inc/Admin/BuilderTexts.php:246
+#: inc/Admin/BuilderTexts.php:256
 msgid "Das Schema braucht eine Liste «fields»."
 msgstr "Das Schema braucht eine Liste «fields»."
 
@@ -1427,115 +1423,115 @@ msgstr "Trotzdem löschen"
 msgid "Das Formular ist zu gross für die Vorschau."
 msgstr "Das Formular ist zu gross für die Vorschau."
 
-#: inc/Admin/BuilderTexts.php:183
+#: inc/Admin/BuilderTexts.php:193
 msgid "Standard"
 msgstr "Standard"
 
-#: inc/Admin/BuilderTexts.php:184
+#: inc/Admin/BuilderTexts.php:194
 msgid "Sprache hinzufügen"
 msgstr "Sprache hinzufügen"
 
-#: inc/Admin/BuilderTexts.php:185
+#: inc/Admin/BuilderTexts.php:195
 msgid "Sprache entfernen"
 msgstr "Sprache entfernen"
 
-#: inc/Admin/BuilderTexts.php:186
+#: inc/Admin/BuilderTexts.php:196
 msgid "Standardsprache: hier stehen die Texte, die ohne Übersetzung überall gelten."
 msgstr "Standardsprache: hier stehen die Texte, die ohne Übersetzung überall gelten."
 
-#: inc/Admin/BuilderTexts.php:187
+#: inc/Admin/BuilderTexts.php:197
 msgid "Das Formular hat eine Sprache. Füge eine weitere hinzu, um Texte zu übersetzen."
 msgstr "Das Formular hat eine Sprache. Füge eine weitere hinzu, um Texte zu übersetzen."
 
 #. translators: 1: Anzahl übersetzter Texte, 2: Anzahl aller Texte
-#: inc/Admin/BuilderTexts.php:189
+#: inc/Admin/BuilderTexts.php:199
 #, php-format
 msgid "%1$d von %2$d übersetzt"
 msgstr "%1$d von %2$d übersetzt"
 
-#: inc/Admin/BuilderTexts.php:190
+#: inc/Admin/BuilderTexts.php:200
 msgid "Noch nicht übersetzt"
 msgstr "Noch nicht übersetzt"
 
 #. translators: %s: Standardtext
-#: inc/Admin/BuilderTexts.php:192
+#: inc/Admin/BuilderTexts.php:202
 #, php-format
 msgid "Standardtext: %s"
 msgstr "Standardtext: %s"
 
 #. translators: %s: Name der Sprache
-#: inc/Admin/BuilderTexts.php:194
+#: inc/Admin/BuilderTexts.php:204
 #, php-format
 msgid "Du übersetzt in %s. Ein leeres Feld zeigt den Standardtext."
 msgstr "Du übersetzt in %s. Ein leeres Feld zeigt den Standardtext."
 
-#: inc/Admin/BuilderTexts.php:195
+#: inc/Admin/BuilderTexts.php:205
 msgid "Dieses Feld hat keine Texte zum Übersetzen."
 msgstr "Dieses Feld hat keine Texte zum Übersetzen."
 
-#: inc/Admin/BuilderTexts.php:196
+#: inc/Admin/BuilderTexts.php:206
 msgid "Betreff und Text der E-Mails übersetzt du in der Experten-Ansicht (JSON) bei der Benachrichtigung unter «i18n». E-Mails an die Admin-Adresse erscheinen immer in der Standardsprache."
 msgstr "Betreff und Text der E-Mails übersetzt du in der Experten-Ansicht (JSON) bei der Benachrichtigung unter «i18n». E-Mails an die Admin-Adresse erscheinen immer in der Standardsprache."
 
 #. translators: %s: Name der Sprache
-#: inc/Admin/BuilderTexts.php:198
+#: inc/Admin/BuilderTexts.php:208
 #, php-format
 msgid "Sprache: %s"
 msgstr "Sprache: %s"
 
 #. translators: %s: Name der Sprache
-#: inc/Admin/BuilderTexts.php:200
+#: inc/Admin/BuilderTexts.php:210
 #, php-format
 msgid "Sprache «%s» hinzugefügt"
 msgstr "Sprache «%s» hinzugefügt"
 
 #. translators: %s: Name der Sprache
-#: inc/Admin/BuilderTexts.php:202
+#: inc/Admin/BuilderTexts.php:212
 #, php-format
 msgid "Sprache «%s» entfernt"
 msgstr "Sprache «%s» entfernt"
 
 #. translators: 1: Name der Sprache, 2: Anzahl Übersetzungen
-#: inc/Admin/BuilderTexts.php:204
+#: inc/Admin/BuilderTexts.php:214
 #, php-format
 msgid "Sprache «%1$s» entfernen? Dabei werden %2$d Übersetzungen gelöscht. Danach kannst du das noch kurz rückgängig machen."
 msgstr "Sprache «%1$s» entfernen? Dabei werden %2$d Übersetzungen gelöscht. Danach kannst du das noch kurz rückgängig machen."
 
 #. translators: %s: Name der Sprache
-#: inc/Admin/BuilderTexts.php:206
+#: inc/Admin/BuilderTexts.php:216
 #, php-format
 msgid "Sprache «%s» entfernen? Sie hat noch keine Übersetzungen."
 msgstr "Sprache «%s» entfernen? Sie hat noch keine Übersetzungen."
 
-#: inc/Admin/BuilderTexts.php:217
+#: inc/Admin/BuilderTexts.php:227
 msgid "Deutsch"
 msgstr "Deutsch"
 
-#: inc/Admin/BuilderTexts.php:218
+#: inc/Admin/BuilderTexts.php:228
 msgid "Französisch"
 msgstr "Französisch"
 
-#: inc/Admin/BuilderTexts.php:219
+#: inc/Admin/BuilderTexts.php:229
 msgid "Italienisch"
 msgstr "Italienisch"
 
-#: inc/Admin/BuilderTexts.php:220
+#: inc/Admin/BuilderTexts.php:230
 msgid "Englisch"
 msgstr "Englisch"
 
-#: inc/Admin/BuilderTexts.php:221
+#: inc/Admin/BuilderTexts.php:231
 msgid "Rätoromanisch"
 msgstr "Rätoromanisch"
 
-#: inc/Admin/BuilderTexts.php:222
+#: inc/Admin/BuilderTexts.php:232
 msgid "Spanisch"
 msgstr "Spanisch"
 
-#: inc/Admin/BuilderTexts.php:223
+#: inc/Admin/BuilderTexts.php:233
 msgid "Portugiesisch"
 msgstr "Portugiesisch"
 
-#: inc/Admin/BuilderTexts.php:224
+#: inc/Admin/BuilderTexts.php:234
 msgid "Niederländisch"
 msgstr "Niederländisch"
 
@@ -1576,3 +1572,47 @@ msgstr "Ein Sprachcode besteht aus zwei oder drei Kleinbuchstaben, z. B. «de».
 #, php-format
 msgid "Die Sprache «%s» kommt mehrfach vor."
 msgstr "Die Sprache «%s» kommt mehrfach vor."
+
+#: inc/Admin/BuilderTexts.php:170
+msgid "Empfänger"
+msgstr "Empfänger"
+
+#: inc/Admin/BuilderTexts.php:171
+msgid "An diese Adresse(n) senden"
+msgstr "An diese Adresse(n) senden"
+
+#: inc/Admin/BuilderTexts.php:172
+msgid "z. B. verkauf@firma.ch, info@firma.ch"
+msgstr "z. B. verkauf@firma.ch, info@firma.ch"
+
+#. translators: %s: Standard-Empfänger aus den Plugin-Einstellungen
+#: inc/Admin/BuilderTexts.php:174
+#, php-format
+msgid "Leer lassen: Anfragen gehen an %s"
+msgstr "Leer lassen: Anfragen gehen an %s"
+
+#. translators: %s: Angaben, die keine E-Mail-Adresse sind
+#: inc/Admin/BuilderTexts.php:176 inc/Forms/SchemaValidator.php:114
+#, php-format
+msgid "Diese Adresse sieht nicht richtig aus: %s"
+msgstr "Diese Adresse sieht nicht richtig aus: %s"
+
+#. translators: %s: Höchstzahl der Adressen
+#: inc/Admin/BuilderTexts.php:178
+#, php-format
+msgid "Es sind höchstens %s Adressen möglich."
+msgstr "Es sind höchstens %s Adressen möglich."
+
+#: inc/Admin/BuilderTexts.php:179
+msgid "Die Bestätigungsmail an den Besucher ist davon nicht betroffen."
+msgstr "Die Bestätigungsmail an den Besucher ist davon nicht betroffen."
+
+#. translators: %d: Höchstzahl
+#: inc/Forms/SchemaValidator.php:117
+#, php-format
+msgid "Es sind höchstens %d Adressen möglich."
+msgstr "Es sind höchstens %d Adressen möglich."
+
+#: inc/options.php:36
+msgid "An diese Adresse(n) gehen die Anfragen, wenn ein Formular keine eigene Adresse hat. Mehrere Adressen trennst du mit Komma. Leer lassen für die Admin-E-Mail der Website."
+msgstr "An diese Adresse(n) gehen die Anfragen, wenn ein Formular keine eigene Adresse hat. Mehrere Adressen trennst du mit Komma. Leer lassen für die Admin-E-Mail der Website."

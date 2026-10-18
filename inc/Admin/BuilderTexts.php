@@ -162,13 +162,23 @@ final class BuilderTexts {
 	 */
 	private static function settings(): array {
 		return array(
-			'afterSubmit'    => __( 'Nach dem Absenden', 'mlab-forms' ),
-			'submitLabel'    => __( 'Text des Absende-Buttons', 'mlab-forms' ),
-			'successMessage' => __( 'Erfolgsmeldung', 'mlab-forms' ),
-			'thanksPage'     => __( 'Danke-Seite (Adresse)', 'mlab-forms' ),
-			'thanksPageHint' => __( 'Optional. Wenn du eine Adresse einträgst, geht es nach dem Absenden dort weiter.', 'mlab-forms' ),
-			'retention'      => __( 'Aufbewahrung', 'mlab-forms' ),
-			'retentionHint'  => __( 'Wie lange gesendete Anfragen gespeichert bleiben, stellst du im Kasten «Aufbewahrung» rechts ein.', 'mlab-forms' ),
+			'afterSubmit'         => __( 'Nach dem Absenden', 'mlab-forms' ),
+			'submitLabel'         => __( 'Text des Absende-Buttons', 'mlab-forms' ),
+			'successMessage'      => __( 'Erfolgsmeldung', 'mlab-forms' ),
+			'thanksPage'          => __( 'Danke-Seite (Adresse)', 'mlab-forms' ),
+			'thanksPageHint'      => __( 'Optional. Wenn du eine Adresse einträgst, geht es nach dem Absenden dort weiter.', 'mlab-forms' ),
+			'recipientsGroup'     => __( 'Empfänger', 'mlab-forms' ),
+			'recipientsLabel'     => __( 'An diese Adresse(n) senden', 'mlab-forms' ),
+			'recipientsExample'   => __( 'z. B. verkauf@firma.ch, info@firma.ch', 'mlab-forms' ),
+			/* translators: %s: Standard-Empfänger aus den Plugin-Einstellungen */
+			'recipientsEmptyHint' => __( 'Leer lassen: Anfragen gehen an %s', 'mlab-forms' ),
+			/* translators: %s: Angaben, die keine E-Mail-Adresse sind */
+			'recipientsInvalid'   => __( 'Diese Adresse sieht nicht richtig aus: %s', 'mlab-forms' ),
+			/* translators: %s: Höchstzahl der Adressen */
+			'recipientsTooMany'   => __( 'Es sind höchstens %s Adressen möglich.', 'mlab-forms' ),
+			'recipientsGuestNote' => __( 'Die Bestätigungsmail an den Besucher ist davon nicht betroffen.', 'mlab-forms' ),
+			'retention'           => __( 'Aufbewahrung', 'mlab-forms' ),
+			'retentionHint'       => __( 'Wie lange gesendete Anfragen gespeichert bleiben, stellst du im Kasten «Aufbewahrung» rechts ein.', 'mlab-forms' ),
 		);
 	}
 

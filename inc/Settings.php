@@ -161,6 +161,8 @@ final class Settings {
 				return max( $field['min'] ?? PHP_INT_MIN, min( $field['max'] ?? PHP_INT_MAX, $number ) );
 			case 'email':
 				return sanitize_email( (string) $value );
+			case 'emails':
+				return Mail\Recipients::clean( $value );
 			case 'select':
 				return array_key_exists( (string) $value, $field['options'] ?? array() ) ? (string) $value : $field['default'];
 			default:

@@ -14,12 +14,10 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Verschickt die Benachrichtigungen eines Formulars per wp_mail als Text-E-Mail.
  *
- * Schutz gegen Header-Injection: Empfänger und Reply-To sind nur gültige Adressen,
+ * Schutz gegen Header-Injection: Empfänger und Reply-To sind nur einzeln geprüfte, gültige Adressen,
  * der Betreff enthält keine Zeilenumbrüche. Absender und Antwort-Adresse löst Sender auf.
  */
 final class Notifier {
-
-	private const MAX_RECIPIENTS = 10;
 
 	/**
 	 * Sendet alle aktiven Benachrichtigungen.
@@ -43,29 +41,46 @@ final class Notifier {
 	}
 
 	/**
-	 * Geht die Benachrichtigung nur an die Admin-Adresse (und nicht an den Besucher oder andere)?
+	 * Geht die Benachrichtigung nur an die Empfänger der Seite (und nicht an den Besucher oder andere)?
 	 *
 	 * @param array<string, mixed> $notification Benachrichtigung.
 	 * @param Submission           $submission   Absendung.
 	 */
 	private static function is_for_admin( array $notification, Submission $submission ): bool {
-		$to = self::addresses( (string) ( $notification['to'] ?? '' ), $submission );
+		$to    = self::recipients( $notification, $submission );
+		$known = array_map( 'strtolower', array_merge( Recipients::for_form( $submission->form ), Recipients::defaults() ) );
 
-		return array() !== $to && array() === array_filter( $to, static fn( string $email ) => 0 !== strcasecmp( $email, MergeTags::admin_email() ) );
+		return array() !== $to && array() === array_filter( $to, static fn( string $email ) => ! in_array( strtolower( $email ), $known, true ) );
 	}
 
 	/**
 	 * Gültige Adressen aus einem Text mit Platzhaltern.
 	 *
-	 * @param string     $value      z. B. «{site_admin_email}, {field:email}».
+	 * @param string     $value      z. B. «{default_recipient}, {field:email}».
 	 * @param Submission $submission Absendung.
 	 * @return list<string>
 	 */
 	public static function addresses( string $value, Submission $submission ): array {
-		$parts = array_map( 'trim', explode( ',', MergeTags::replace( $value, $submission ) ) );
-		$valid = array_filter( $parts, static fn( string $email ) => (bool) is_email( $email ) );
+		return Recipients::valid( MergeTags::replace( $value, $submission ) );
+	}
 
-		return array_slice( array_values( array_unique( $valid ) ), 0, self::MAX_RECIPIENTS );
+	/**
+	 * Empfänger einer Benachrichtigung.
+	 *
+	 * Hat das Formular eigene Empfänger, ersetzen sie «{site_admin_email}», wenn das allein im Feld «to» steht.
+	 * Andere Angaben (z. B. {field:email} für die Bestätigung an den Besucher) bleiben unverändert.
+	 *
+	 * @param array<string, mixed> $notification Einstellungen der Benachrichtigung.
+	 * @param Submission           $submission   Absendung.
+	 * @return list<string>
+	 */
+	private static function recipients( array $notification, Submission $submission ): array {
+		$to = trim( (string) ( $notification['to'] ?? '' ) );
+		if ( '{site_admin_email}' === $to && Recipients::of_form( $submission->form ) ) {
+			$to = '{default_recipient}';
+		}
+
+		return self::addresses( $to, $submission );
 	}
 
 	/**
@@ -75,7 +90,7 @@ final class Notifier {
 	 * @param Submission           $submission   Absendung.
 	 */
 	private static function send( array $notification, Submission $submission ): bool {
-		$to = self::addresses( (string) ( $notification['to'] ?? '' ), $submission );
+		$to = self::recipients( $notification, $submission );
 		if ( ! $to ) {
 			return false;
 		}

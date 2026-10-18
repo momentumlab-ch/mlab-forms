@@ -21,6 +21,7 @@ use MLab_Forms\Forms\Language;
 use MLab_Forms\Forms\Presets;
 use MLab_Forms\Forms\Templates;
 use MLab_Forms\Html;
+use MLab_Forms\Mail\Recipients;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -130,6 +131,7 @@ final class Builder {
 			'defaults'     => array(
 				'submitLabel'    => __( 'Senden', 'mlab-forms' ),
 				'successMessage' => __( 'Danke! Wir haben deine Nachricht erhalten.', 'mlab-forms' ),
+				'recipients'     => implode( ', ', Recipients::defaults() ),
 			),
 			'preview'      => array(
 				'url'    => admin_url( 'admin-ajax.php' ),

@@ -1,5 +1,12 @@
 == Changelog ==
 
+= 0.7.1 =
+* Jedes Formular kann an eine eigene Adresse senden. Im Builder unter «Einstellungen › Empfänger» trägst du eine oder mehrere Adressen ein (z. B. verkauf@firma.ch, info@firma.ch). Ist das Feld leer, gehen die Anfragen wie bisher an den Standard-Empfänger. Eine ungültige Adresse meldet der Builder sofort am Feld; der Server lehnt sie beim Speichern mit einer verständlichen Meldung ab.
+* Der Standard-Empfänger in den Einstellungen (Tab «E-Mail», Abschnitt «Absender») darf jetzt mehrere Adressen enthalten. Ist er leer, gilt die Admin-E-Mail der Website.
+* Die Bestätigungsmail an den Besucher bleibt unverändert. Bestehende Formulare funktionieren weiter und können die neue Einstellung ebenfalls nutzen.
+* Mails an die Empfänger der Seite erscheinen in der Standardsprache des Formulars, auch wenn ein Formular eigene Empfänger hat.
+* Für Entwickler: neues Merge-Tag `{default_recipient}` und optionales Schema-Feld `settings.recipients`. Besucher-Eingaben (`{field:…}`) werden als Empfänger nie aufgelöst.
+
 = 0.7.0 =
 * Mehrsprachige Formulare: Beschriftungen, Platzhalter, Hilfetexte, Einträge von Auswahllisten, Text des Absende-Buttons und Erfolgsmeldung lassen sich pro Sprache pflegen. Im Builder wählst du oben die Sprache (DE, FR, EN …) oder fügst eine hinzu (Deutsch, Französisch, Italienisch, Englisch, Rätoromanisch, Spanisch, Portugiesisch, Niederländisch). In einer weiteren Sprache siehst du nur die Texte, mit dem Standardtext darunter; ein leeres Feld zeigt den Standardtext. Der Zähler «12 von 14 übersetzt» und die Markierung «Noch nicht übersetzt» an den Feldern zeigen, was noch fehlt. Eine Sprache entfernen fragt zuerst nach und lässt sich kurz rückgängig machen. Die Vorschau hat einen eigenen Umschalter.
 * Die Seite bestimmt die Sprache: WPML, Polylang oder die Sprache der Website. Pflegt das Formular die Sprache nicht, erscheint die Standardsprache (die erste Sprache). Erfolgsmeldung, Fehlermeldungen und die Mail an den Besucher kommen in der Sprache, in der das Formular ausgefüllt wurde. Mails an die Admin-Adresse erscheinen immer in der Standardsprache des Formulars. Gespeichert wird der Wert einer Auswahl, nicht ihre Übersetzung, damit Anfragen und Auswertungen vergleichbar bleiben. Die Sprache steht in der Detailansicht der Anfrage.

@@ -4,7 +4,7 @@ Tags: formulare, kontakt, anfrage
 Requires at least: 6.9
 Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 0.7.0
+Stable tag: 0.7.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,8 +19,17 @@ MomentumLab Forms hat einen eigenen Menüpunkt im Backend mit «Alle Formulare»
 * Anfragen mit Status, Notizen und CSV-Export; Benachrichtigungen mit Platzhaltern wie `{field:email}` und `{all_fields}`.
 * Spam-Schutz mit Honeypot, Mindestzeit und Limit pro IP (gehasht gespeichert). Optional Cloudflare Turnstile, Google reCAPTCHA v3, hCaptcha (nur einer pro Formular) und Akismet; die Schlüssel liegen nur in den Einstellungen.
 * Absender (Name, E-Mail, «Antwort an») und Aufbewahrung pro Formular einstellbar.
+* Empfänger: Der Standard-Empfänger (Einstellungen › E-Mail) gilt für alle Formulare. Im Builder unter «Einstellungen › Empfänger» überschreibst du ihn pro Formular.
 * Datenschutz: Aufbewahrungsdauer, Export und Löschung über die WordPress-Datenschutz-Werkzeuge.
 * Mehrsprachig: Texte pro Formular in mehreren Sprachen pflegen, passend zur Sprache der Seite (WPML, Polylang oder Sprache der Website). Siehe «Mehrsprachige Formulare».
+
+= Empfänger pro Formular =
+
+Ohne Angabe gehen die Anfragen an den Standard-Empfänger aus den Einstellungen (Tab «E-Mail»), sonst an die Admin-E-Mail der Website. Ein Formular überschreibt das mit `settings.recipients`: ein Text mit festen Adressen, getrennt durch Komma, Semikolon oder Zeilenumbruch (höchstens 10, jede muss gültig sein; Duplikate fallen weg). Leer oder fehlend heisst «Standard-Empfänger».
+
+* Neues Merge-Tag `{default_recipient}`: die Adressen von `settings.recipients`, sonst der Standard-Empfänger, sonst die Admin-E-Mail. Die mitgelieferten Vorlagen und neue Formulare verwenden es als `to` der Benachrichtigung.
+* Der Override gilt für jede Benachrichtigung, deren `to` genau `{site_admin_email}` oder `{default_recipient}` ist, also auch für bestehende Formulare. Andere Angaben, z. B. `{field:email}` für die Bestätigung an den Besucher, bleiben unverändert.
+* Besucher können den Empfänger nie beeinflussen: In `settings.recipients` und im Standard-Empfänger zählen nur feste Adressen, Platzhalter wie `{field:email}` werden dort nicht aufgelöst.
 
 = Mehrsprachige Formulare =
 
@@ -69,6 +78,12 @@ Das Repository ist öffentlich, ein Token ist nicht nötig. Wird es privat, komm
 2. Auf main mergen. Der Workflow «Release» legt das Release `vX.Y.Z` mit `mlab-forms.zip` an, sobald es zur Version noch keines gibt. Ab dann sehen die Websites das Update.
 
 == Changelog ==
+
+= 0.7.1 =
+* Jedes Formular kann an eine eigene Adresse senden. Im Builder unter «Einstellungen › Empfänger» trägst du eine oder mehrere Adressen ein (z. B. verkauf@firma.ch, info@firma.ch). Ist das Feld leer, gehen die Anfragen wie bisher an den Standard-Empfänger. Eine ungültige Adresse meldet der Builder sofort am Feld.
+* Der Standard-Empfänger in den Einstellungen (Tab «E-Mail») darf jetzt mehrere Adressen enthalten.
+* Die Bestätigungsmail an den Besucher bleibt unverändert. Bestehende Formulare funktionieren weiter und können die neue Einstellung ebenfalls nutzen.
+* Für Entwickler: neues Merge-Tag `{default_recipient}` und optionales Schema-Feld `settings.recipients`.
 
 = 0.7.0 =
 * Mehrsprachige Formulare: Beschriftungen, Platzhalter, Hilfetexte, Einträge von Auswahllisten, Text des Absende-Buttons und Erfolgsmeldung lassen sich pro Sprache pflegen. Im Builder wählst du oben die Sprache (DE, FR, EN …) oder fügst eine hinzu (Deutsch, Französisch, Italienisch, Englisch, Rätoromanisch, Spanisch, Portugiesisch, Niederländisch). In einer weiteren Sprache siehst du nur die Texte, mit dem Standardtext darunter; ein leeres Feld zeigt den Standardtext. Der Zähler «12 von 14 übersetzt» und die Markierung «Noch nicht übersetzt» an den Feldern zeigen, was noch fehlt. Eine Sprache entfernen fragt zuerst nach und lässt sich kurz rückgängig machen. Die Vorschau hat einen eigenen Umschalter.

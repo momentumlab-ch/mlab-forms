@@ -630,6 +630,59 @@
 		} );
 	}
 
+	/* ---------- Empfänger ---------- */
+
+	var MAX_RECIPIENTS = 10;
+	var EMAIL_PATTERN = /^[^\s@,;<>"]+@[^\s@,;<>"]+\.[^\s@,;<>"]{2,}$/;
+
+	/**
+	 * Zerlegt die Eingabe (Komma, Semikolon oder Zeilenumbruch) in gültige und ungültige Angaben.
+	 *
+	 * @return {{valid: string[], invalid: string[], tooMany: boolean}}
+	 */
+	function parseAddresses( text ) {
+		var seen = {};
+		var result = { valid: [], invalid: [], tooMany: false };
+
+		String( text || '' ).split( /[,;\r\n]+/ ).forEach( function ( part ) {
+			var item = part.trim();
+			var key = item.toLowerCase();
+
+			if ( ! item || seen[ key ] ) {
+				return;
+			}
+			seen[ key ] = true;
+			( EMAIL_PATTERN.test( item ) ? result.valid : result.invalid ).push( item );
+		} );
+		result.tooMany = result.valid.length > MAX_RECIPIENTS;
+		return result;
+	}
+
+	/**
+	 * Setzt «settings.recipients». Leer entfernt die Eigenschaft (und «settings», wenn nichts übrig bleibt).
+	 */
+	function setRecipients( schema, text ) {
+		var settings = schema.settings && 'object' === typeof schema.settings ? schema.settings : {};
+
+		setValue( settings, 'recipients', String( text || '' ).trim() );
+		if ( Object.keys( settings ).length ) {
+			schema.settings = settings;
+		} else {
+			delete schema.settings;
+		}
+	}
+
+	/**
+	 * Gibt es eine Benachrichtigung an den Besucher (Adresse aus einem Feld)?
+	 */
+	function hasVisitorMail( schema ) {
+		var list = schema.settings && Array.isArray( schema.settings.notifications ) ? schema.settings.notifications : [];
+
+		return list.some( function ( notification ) {
+			return !! notification && 'string' === typeof notification.to && -1 !== notification.to.indexOf( '{field:' );
+		} );
+	}
+
 	function prefillEnabled( field ) {
 		return !! field.prefill && false !== field.prefill.enabled;
 	}
@@ -729,6 +782,9 @@
 		toggleLink: toggleLink,
 		toggleFuture: toggleFuture,
 		usedInNotifications: usedInNotifications,
+		parseAddresses: parseAddresses,
+		setRecipients: setRecipients,
+		hasVisitorMail: hasVisitorMail,
 		optionProblems: optionProblems,
 		setPrefill: setPrefill,
 		problems: problems,
