@@ -4,7 +4,7 @@ Tags: formulare, kontakt, anfrage
 Requires at least: 6.9
 Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 0.6.0
+Stable tag: 0.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,6 +20,17 @@ MomentumLab Forms hat einen eigenen Menüpunkt im Backend mit «Alle Formulare»
 * Spam-Schutz mit Honeypot, Mindestzeit und Limit pro IP (gehasht gespeichert). Optional Cloudflare Turnstile, Google reCAPTCHA v3, hCaptcha (nur einer pro Formular) und Akismet; die Schlüssel liegen nur in den Einstellungen.
 * Absender (Name, E-Mail, «Antwort an») und Aufbewahrung pro Formular einstellbar.
 * Datenschutz: Aufbewahrungsdauer, Export und Löschung über die WordPress-Datenschutz-Werkzeuge.
+* Mehrsprachig: Texte pro Formular in mehreren Sprachen pflegen, passend zur Sprache der Seite (WPML, Polylang oder Sprache der Website). Siehe «Mehrsprachige Formulare».
+
+= Mehrsprachige Formulare =
+
+Im Schema gibt `languages` die Sprachen an, z. B. `["de", "fr", "en"]`; die erste ist die Standardsprache, ihre Texte stehen wie bisher in den normalen Eigenschaften. Fehlt `languages`, ist das Formular einsprachig. Weitere Sprachen liegen unter `i18n`:
+
+* Feld: `"i18n": { "fr": { "label": "…", "placeholder": "…", "help": "…", "content": "…", "options": { "<Wert der Option>": "<Beschriftung>" } } }`
+* Einstellungen: `settings.i18n` mit `submit_label` und `success_message`.
+* Benachrichtigung: `i18n` mit `subject` und `body`.
+
+Leere oder fehlende Übersetzungen zeigen den Standardtext. Der Wert einer Option ist in allen Sprachen gleich, nur die Beschriftung wechselt; gespeichert wird der Wert. Das Formular sendet die Sprache im versteckten Feld `mlab_lang` mit (der Server akzeptiert nur Sprachen des Formulars). Mails an die Admin-Adresse (`to` enthält nur diese Adresse) erscheinen in der Standardsprache, alle anderen in der Sprache der Absendung. Texte, die vom Plugin selbst stammen (z. B. «Bitte fülle dieses Feld aus.»), folgen der Sprache der Website über die `.po`-Dateien (Deutsch (Schweiz) und Englisch liegen bei) und nicht der Sprache des Formulars.
 
 = Hooks =
 
@@ -29,6 +40,7 @@ Filter:
 * `mlab_forms_presets`: Bausteine des Builders ergänzen, ändern oder entfernen (je Baustein `key`, `name`, `hint`, optional `id_hint` und `field` mit dem Feld-Schema ohne `id`).
 * `mlab_forms_options_providers`: Quellen für Auswahllisten ergänzen (`options_source` im Formular).
 * `mlab_forms_style_vars`: CSS-Variablen der Formulare setzen, z. B. `--mlab-form-accent` aus den Theme-Farben.
+* `mlab_forms_current_language`: Sprache der Seite für mehrsprachige Formulare überschreiben (Code wie `fr`, dazu die Sprachen des Formulars). Ohne Filter gilt WPML, dann Polylang, dann die Sprache der Website.
 * `mlab_forms_client_ip`: IP-Adresse hinter einem Proxy oder CDN korrekt bestimmen.
 * `mlab_forms_recaptcha_threshold`: Mindest-Score für Google reCAPTCHA v3 (Standard 0.5).
 * `mlab_forms_token_max_age`: Höchstalter des Zeitfallen-Tokens in Sekunden (Standard 604800, also 7 Tage).
@@ -57,6 +69,14 @@ Das Repository ist öffentlich, ein Token ist nicht nötig. Wird es privat, komm
 2. Auf main mergen. Der Workflow «Release» legt das Release `vX.Y.Z` mit `mlab-forms.zip` an, sobald es zur Version noch keines gibt. Ab dann sehen die Websites das Update.
 
 == Changelog ==
+
+= 0.7.0 =
+* Mehrsprachige Formulare: Beschriftungen, Platzhalter, Hilfetexte, Einträge von Auswahllisten, Text des Absende-Buttons und Erfolgsmeldung lassen sich pro Sprache pflegen. Im Builder wählst du oben die Sprache (DE, FR, EN …) oder fügst eine hinzu (Deutsch, Französisch, Italienisch, Englisch, Rätoromanisch, Spanisch, Portugiesisch, Niederländisch). In einer weiteren Sprache siehst du nur die Texte, mit dem Standardtext darunter; ein leeres Feld zeigt den Standardtext. Der Zähler «12 von 14 übersetzt» und die Markierung «Noch nicht übersetzt» an den Feldern zeigen, was noch fehlt. Eine Sprache entfernen fragt zuerst nach und lässt sich kurz rückgängig machen. Die Vorschau hat einen eigenen Umschalter.
+* Die Seite bestimmt die Sprache: WPML, Polylang oder die Sprache der Website. Pflegt das Formular die Sprache nicht, erscheint die Standardsprache (die erste Sprache). Erfolgsmeldung, Fehlermeldungen und die Mail an den Besucher kommen in der Sprache, in der das Formular ausgefüllt wurde. Mails an die Admin-Adresse erscheinen immer in der Standardsprache des Formulars. Gespeichert wird der Wert einer Auswahl, nicht ihre Übersetzung, damit Anfragen und Auswertungen vergleichbar bleiben. Die Sprache steht in der Detailansicht der Anfrage.
+* Betreff und Text der Benachrichtigungen übersetzt du in der Experten-Ansicht (JSON) unter «i18n» der Benachrichtigung; einen Editor dafür gibt es im Builder noch nicht.
+* Bestehende Formulare bleiben unverändert. Das Schema bleibt bei Version 1, alles Neue ist optional («languages» und «i18n»).
+* Die Plugin-Oberfläche gibt es zusätzlich auf Englisch (en_US), damit Seiten auf Englisch englische Meldungen zeigen.
+* Für Entwickler: neuer Filter `mlab_forms_current_language`, um die erkannte Sprache zu überschreiben.
 
 = 0.6.0 =
 * Neuer Formular-Builder: Felder werden links aus Bausteinen gewählt, in der Mitte angeordnet und rechts bearbeitet. Reiter «Felder», «Einstellungen» und «Vorschau»; am Handy als Zeile mit Bausteinen und Eigenschaften als Blatt von unten. Alles lässt sich per Tastatur bedienen, Felder verschiebst du mit den Pfeilen.
