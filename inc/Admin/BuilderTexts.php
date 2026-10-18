@@ -72,6 +72,12 @@ final class BuilderTexts {
 			'duplicated'   => __( 'Feld «%s» dupliziert', 'mlab-forms' ),
 			/* translators: %s: Name des Felds */
 			'removed'      => __( 'Feld «%s» entfernt', 'mlab-forms' ),
+			'undo'         => __( 'Rückgängig', 'mlab-forms' ),
+			'undone'       => __( 'Rückgängig gemacht', 'mlab-forms' ),
+			/* translators: %s: Name des Eintrags */
+			'entryRemoved' => __( 'Eintrag «%s» entfernt', 'mlab-forms' ),
+			'usedInMail'   => __( 'Dieses Feld wird in einer Benachrichtigung verwendet. Beim Löschen kommt die Mail nicht mehr richtig an.', 'mlab-forms' ),
+			'removeAnyway' => __( 'Trotzdem löschen', 'mlab-forms' ),
 			'noFields'     => __( 'Das Formular braucht mindestens ein Feld.', 'mlab-forms' ),
 			'labelMissing' => __( 'Die Beschriftung fehlt.', 'mlab-forms' ),
 			/* translators: %s: Name des Felds */
@@ -127,22 +133,25 @@ final class BuilderTexts {
 	 */
 	private static function choices(): array {
 		return array(
-			'entries'        => __( 'Einträge', 'mlab-forms' ),
-			'entry'          => __( 'Eintrag', 'mlab-forms' ),
-			'addEntry'       => __( 'Eintrag hinzufügen', 'mlab-forms' ),
-			'newEntry'       => __( 'Neuer Eintrag', 'mlab-forms' ),
-			'removeEntry'    => __( 'Eintrag entfernen', 'mlab-forms' ),
-			'makeDefault'    => __( 'Als Standard festlegen', 'mlab-forms' ),
-			'defaultHint'    => __( 'Der Stern markiert den Standard-Eintrag. Es gibt höchstens einen.', 'mlab-forms' ),
-			'option1'        => __( 'Option 1', 'mlab-forms' ),
-			'option2'        => __( 'Option 2', 'mlab-forms' ),
-			'optionsMissing' => __( 'Es braucht mindestens einen Eintrag.', 'mlab-forms' ),
-			'emptyFirst'     => __( 'Leere erste Zeile anzeigen', 'mlab-forms' ),
-			'emptyFirstHint' => __( 'Zeigt «Bitte wählen» zuoberst.', 'mlab-forms' ),
-			'prefill'        => __( 'Vorauswahl per Link erlauben', 'mlab-forms' ),
+			'entries'          => __( 'Einträge', 'mlab-forms' ),
+			'entry'            => __( 'Eintrag', 'mlab-forms' ),
+			'addEntry'         => __( 'Eintrag hinzufügen', 'mlab-forms' ),
+			'newEntry'         => __( 'Neuer Eintrag', 'mlab-forms' ),
+			'removeEntry'      => __( 'Eintrag entfernen', 'mlab-forms' ),
+			'makeDefault'      => __( 'Als Standard festlegen', 'mlab-forms' ),
+			'defaultHint'      => __( 'Der Stern markiert den Standard-Eintrag. Es gibt höchstens einen.', 'mlab-forms' ),
+			'option1'          => __( 'Option 1', 'mlab-forms' ),
+			'option2'          => __( 'Option 2', 'mlab-forms' ),
+			'optionEmpty'      => __( 'Ein Eintrag ist leer.', 'mlab-forms' ),
+			'optionDuplicate'  => __( 'Zwei Einträge heissen gleich.', 'mlab-forms' ),
+			'multipleDefaults' => __( 'Es darf nur ein Eintrag der Standard sein.', 'mlab-forms' ),
+			'optionsMissing'   => __( 'Es braucht mindestens einen Eintrag.', 'mlab-forms' ),
+			'emptyFirst'       => __( 'Leere erste Zeile anzeigen', 'mlab-forms' ),
+			'emptyFirstHint'   => __( 'Zeigt «Bitte wählen» zuoberst.', 'mlab-forms' ),
+			'prefill'          => __( 'Vorauswahl per Link erlauben', 'mlab-forms' ),
 			/* translators: %s: Name des URL-Parameters */
-			'prefillHint'    => __( 'Ein Link wie …/kontakt/?%s=Eintrag wählt den Eintrag vor. Ausgeschaltet, gelten nur die Einträge oben.', 'mlab-forms' ),
-			'prefillDev'     => __( 'Für Entwickler: Filter mlab_forms_options_providers', 'mlab-forms' ),
+			'prefillHint'      => __( 'Ein Link wie …/kontakt/?%s=Eintrag wählt den Eintrag vor. Ausgeschaltet, gelten nur die Einträge oben.', 'mlab-forms' ),
+			'prefillDev'       => __( 'Für Entwickler: Filter mlab_forms_options_providers', 'mlab-forms' ),
 		);
 	}
 

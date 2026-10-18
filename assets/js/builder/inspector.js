@@ -131,7 +131,7 @@
 				title: app.t( 'makeDefault' ),
 				'data-focus': 'opt-def:' + index,
 				onclick: function () {
-					Core.toggleDefault( options, index );
+					Core.toggleDefault( options, index, field.options_source && field.options_source.prepend );
 					app.change( 'structure' );
 				},
 			}, ns.Dom.icon( 'star' ) ),
@@ -142,9 +142,21 @@
 			act( 'down', 'moveDown', index === count - 1, function () {
 				Core.move( options, index, 1 );
 			} ),
-			act( 'trash', 'removeEntry', false, function () {
-				options.splice( index, 1 );
-			} ),
+			h( 'button', {
+				type: 'button',
+				class: 'mlab-b-icon-btn',
+				'data-focus': 'trash:' + index,
+				'aria-label': app.t( 'removeEntry' ) + ' (' + ( index + 1 ) + ')',
+				title: app.t( 'removeEntry' ),
+				onclick: function () {
+					var snapshot = app.snapshot( 'opt-in:' + index );
+					var name = Core.optionText( options[ index ] ) || String( index + 1 );
+
+					options.splice( index, 1 );
+					app.change( 'structure' );
+					app.offerUndo( app.t( 'entryRemoved' ).replace( '%s', name ), snapshot );
+				},
+			}, ns.Dom.icon( 'trash' ) ),
 		] );
 	}
 
@@ -265,7 +277,7 @@
 		}
 		if ( p.futureOnly ) {
 			box.appendChild( toggle( app, app.t( 'futureOnly' ), app.t( 'futureOnlyHint' ), 'today' === field.min, function ( on ) {
-				Core.setValue( field, 'min', on ? 'today' : '' );
+				Core.toggleFuture( app.memory, field, on );
 			}, 'prop:min' ) );
 		}
 		if ( p.required ) {
@@ -275,7 +287,7 @@
 		}
 		if ( p.link && 'consent' === field.type ) {
 			box.appendChild( toggle( app, app.t( 'linkPrivacy' ), app.t( 'linkPrivacyHint' ), !! field.link, function ( on ) {
-				Core.setValue( field, 'link', on ? '{privacy_url}' : '' );
+				Core.toggleLink( app.memory, field, on );
 			}, 'prop:link' ) );
 		}
 		if ( p.width ) {
@@ -336,7 +348,7 @@
 			basics( app, field, p, type, box );
 			behaviour( app, field, p, type, box );
 			el.appendChild( box );
-		} );
+		}, [ 'opt-add', 'sheet-close' ] );
 	}
 
 	root.MLabBuilder.Inspector = { render: render };

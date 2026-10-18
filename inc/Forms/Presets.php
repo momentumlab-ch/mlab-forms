@@ -33,7 +33,7 @@ final class Presets {
 		 * Bausteine des Builders ergänzen, ändern oder entfernen.
 		 *
 		 * Jeder Baustein: key, name, hint, optional id_hint und field (Feld-Schema ohne id).
-		 * Ungültige Bausteine werden ignoriert.
+		 * Ungültige Bausteine (auch mit ungültigem Feld) werden ignoriert, eine «id» im Feld wird entfernt.
 		 *
 		 * @param array<int, array<string, mixed>> $presets Bausteine.
 		 */
@@ -65,17 +65,36 @@ final class Presets {
 			if ( ! self::is_valid( $preset ) || isset( $seen[ $preset['key'] ] ) ) {
 				continue;
 			}
+			$field = $preset['field'];
+			unset( $field['id'] ); // Die ID vergibt das System.
+			if ( ! self::is_valid_field( $field ) ) {
+				continue;
+			}
 			$seen[ $preset['key'] ] = true;
 			$clean[]                = array(
 				'key'     => $preset['key'],
 				'name'    => $preset['name'],
 				'hint'    => is_string( $preset['hint'] ?? null ) ? $preset['hint'] : '',
 				'id_hint' => is_string( $preset['id_hint'] ?? null ) ? $preset['id_hint'] : '',
-				'field'   => $preset['field'],
+				'field'   => $field,
 			);
 		}
 
 		return $clean;
+	}
+
+	/**
+	 * Besteht das Feld die Schema-Prüfung (mit einer Dummy-ID)?
+	 *
+	 * @param array<string, mixed> $field Feld ohne ID.
+	 */
+	private static function is_valid_field( array $field ): bool {
+		$schema = array(
+			'schema_version' => SchemaValidator::SCHEMA_VERSION,
+			'fields'         => array( array( 'id' => 'baustein' ) + $field ),
+		);
+
+		return array() === SchemaValidator::validate( $schema );
 	}
 
 	/**

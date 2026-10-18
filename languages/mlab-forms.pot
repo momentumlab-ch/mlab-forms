@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-18T01:17:12+00:00\n"
+"POT-Creation-Date: 2026-10-18T01:23:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: mlab-forms\n"
@@ -41,7 +41,7 @@ msgstr ""
 msgid "https://momentumlab.ch"
 msgstr ""
 
-#: inc/Admin/ConnectionTest.php:37 inc/Admin/Preview.php:40 inc/Capabilities.php:45
+#: inc/Admin/ConnectionTest.php:37 inc/Admin/Preview.php:45 inc/Capabilities.php:45
 msgid "Dazu fehlt dir die Berechtigung."
 msgstr ""
 
@@ -180,7 +180,7 @@ msgstr ""
 msgid "Aktiv"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:161 inc/Admin/FormEditor.php:48
+#: inc/Admin/BuilderTexts.php:170 inc/Admin/FormEditor.php:48
 msgid "Aufbewahrung"
 msgstr ""
 
@@ -342,7 +342,7 @@ msgstr ""
 msgid "Bitte wählen"
 msgstr ""
 
-#: inc/Fields/DateField.php:23 inc/Forms/Presets.php:195
+#: inc/Fields/DateField.php:23 inc/Forms/Presets.php:214
 msgid "Datum"
 msgstr ""
 
@@ -368,11 +368,11 @@ msgstr ""
 msgid "Text"
 msgstr ""
 
-#: inc/Fields/FieldTypes.php:61 inc/Forms/Presets.php:114 inc/Forms/Presets.php:118 inc/Settings.php:44
+#: inc/Fields/FieldTypes.php:61 inc/Forms/Presets.php:133 inc/Forms/Presets.php:137 inc/Settings.php:44
 msgid "E-Mail"
 msgstr ""
 
-#: inc/Fields/FieldTypes.php:62 inc/Forms/Presets.php:127 inc/Forms/Presets.php:131
+#: inc/Fields/FieldTypes.php:62 inc/Forms/Presets.php:146 inc/Forms/Presets.php:150
 msgid "Telefon"
 msgstr ""
 
@@ -380,7 +380,7 @@ msgstr ""
 msgid "Verstecktes Feld"
 msgstr ""
 
-#: inc/Fields/FieldTypes.php:67 inc/Forms/Presets.php:198
+#: inc/Fields/FieldTypes.php:67 inc/Forms/Presets.php:217
 msgid "Auswahlliste"
 msgstr ""
 
@@ -388,7 +388,7 @@ msgstr ""
 msgid "Optionsfelder"
 msgstr ""
 
-#: inc/Fields/FieldTypes.php:69 inc/Forms/Presets.php:208 inc/Forms/Presets.php:212
+#: inc/Fields/FieldTypes.php:69 inc/Forms/Presets.php:227 inc/Forms/Presets.php:231
 msgid "Mehrfachauswahl"
 msgstr ""
 
@@ -396,11 +396,11 @@ msgstr ""
 msgid "Checkbox"
 msgstr ""
 
-#: inc/Fields/FieldTypes.php:71 inc/Forms/Presets.php:218
+#: inc/Fields/FieldTypes.php:71 inc/Forms/Presets.php:237
 msgid "Einwilligung"
 msgstr ""
 
-#: inc/Fields/FieldTypes.php:72 inc/Forms/Presets.php:229
+#: inc/Fields/FieldTypes.php:72 inc/Forms/Presets.php:248
 msgid "Zwischentitel"
 msgstr ""
 
@@ -454,7 +454,7 @@ msgstr ""
 msgid "Bitte gib eine gültige E-Mail-Adresse ein."
 msgstr ""
 
-#: inc/Admin/Builder.php:189 inc/Fields/TextareaField.php:25 inc/Forms/Presets.php:194
+#: inc/Admin/Builder.php:189 inc/Fields/TextareaField.php:25 inc/Forms/Presets.php:213
 msgid "Mehrzeiliger Text"
 msgstr ""
 
@@ -882,15 +882,15 @@ msgstr ""
 msgid "Updates sind nicht aktiv: In wp-config.php fehlt die Konstante MLAB_FORMS_GITHUB_TOKEN."
 msgstr ""
 
-#: inc/Admin/Builder.php:185 inc/Forms/Presets.php:110 inc/Forms/Presets.php:111 inc/Forms/Presets.php:135 inc/Forms/Presets.php:160
+#: inc/Admin/Builder.php:185 inc/Forms/Presets.php:129 inc/Forms/Presets.php:130 inc/Forms/Presets.php:154 inc/Forms/Presets.php:179
 msgid "Kurzer Text"
 msgstr ""
 
-#: inc/Admin/Builder.php:186 inc/Forms/Presets.php:115
+#: inc/Admin/Builder.php:186 inc/Forms/Presets.php:134
 msgid "Prüft das Format"
 msgstr ""
 
-#: inc/Admin/Builder.php:187 inc/Forms/Presets.php:128
+#: inc/Admin/Builder.php:187 inc/Forms/Presets.php:147
 msgid "Prüft die Nummer"
 msgstr ""
 
@@ -902,7 +902,7 @@ msgstr ""
 msgid "Nur Zahlen"
 msgstr ""
 
-#: inc/Admin/Builder.php:191 inc/Forms/Presets.php:195
+#: inc/Admin/Builder.php:191 inc/Forms/Presets.php:214
 msgid "Prüft das Datum"
 msgstr ""
 
@@ -914,7 +914,7 @@ msgstr ""
 msgid "Eine Option, alle sichtbar"
 msgstr ""
 
-#: inc/Admin/Builder.php:194 inc/Forms/Presets.php:209
+#: inc/Admin/Builder.php:194 inc/Forms/Presets.php:228
 msgid "Mehrere Optionen wählen"
 msgstr ""
 
@@ -926,7 +926,7 @@ msgstr ""
 msgid "Pflicht-Häkchen mit Datenschutz-Link"
 msgstr ""
 
-#: inc/Admin/Builder.php:197 inc/Forms/Presets.php:229
+#: inc/Admin/Builder.php:197 inc/Forms/Presets.php:248
 msgid "Nur eine Überschrift"
 msgstr ""
 
@@ -938,135 +938,135 @@ msgstr ""
 msgid "Formular als JSON"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:100
+#: inc/Admin/BuilderTexts.php:106
 msgid "Muss vor dem Senden ausgefüllt sein"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:101
+#: inc/Admin/BuilderTexts.php:107
 msgid "Breite"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:102
+#: inc/Admin/BuilderTexts.php:108
 msgid "Voll"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:103
+#: inc/Admin/BuilderTexts.php:109
 msgid "Halb"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:104
+#: inc/Admin/BuilderTexts.php:110
 msgid "Drittel"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:105
+#: inc/Admin/BuilderTexts.php:111
 msgid "Prüfung"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:106
+#: inc/Admin/BuilderTexts.php:112
 msgid "Keine besondere Prüfung"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:107
+#: inc/Admin/BuilderTexts.php:113
 msgid "Schweizer Postleitzahl"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:108
+#: inc/Admin/BuilderTexts.php:114
 msgid "Kleinster Wert"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:109
+#: inc/Admin/BuilderTexts.php:115
 msgid "Grösster Wert"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:110
+#: inc/Admin/BuilderTexts.php:116
 msgid "Nur Daten ab heute"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:111
+#: inc/Admin/BuilderTexts.php:117
 msgid "Frühere Daten werden abgelehnt"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:112
+#: inc/Admin/BuilderTexts.php:118
 msgid "Mit der Datenschutzerklärung verlinken"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:113
+#: inc/Admin/BuilderTexts.php:119
 msgid "Der Text wird zum Link auf deine Datenschutzseite."
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:114
+#: inc/Admin/BuilderTexts.php:120
 msgid "Wird automatisch geprüft:"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:115
+#: inc/Admin/BuilderTexts.php:121
 msgid "gültige E-Mail-Adresse"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:116
+#: inc/Admin/BuilderTexts.php:122
 msgid "gültige Telefonnummer"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:117
+#: inc/Admin/BuilderTexts.php:123
 msgid "gültige Postleitzahl"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:118
+#: inc/Admin/BuilderTexts.php:124
 msgid "gültiges Datum"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:119
+#: inc/Admin/BuilderTexts.php:125
 msgid "nur Zahlen"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:130
+#: inc/Admin/BuilderTexts.php:136
 msgid "Einträge"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:131
+#: inc/Admin/BuilderTexts.php:137
 msgid "Eintrag"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:132
+#: inc/Admin/BuilderTexts.php:138
 msgid "Eintrag hinzufügen"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:133
+#: inc/Admin/BuilderTexts.php:139
 msgid "Neuer Eintrag"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:134
+#: inc/Admin/BuilderTexts.php:140
 msgid "Eintrag entfernen"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:135
+#: inc/Admin/BuilderTexts.php:141
 msgid "Als Standard festlegen"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:136
+#: inc/Admin/BuilderTexts.php:142
 msgid "Der Stern markiert den Standard-Eintrag. Es gibt höchstens einen."
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:137 inc/Forms/Presets.php:204 inc/Forms/Presets.php:214
+#: inc/Admin/BuilderTexts.php:143 inc/Forms/Presets.php:223 inc/Forms/Presets.php:233
 msgid "Option 1"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:138 inc/Forms/Presets.php:204 inc/Forms/Presets.php:214
+#: inc/Admin/BuilderTexts.php:144 inc/Forms/Presets.php:223 inc/Forms/Presets.php:233
 msgid "Option 2"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:139
+#: inc/Admin/BuilderTexts.php:148
 msgid "Es braucht mindestens einen Eintrag."
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:140
+#: inc/Admin/BuilderTexts.php:149
 msgid "Leere erste Zeile anzeigen"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:141
+#: inc/Admin/BuilderTexts.php:150
 msgid "Zeigt «Bitte wählen» zuoberst."
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:142
+#: inc/Admin/BuilderTexts.php:151
 msgid "Vorauswahl per Link erlauben"
 msgstr ""
 
@@ -1075,67 +1075,67 @@ msgstr ""
 msgid "Ein Link wie …/kontakt/?%s=Eintrag wählt den Eintrag vor. Ausgeschaltet, gelten nur die Einträge oben."
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:145
+#: inc/Admin/BuilderTexts.php:154
 msgid "Für Entwickler: Filter mlab_forms_options_providers"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:156
+#: inc/Admin/BuilderTexts.php:165
 msgid "Nach dem Absenden"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:157
+#: inc/Admin/BuilderTexts.php:166
 msgid "Text des Absende-Buttons"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:158
+#: inc/Admin/BuilderTexts.php:167
 msgid "Erfolgsmeldung"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:159
+#: inc/Admin/BuilderTexts.php:168
 msgid "Danke-Seite (Adresse)"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:160
+#: inc/Admin/BuilderTexts.php:169
 msgid "Optional. Wenn du eine Adresse einträgst, geht es nach dem Absenden dort weiter."
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:162
+#: inc/Admin/BuilderTexts.php:171
 msgid "Wie lange gesendete Anfragen gespeichert bleiben, stellst du im Kasten «Aufbewahrung» rechts ein."
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:173
+#: inc/Admin/BuilderTexts.php:182
 msgid "Vorschau des Formulars"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:174
+#: inc/Admin/BuilderTexts.php:183
 msgid "Grösse der Vorschau"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:175
+#: inc/Admin/BuilderTexts.php:184
 msgid "So sieht das Formular auf deiner Seite aus. Absenden ist hier ausgeschaltet."
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:176
+#: inc/Admin/BuilderTexts.php:185
 msgid "Vorschau wird geladen …"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:177
+#: inc/Admin/BuilderTexts.php:186
 msgid "Die Vorschau ist noch nicht möglich. Bitte korrigiere:"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:178
+#: inc/Admin/BuilderTexts.php:187
 msgid "Die Vorschau konnte nicht geladen werden. Bitte versuche es nochmals."
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:179
+#: inc/Admin/BuilderTexts.php:188
 msgid "Handy"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:180
+#: inc/Admin/BuilderTexts.php:189
 msgid "Computer"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:184
+#: inc/Admin/BuilderTexts.php:193
 msgid "Das Schema braucht eine Liste «fields»."
 msgstr ""
 
@@ -1244,7 +1244,7 @@ msgstr ""
 msgid "Das Formular braucht mindestens ein Feld."
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:76
+#: inc/Admin/BuilderTexts.php:82
 msgid "Die Beschriftung fehlt."
 msgstr ""
 
@@ -1253,130 +1253,170 @@ msgstr ""
 msgid "Feld «%s»:"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:89
+#: inc/Admin/BuilderTexts.php:95
 msgid "Eigenschaften"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:90
+#: inc/Admin/BuilderTexts.php:96
 msgid "Wähle ein Feld aus, um es zu bearbeiten."
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:91
+#: inc/Admin/BuilderTexts.php:97
 msgid "Fertig"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:92
+#: inc/Admin/BuilderTexts.php:98
 msgid "Beschriftung"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:93
+#: inc/Admin/BuilderTexts.php:99
 msgid "Titel"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:94
+#: inc/Admin/BuilderTexts.php:100
 msgid "Platzhalter"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:95
+#: inc/Admin/BuilderTexts.php:101
 msgid "Text der leeren ersten Zeile"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:96
+#: inc/Admin/BuilderTexts.php:102
 msgid "Hilfetext"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:97
+#: inc/Admin/BuilderTexts.php:103
 msgid "Inhalt (HTML)"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:98
+#: inc/Admin/BuilderTexts.php:104
 msgid "Standardwert"
 msgstr ""
 
-#: inc/Admin/BuilderTexts.php:99
+#: inc/Admin/BuilderTexts.php:105
 msgid "Pflichtfeld"
 msgstr ""
 
-#: inc/Forms/Presets.php:110
+#: inc/Forms/Presets.php:129
 msgid "Vorname"
 msgstr ""
 
-#: inc/Forms/Presets.php:111
+#: inc/Forms/Presets.php:130
 msgid "Nachname"
 msgstr ""
 
-#: inc/Forms/Presets.php:135
+#: inc/Forms/Presets.php:154
 msgid "Firma"
 msgstr ""
 
-#: inc/Forms/Presets.php:146
+#: inc/Forms/Presets.php:165
 msgid "Adresse"
 msgstr ""
 
-#: inc/Forms/Presets.php:146
+#: inc/Forms/Presets.php:165
 msgid "Strasse und Nummer"
 msgstr ""
 
-#: inc/Forms/Presets.php:149 inc/Forms/Presets.php:153
+#: inc/Forms/Presets.php:168 inc/Forms/Presets.php:172
 msgid "PLZ"
 msgstr ""
 
-#: inc/Forms/Presets.php:150
+#: inc/Forms/Presets.php:169
 msgid "Prüft die Postleitzahl"
 msgstr ""
 
-#: inc/Forms/Presets.php:160
+#: inc/Forms/Presets.php:179
 msgid "Ort"
 msgstr ""
 
-#: inc/Forms/Presets.php:163 inc/Forms/Presets.php:167
+#: inc/Forms/Presets.php:182 inc/Forms/Presets.php:186
 msgid "Land"
 msgstr ""
 
-#: inc/Forms/Presets.php:164
+#: inc/Forms/Presets.php:183
 msgid "Auswahl der Länder"
 msgstr ""
 
-#: inc/Forms/Presets.php:173
+#: inc/Forms/Presets.php:192
 msgid "Schweiz"
 msgstr ""
 
-#: inc/Forms/Presets.php:176
+#: inc/Forms/Presets.php:195
 msgid "Deutschland"
 msgstr ""
 
-#: inc/Forms/Presets.php:177
+#: inc/Forms/Presets.php:196
 msgid "Österreich"
 msgstr ""
 
-#: inc/Forms/Presets.php:178
+#: inc/Forms/Presets.php:197
 msgid "Liechtenstein"
 msgstr ""
 
-#: inc/Forms/Presets.php:179
+#: inc/Forms/Presets.php:198
 msgid "Frankreich"
 msgstr ""
 
-#: inc/Forms/Presets.php:180
+#: inc/Forms/Presets.php:199
 msgid "Italien"
 msgstr ""
 
-#: inc/Forms/Presets.php:194
+#: inc/Forms/Presets.php:213
 msgid "Nachricht"
 msgstr ""
 
-#: inc/Forms/Presets.php:199
+#: inc/Forms/Presets.php:218
 msgid "Eine Option wählen"
 msgstr ""
 
-#: inc/Forms/Presets.php:202
+#: inc/Forms/Presets.php:221
 msgid "Auswahl"
 msgstr ""
 
-#: inc/Forms/Presets.php:219
+#: inc/Forms/Presets.php:238
 msgid "Pflicht-Häkchen mit Link zur Datenschutzerklärung"
 msgstr ""
 
-#: inc/Forms/Presets.php:222
+#: inc/Forms/Presets.php:241
 msgid "Ich bin mit der Verarbeitung meiner Angaben einverstanden."
+msgstr ""
+
+#: inc/Admin/BuilderTexts.php:145
+msgid "Ein Eintrag ist leer."
+msgstr ""
+
+#: inc/Admin/BuilderTexts.php:146
+msgid "Zwei Einträge heissen gleich."
+msgstr ""
+
+#: inc/Admin/BuilderTexts.php:147
+msgid "Es darf nur ein Eintrag der Standard sein."
+msgstr ""
+
+#. translators: %s: Name des Felds
+#: inc/Admin/BuilderTexts.php:75
+msgid "Rückgängig"
+msgstr ""
+
+#. translators: %s: Name des Felds
+#: inc/Admin/BuilderTexts.php:76
+msgid "Rückgängig gemacht"
+msgstr ""
+
+#. translators: %s: Name des Eintrags
+#: inc/Admin/BuilderTexts.php:78
+msgid "Eintrag «%s» entfernt"
+msgstr ""
+
+#. translators: %s: Name des Eintrags
+#: inc/Admin/BuilderTexts.php:79
+msgid "Dieses Feld wird in einer Benachrichtigung verwendet. Beim Löschen kommt die Mail nicht mehr richtig an."
+msgstr ""
+
+#: inc/Admin/BuilderTexts.php:80
+msgid "Trotzdem löschen"
+msgstr ""
+
+#: inc/Admin/Preview.php:51
+msgid "Das Formular ist zu gross für die Vorschau."
 msgstr ""

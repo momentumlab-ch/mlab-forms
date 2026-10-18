@@ -41,4 +41,10 @@ final class BuilderTest extends TestCase {
 	public function test_kein_objekt_liefert_fehler(): void {
 		$this->assertFalse( Preview::respond( null )['ok'] );
 	}
+
+	public function test_zu_grosse_eingabe_wird_erkannt(): void {
+		$this->assertFalse( Preview::is_too_large( str_repeat( 'a', Preview::MAX_BYTES ) ) );
+		$this->assertTrue( Preview::is_too_large( str_repeat( 'a', Preview::MAX_BYTES + 1 ) ) );
+		$this->assertFalse( Preview::is_too_large( null ) );
+	}
 }

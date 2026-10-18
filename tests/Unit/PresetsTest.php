@@ -117,4 +117,27 @@ final class PresetsTest extends TestCase {
 		$this->assertSame( 1, count( array_keys( $keys, 'email', true ) ) );
 		$this->assertSame( 'E-Mail', array_column( $all, 'name', 'key' )['email'] );
 	}
+
+	public function test_id_wird_entfernt_und_ungueltige_felder_werden_verworfen(): void {
+		add_filter(
+			'mlab_forms_presets',
+			static fn( array $presets ): array => array_merge(
+				$presets,
+				array(
+					array( 'key' => 'mit_id', 'name' => 'Mit ID', 'field' => array( 'id' => 'boese', 'type' => 'text', 'label' => 'X' ) ),
+					array( 'key' => 'falsches_format', 'name' => 'Falsch', 'field' => array( 'type' => 'text', 'label' => 'X', 'format' => 'unbekannt' ) ),
+					array( 'key' => 'ohne_label', 'name' => 'Ohne', 'field' => array( 'type' => 'text' ) ),
+					array( 'key' => 'unbekannter_typ', 'name' => 'Typ', 'field' => array( 'type' => 'gibtsnicht', 'label' => 'X' ) ),
+					array( 'key' => 'zwei_standard', 'name' => 'Zwei', 'field' => array( 'type' => 'select', 'label' => 'X', 'options' => array( array( 'value' => 'a', 'default' => true ), array( 'value' => 'b', 'default' => true ) ) ) ),
+				)
+			)
+		);
+
+		$all = array_column( Presets::all(), null, 'key' );
+
+		$this->assertArrayNotHasKey( 'id', $all['mit_id']['field'] );
+		foreach ( array( 'falsches_format', 'ohne_label', 'unbekannter_typ', 'zwei_standard' ) as $key ) {
+			$this->assertArrayNotHasKey( $key, $all, $key );
+		}
+	}
 }

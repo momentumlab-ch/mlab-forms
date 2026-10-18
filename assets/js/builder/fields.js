@@ -42,11 +42,7 @@
 	 * «Eigenes Feld»: Dialog mit den Feldtypen des Systems.
 	 */
 	function openCustomDialog( app ) {
-		var dialog = h( 'dialog', { class: 'mlab-b-dialog', 'aria-labelledby': 'mlab-b-dialog-title' } );
-		var close = function () {
-			dialog.close();
-			dialog.remove();
-		};
+		var dialog;
 		var buttons = app.config.typeList.map( function ( type ) {
 			return h(
 				'button',
@@ -55,7 +51,7 @@
 					class: 'mlab-b-type',
 					'data-type': type.key,
 					onclick: function () {
-						close();
+						dialog.close( true );
 						app.addField( Core.fromType( type, app.schema.fields, { option1: app.t( 'option1' ), option2: app.t( 'option2' ) } ) );
 					},
 				},
@@ -63,15 +59,14 @@
 			);
 		} );
 
-		dialog.appendChild( h( 'h2', { id: 'mlab-b-dialog-title' }, app.t( 'customField' ) ) );
-		dialog.appendChild( h( 'p', { class: 'mlab-b-muted' }, app.t( 'customFieldIntro' ) ) );
-		dialog.appendChild( h( 'div', { class: 'mlab-b-types' }, buttons ) );
-		dialog.appendChild( h( 'button', { type: 'button', class: 'mlab-b-btn', onclick: close }, app.t( 'cancel' ) ) );
-		dialog.addEventListener( 'cancel', function () {
-			dialog.remove();
-		} );
-		app.root.appendChild( dialog );
-		dialog.showModal();
+		dialog = ns.Dom.openDialog( app.root, [
+			h( 'h2', { id: 'mlab-b-dialog-title' }, app.t( 'customField' ) ),
+			h( 'p', { class: 'mlab-b-muted' }, app.t( 'customFieldIntro' ) ),
+			h( 'div', { class: 'mlab-b-types' }, buttons ),
+			h( 'button', { type: 'button', class: 'mlab-b-btn', onclick: function () {
+				dialog.close();
+			} }, app.t( 'cancel' ) ),
+		], 'mlab-b-dialog-title' );
 	}
 
 	/* ---------- Formular-Ansicht ---------- */

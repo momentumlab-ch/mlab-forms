@@ -11,6 +11,7 @@
 	var h = ns.Dom.h;
 	var Core = ns.Core;
 	var NARROW_WIDTH = 760;
+	var UNDO_SECONDS = 10;
 	var TABS = [ 'fields', 'settings', 'preview' ];
 
 	function typeMap( list ) {
@@ -65,6 +66,7 @@
 			selectedId: null,
 			expert: false,
 			dirty: false,
+			memory: {},
 			tab: 'fields',
 			t: function ( key ) {
 				return texts[ key ] || key;
@@ -95,6 +97,7 @@
 		}
 
 		app.change = function ( level ) {
+			hideUndo();
 			sync();
 			ns.Fields.renderCanvas( app, parts.canvas );
 			if ( 'structure' === level ) {
@@ -124,28 +127,122 @@
 			}
 		};
 
-		app.rowAction = function ( action, id ) {
-			var fields = app.schema.fields;
-			var index = fields.map( function ( item ) {
+		function indexOf( id ) {
+			return app.schema.fields.map( function ( item ) {
 				return item.id;
 			} ).indexOf( id );
+		}
+
+		app.focus = function ( key ) {
+			var target = rootEl.querySelector( '[data-focus="' + window.CSS.escape( key ) + '"]' );
+			if ( target ) {
+				target.focus();
+			}
+		};
+
+		function removeField( id ) {
+			var fields = app.schema.fields;
+			var index = indexOf( id );
+			var name = fields[ index ].label || id;
+			var snapshot = app.snapshot( 'select:' + id );
+			var neighbour;
+
+			fields.splice( index, 1 );
+			app.selectedId = app.selectedId === id ? null : app.selectedId;
+			neighbour = fields[ index ] || fields[ index - 1 ];
+			app.change( 'structure' );
+			if ( neighbour ) {
+				app.focus( 'select:' + neighbour.id );
+			} else {
+				parts.palette.querySelector( 'button' ).focus();
+			}
+			app.offerUndo( texts.removed.replace( '%s', name ), snapshot );
+		}
+
+		function confirmRemove( id ) {
+			if ( ! Core.usedInNotifications( app.schema, id ) ) {
+				removeField( id );
+				return;
+			}
+			ns.Dom.confirmDialog( rootEl, {
+				text: texts.usedInMail,
+				cancelLabel: texts.cancel,
+				confirmLabel: texts.removeAnyway,
+				onConfirm: function () {
+					removeField( id );
+				},
+			} );
+		}
+
+		app.rowAction = function ( action, id ) {
+			var fields = app.schema.fields;
+			var index = indexOf( id );
 			var field = fields[ index ];
 			var name = field.label || field.id;
+			var copy;
 
-			if ( 'up' === action || 'down' === action ) {
-				Core.move( fields, index, 'up' === action ? -1 : 1 );
-				live.say( texts.moved.replace( '%1$s', name ).replace( '%2$d', fields.indexOf( field ) + 1 ) );
-			} else if ( 'copy' === action ) {
-				var copy = Core.duplicate( field, fields, texts.copySuffix );
+			if ( 'trash' === action ) {
+				confirmRemove( id );
+				return;
+			}
+			if ( 'copy' === action ) {
+				copy = Core.duplicate( field, fields, texts.copySuffix );
 				fields.splice( index + 1, 0, copy );
 				app.selectedId = copy.id;
 				live.say( texts.duplicated.replace( '%s', name ) );
-			} else if ( 'trash' === action ) {
-				fields.splice( index, 1 );
-				app.selectedId = app.selectedId === id ? null : app.selectedId;
-				live.say( texts.removed.replace( '%s', name ) );
+			} else {
+				Core.move( fields, index, 'up' === action ? -1 : 1 );
+				live.say( texts.moved.replace( '%1$s', name ).replace( '%2$d', fields.indexOf( field ) + 1 ) );
 			}
 			app.change( 'structure' );
+		};
+
+		/* ---------- Rückgängig ---------- */
+
+		app.snapshot = function ( focusKey ) {
+			return { schema: Core.clone( app.schema ), selectedId: app.selectedId, focus: focusKey };
+		};
+
+		function hideUndo() {
+			clearTimeout( parts.undoTimer );
+			parts.undo.hidden = true;
+		}
+
+		function armUndoTimer() {
+			clearTimeout( parts.undoTimer );
+			parts.undoTimer = setTimeout( hideUndo, UNDO_SECONDS * 1000 );
+		}
+
+		function undo( snapshot ) {
+			app.schema = snapshot.schema;
+			app.selectedId = snapshot.selectedId;
+			hideUndo();
+			sync();
+			renderFields();
+			live.say( texts.undone );
+			app.focus( snapshot.focus );
+		}
+
+		/**
+		 * Blendet «Rückgängig» ein. Es bleibt sichtbar, solange Maus oder Fokus darauf sind, sonst 10 Sekunden.
+		 */
+		app.offerUndo = function ( message, snapshot ) {
+			ns.Dom.clear( parts.undo );
+			parts.undo.appendChild( h( 'span', null, message ) );
+			parts.undo.appendChild( h( 'button', {
+				type: 'button',
+				class: 'mlab-b-btn',
+				'aria-keyshortcuts': 'Control+Z Meta+Z',
+				onclick: function () {
+					undo( snapshot );
+				},
+			}, texts.undo ) );
+			parts.undo.hidden = false;
+			live.say( message );
+			parts.undoAction = function () {
+				undo( snapshot );
+			};
+			armUndoTimer();
 		};
 
 		/* ---------- Layout ---------- */
@@ -293,6 +390,15 @@
 			parts.scrim = h( 'div', { class: 'mlab-b-scrim', hidden: true, onclick: function () {
 				app.closeSheet();
 			} } );
+			parts.undo = h( 'div', { class: 'mlab-b-undo', role: 'status', 'aria-live': 'polite', hidden: true } );
+			parts.undo.addEventListener( 'mouseenter', function () {
+				clearTimeout( parts.undoTimer );
+			} );
+			parts.undo.addEventListener( 'focusin', function () {
+				clearTimeout( parts.undoTimer );
+			} );
+			parts.undo.addEventListener( 'mouseleave', armUndoTimer );
+			parts.undo.addEventListener( 'focusout', armUndoTimer );
 			parts.preview = ns.Panels.createPreview( app );
 			parts.views = {
 				fields: h( 'section', { class: 'mlab-b-grid' }, [ parts.palette, h( 'div', { class: 'mlab-b-main', 'aria-label': texts.formArea, role: 'region' }, parts.canvas ), parts.inspector ] ),
@@ -307,6 +413,7 @@
 			} );
 			rootEl.appendChild( h( 'p', { class: 'mlab-b-muted mlab-b-small mlab-b-foot' }, texts.saveNote ) );
 			rootEl.appendChild( parts.scrim );
+			rootEl.appendChild( parts.undo );
 			rootEl.appendChild( live.element );
 		}
 
@@ -315,6 +422,10 @@
 				var tag = event.target.tagName;
 				if ( 'Enter' === event.key && 'INPUT' === tag && 'checkbox' !== event.target.type ) {
 					event.preventDefault(); // Enter soll das Formular nicht speichern.
+				}
+				if ( 'z' === event.key.toLowerCase() && ( event.ctrlKey || event.metaKey ) && ! parts.undo.hidden && 'INPUT' !== tag && 'TEXTAREA' !== tag ) {
+					event.preventDefault();
+					parts.undoAction();
 				}
 				if ( 'Escape' === event.key && rootEl.classList.contains( 'is-sheet-open' ) ) {
 					app.closeSheet();

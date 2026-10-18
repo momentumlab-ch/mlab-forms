@@ -743,3 +743,51 @@ textarea.mlab-b-in {
 		transition: none !important;
 	}
 }
+
+/* ---------- Rückgängig und Rückfrage ---------- */
+
+.mlab-b-undo {
+	position: fixed;
+	bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+	left: 50%;
+	z-index: 100001;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	max-width: calc(100vw - 32px);
+	padding: 6px 6px 6px 16px;
+	border-radius: 12px;
+	background: var(--mb-fg);
+	color: #fff;
+	box-shadow: 0 8px 30px var(--mb-shadow);
+	transform: translateX(-50%);
+}
+
+.mlab-b-undo .mlab-b-btn {
+	flex: 0 0 auto;
+	border-color: transparent;
+	color: var(--mb-fg);
+}
+
+.mlab-b-dialog-text {
+	margin: 0 0 16px;
+	font-size: 16px;
+}
+
+.mlab-b-dialog-actions {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	gap: 8px;
+}
+
+.mlab-b-btn.mlab-b-btn-danger {
+	border-color: var(--mb-danger);
+	background: var(--mb-danger);
+	color: #fff;
+}
+
+.mlab-b-btn.mlab-b-btn-danger:hover {
+	background: var(--mb-danger);
+	filter: brightness(1.1);
+}

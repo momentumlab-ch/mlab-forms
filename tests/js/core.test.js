@@ -4,7 +4,7 @@ const test = require( 'node:test' );
 const assert = require( 'node:assert/strict' );
 const Core = require( '../../assets/js/builder/core.js' );
 
-const TEXTS = { noFields: 'leer', labelMissing: 'Beschriftung fehlt', optionsMissing: 'Einträge fehlen', fieldPrefix: 'Feld «%s»:', option1: 'Option 1', option2: 'Option 2' };
+const TEXTS = { optionEmpty: 'leer', optionDuplicate: 'doppelt', multipleDefaults: 'mehrere', noFields: 'leer', labelMissing: 'Beschriftung fehlt', optionsMissing: 'Einträge fehlen', fieldPrefix: 'Feld «%s»:', option1: 'Option 1', option2: 'Option 2' };
 const TYPES = {
 	text: { key: 'text', label: 'Text', kind: 'text', input: true },
 	select: { key: 'select', label: 'Auswahlliste', kind: 'choice', input: true },
@@ -114,4 +114,74 @@ test( 'Hinweise zu Problemen und Serverfehlern', () => {
 	assert.equal( Core.problems( { fields: [] }, TYPES, TEXTS )[ 0 ].message, 'leer' );
 	assert.equal( Core.friendlyError( { path: 'fields.1.label', message: 'fehlt' }, schema, TEXTS ), 'Feld «B»: fehlt' );
 	assert.equal( Core.friendlyError( { path: '', message: 'x' }, schema, TEXTS ), 'x' );
+} );
+
+test( 'Leere Beschriftung: Tippen ändert nur das Label, nicht den Wert', () => {
+	const options = [ { value: 'a', label: 'Alpha' } ];
+	Core.setOptionText( options, 0, '' );
+	assert.deepEqual( options[ 0 ], { value: 'a', label: '' } );
+	Core.setOptionText( options, 0, 'Neu' );
+	assert.deepEqual( options[ 0 ], { value: 'a', label: 'Neu' } );
+} );
+
+test( 'Die ID des Systems gewinnt gegen eine ID im Baustein', () => {
+	const field = Core.fromPreset( { id_hint: 'x', field: { id: 'boese', type: 'text', label: 'X' } }, [] );
+	assert.equal( field.id, 'x' );
+	assert.equal( Object.keys( field )[ 0 ], 'id' );
+} );
+
+test( 'Duplizieren: Vorauswahl zeigt auf die neue ID, Label nur wenn vorhanden', () => {
+	const copy = Core.duplicate( { id: 'angebot', type: 'select', label: 'Angebot', prefill: { enabled: true, param: 'angebot', data_attribute: 'data-x' } }, [ { id: 'angebot' } ], ' (Kopie)' );
+	assert.equal( copy.id, 'angebot_kopie' );
+	assert.equal( copy.prefill.param, 'angebot_kopie' );
+	assert.equal( copy.prefill.data_attribute, undefined );
+	const bare = Core.duplicate( { id: 'h', type: 'hidden' }, [ { id: 'h' } ], ' (Kopie)' );
+	assert.equal( bare.label, undefined );
+	assert.notEqual( bare.id, 'h' );
+} );
+
+test( 'Standardzeile räumt auch options_source.prepend', () => {
+	const field = { options: [ 'A', 'B' ], options_source: { prepend: [ { value: 'P', default: true } ] } };
+	Core.toggleDefault( field.options, 1, field.options_source.prepend );
+	assert.equal( Core.optionProblems( field, TEXTS ).length, 0 );
+	assert.deepEqual( field.options_source.prepend, [ 'P' ] );
+	assert.equal( Core.optionIsDefault( field.options[ 1 ] ), true );
+} );
+
+test( 'Hinweise: leere, doppelte Einträge und mehrere Standardzeilen', () => {
+	const types = { select: TYPES.select };
+	const check = ( options, extra ) => Core.problems( { fields: [ Object.assign( { id: 'a', type: 'select', label: 'A', options }, extra ) ] }, types, TEXTS ).map( ( p ) => p.message );
+	assert.deepEqual( check( [ 'x', ' ' ] ), [ 'leer' ] );
+	assert.deepEqual( check( [ 'x', 'x' ] ), [ 'doppelt' ] );
+	assert.deepEqual( check( [ { value: 'a', label: 'X' }, { value: 'a', label: 'Y' } ] ), [ 'doppelt' ] );
+	assert.deepEqual( check( [ 'x', 'y' ] ), [] );
+	assert.deepEqual( check( [ { value: 'x', default: true } ], { options_source: { provider: 'post_type', prepend: [ { value: 'p', default: true } ] } } ), [ 'mehrere' ] );
+} );
+
+test( 'Schalter merken alte Werte', () => {
+	const memory = {};
+	const consent = { id: 'c', link: 'https://example.org/datenschutz' };
+	Core.toggleLink( memory, consent, false );
+	assert.equal( consent.link, undefined );
+	Core.toggleLink( memory, consent, true );
+	assert.equal( consent.link, 'https://example.org/datenschutz' );
+	Core.toggleLink( memory, consent, false );
+	delete memory[ 'c:link' ];
+	Core.toggleLink( memory, consent, true );
+	assert.equal( consent.link, '{privacy_url}' );
+
+	const date = { id: 'd', min: '2026-01-01' };
+	Core.toggleFuture( memory, date, true );
+	assert.equal( date.min, 'today' );
+	Core.toggleFuture( memory, date, false );
+	assert.equal( date.min, '2026-01-01' );
+	Core.toggleFuture( memory, date, false );
+	assert.equal( date.min, undefined );
+} );
+
+test( 'Benachrichtigungen: Feld wird erkannt', () => {
+	const schema = { settings: { notifications: [ { to: '{site_admin_email}', subject: 'Hallo {field:name}', body: '{all_fields}' }, { to: 'x@example.org' } ] } };
+	assert.equal( Core.usedInNotifications( schema, 'name' ), true );
+	assert.equal( Core.usedInNotifications( schema, 'email' ), false );
+	assert.equal( Core.usedInNotifications( {}, 'name' ), false );
 } );

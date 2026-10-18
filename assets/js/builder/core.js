@@ -62,7 +62,9 @@
 	 */
 	function fromPreset( preset, fields ) {
 		var field = clone( preset.field );
-		return Object.assign( { id: deriveId( field.label, fields, preset.id_hint ) }, field );
+		var id = deriveId( field.label, fields, preset.id_hint );
+
+		return Object.assign( { id: id }, field, { id: id } ); // Die ID des Systems gewinnt immer.
 	}
 
 	/**
@@ -84,12 +86,20 @@
 	}
 
 	/**
-	 * Kopie eines Felds mit neuer ID und Zusatz an der Beschriftung.
+	 * Kopie eines Felds mit neuer ID. Die Beschriftung bekommt den Zusatz nur, wenn es eine gibt;
+	 * Parameter der Vorauswahl zeigen auf die neue ID.
 	 */
 	function duplicate( field, fields, suffix ) {
 		var copy = clone( field );
-		copy.label = ( copy.label || '' ) + suffix;
-		copy.id = deriveId( copy.label, fields );
+
+		if ( copy.label ) {
+			copy.label += suffix;
+		}
+		copy.id = deriveId( copy.label || field.id + suffix, fields );
+		if ( copy.prefill ) {
+			copy.prefill.param = copy.id;
+			delete copy.prefill.data_attribute; // Dasselbe Attribut dürfte nicht zwei Felder setzen.
+		}
 		return copy;
 	}
 
@@ -122,7 +132,7 @@
 		if ( 'string' === typeof option ) {
 			return option;
 		}
-		return option.label || option.value || '';
+		return 'string' === typeof option.label ? option.label : option.value || '';
 	}
 
 	function optionIsDefault( option ) {
@@ -134,7 +144,7 @@
 
 		if ( 'string' === typeof option ) {
 			options[ index ] = text;
-		} else if ( option.label ) {
+		} else if ( 'string' === typeof option.label ) {
 			option.label = text;
 		} else {
 			option.value = text;
@@ -142,14 +152,49 @@
 	}
 
 	/**
-	 * Schaltet die Standardzeile um: höchstens eine Zeile trägt «default».
+	 * Schaltet die Standardzeile um: höchstens eine Zeile trägt «default». Zeilen aus
+	 * options_source.prepend zählen mit und verlieren ihre Markierung.
 	 */
-	function toggleDefault( options, index ) {
+	function toggleDefault( options, index, prepend ) {
 		var wasDefault = optionIsDefault( options[ index ] );
 
 		options.forEach( function ( option, i ) {
 			options[ i ] = withDefault( option, i === index && ! wasDefault );
 		} );
+		( prepend || [] ).forEach( function ( option, i ) {
+			prepend[ i ] = withDefault( option, false );
+		} );
+	}
+
+	function allOptions( field ) {
+		var source = field.options_source && Array.isArray( field.options_source.prepend ) ? field.options_source.prepend : [];
+
+		return ( Array.isArray( field.options ) ? field.options : [] ).concat( source );
+	}
+
+	/**
+	 * Hinweise zu den Einträgen: leer, doppelt oder mehrere Standardzeilen.
+	 */
+	function optionProblems( field, texts ) {
+		var list = allOptions( field );
+		var seen = {};
+		var empty = false;
+		var duplicate = false;
+
+		( field.options || [] ).forEach( function ( option ) {
+			var value = 'string' === typeof option ? option : option.value;
+			var text = optionText( option ).trim();
+
+			empty = empty || '' === text;
+			duplicate = duplicate || ( '' !== text && seen[ text ] ) || ( '' !== value && seen[ 'v:' + value ] );
+			seen[ text ] = true;
+			seen[ 'v:' + value ] = true;
+		} );
+		return [
+			empty ? texts.optionEmpty : '',
+			duplicate ? texts.optionDuplicate : '',
+			list.filter( optionIsDefault ).length > 1 ? texts.multipleDefaults : '',
+		].filter( Boolean );
 	}
 
 	function withDefault( option, on ) {
@@ -193,6 +238,49 @@
 		};
 	}
 
+	/**
+	 * Schalter «Mit Datenschutzerklärung verlinken»: der alte Link kommt beim Einschalten zurück.
+	 */
+	function toggleLink( memory, field, on ) {
+		if ( on ) {
+			setValue( field, 'link', memory[ field.id + ':link' ] || '{privacy_url}' );
+		} else {
+			memory[ field.id + ':link' ] = field.link;
+			delete field.link;
+		}
+	}
+
+	/**
+	 * Schalter «Nur Daten ab heute»: ein eigenes Mindestdatum kommt beim Ausschalten zurück.
+	 */
+	function toggleFuture( memory, field, on ) {
+		var slot = field.id + ':min';
+
+		if ( on ) {
+			if ( field.min && 'today' !== field.min ) {
+				memory[ slot ] = field.min;
+			}
+			field.min = 'today';
+		} else {
+			setValue( field, 'min', memory[ slot ] );
+			delete memory[ slot ];
+		}
+	}
+
+	/**
+	 * Kommt {field:id} in einer Benachrichtigung vor?
+	 */
+	function usedInNotifications( schema, id ) {
+		var tag = '{field:' + id + '}';
+		var list = schema.settings && Array.isArray( schema.settings.notifications ) ? schema.settings.notifications : [];
+
+		return list.some( function ( notification ) {
+			return [ 'to', 'reply_to', 'subject', 'body' ].some( function ( key ) {
+				return 'string' === typeof notification[ key ] && -1 !== notification[ key ].indexOf( tag );
+			} );
+		} );
+	}
+
 	function prefillEnabled( field ) {
 		return !! field.prefill && false !== field.prefill.enabled;
 	}
@@ -231,6 +319,11 @@
 			if ( p.options && ! ( field.options && field.options.length ) && ! field.options_source ) {
 				list.push( { id: field.id, message: texts.optionsMissing } );
 			}
+			if ( p.options && field.options ) {
+				optionProblems( field, texts ).forEach( function ( message ) {
+					list.push( { id: field.id, message: message } );
+				} );
+			}
 		} );
 		return list;
 	}
@@ -264,6 +357,10 @@
 		toggleDefault: toggleDefault,
 		props: props,
 		prefillEnabled: prefillEnabled,
+		toggleLink: toggleLink,
+		toggleFuture: toggleFuture,
+		usedInNotifications: usedInNotifications,
+		optionProblems: optionProblems,
 		setPrefill: setPrefill,
 		problems: problems,
 		friendlyError: friendlyError,

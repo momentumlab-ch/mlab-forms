@@ -130,7 +130,54 @@
 		}
 	}
 
-	var api = { h: h, icon: icon, clear: clear, uid: uid, liveRegion: liveRegion, keepFocus: keepFocus };
+	/**
+	 * Modaler Dialog. Beim Schliessen (auch mit Escape) wandert der Fokus zurück zum Auslöser,
+	 * ausser close( true ) verlangt etwas anderes.
+	 */
+	function openDialog( parent, children, labelledBy ) {
+		var trigger = document.activeElement;
+		var dialog = h( 'dialog', { class: 'mlab-b-dialog', 'aria-labelledby': labelledBy }, children );
+		var keepFocus = false;
+
+		dialog.addEventListener( 'close', function () {
+			dialog.remove();
+			if ( ! keepFocus && trigger && trigger.focus ) {
+				trigger.focus();
+			}
+		} );
+		parent.appendChild( dialog );
+		dialog.showModal();
+
+		return {
+			close: function ( moveFocusElsewhere ) {
+				keepFocus = !! moveFocusElsewhere;
+				dialog.close();
+			},
+		};
+	}
+
+	/**
+	 * Kleine Rückfrage mit «Abbrechen» (zuerst fokussiert) und einer Bestätigung.
+	 */
+	function confirmDialog( parent, options ) {
+		var textId = uid();
+		var dialog = openDialog( parent, [
+			h( 'p', { id: textId, class: 'mlab-b-dialog-text' }, options.text ),
+			h( 'div', { class: 'mlab-b-dialog-actions' }, [
+				h( 'button', { type: 'button', class: 'mlab-b-btn', onclick: function () {
+					dialog.close();
+				} }, options.cancelLabel ),
+				h( 'button', { type: 'button', class: 'mlab-b-btn mlab-b-btn-danger', onclick: function () {
+					dialog.close( true );
+					options.onConfirm();
+				} }, options.confirmLabel ),
+			] ),
+		], textId );
+
+		return dialog;
+	}
+
+	var api = { openDialog: openDialog, confirmDialog: confirmDialog, h: h, icon: icon, clear: clear, uid: uid, liveRegion: liveRegion, keepFocus: keepFocus };
 
 	root.MLabBuilder = root.MLabBuilder || {};
 	root.MLabBuilder.Dom = api;

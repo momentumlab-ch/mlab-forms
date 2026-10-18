@@ -25,6 +25,11 @@ final class Preview {
 	public const ACTION = 'mlab_forms_preview';
 
 	/**
+	 * Grösste angenommene Schema-Grösse in Byte.
+	 */
+	public const MAX_BYTES = 524288;
+
+	/**
 	 * Hängt die Ajax-Aktion an (nur für angemeldete Benutzer).
 	 */
 	public function register(): void {
@@ -41,10 +46,22 @@ final class Preview {
 		}
 
 		// JSON wird nicht als Text bereinigt, sondern dekodiert und gegen das Schema geprüft.
-		$json   = isset( $_POST['schema'] ) ? wp_unslash( $_POST['schema'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$json = isset( $_POST['schema'] ) ? wp_unslash( $_POST['schema'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		if ( self::is_too_large( $json ) ) {
+			wp_send_json_error( array( 'message' => __( 'Das Formular ist zu gross für die Vorschau.', 'mlab-forms' ) ), 413 );
+		}
 		$schema = is_string( $json ) ? json_decode( $json, true ) : null;
 
 		wp_send_json_success( self::respond( $schema ) );
+	}
+
+	/**
+	 * Ist die Eingabe grösser als erlaubt?
+	 *
+	 * @param mixed $json Eingabe.
+	 */
+	public static function is_too_large( $json ): bool {
+		return is_string( $json ) && strlen( $json ) > self::MAX_BYTES;
 	}
 
 	/**
