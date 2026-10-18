@@ -14,6 +14,7 @@ function mlab_test_reset(): void {
 		'transients' => array(),
 		'post_meta'  => array(),
 		'posts'      => array(),
+		'filters'    => array(),
 	);
 }
 mlab_test_reset();
@@ -70,7 +71,15 @@ function is_email( $email ) {
 	return false !== filter_var( $email, FILTER_VALIDATE_EMAIL ) ? $email : false;
 }
 
+function add_filter( $hook, $callback, $priority = 10, $accepted_args = 1 ) {
+	$GLOBALS['mlab_test']['filters'][ $hook ][] = $callback;
+	return true;
+}
+
 function apply_filters( $hook, $value, ...$args ) {
+	foreach ( $GLOBALS['mlab_test']['filters'][ $hook ] ?? array() as $callback ) {
+		$value = $callback( $value, ...$args );
+	}
 	return $value;
 }
 
