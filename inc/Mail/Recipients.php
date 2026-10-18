@@ -97,7 +97,6 @@ final class Recipients {
 	/**
 	 * Standard-Empfänger: Einstellung, sonst Admin-Adresse der Website.
 	 *
-	 *
 	 * @return list<string>
 	 */
 	public static function defaults(): array {
