@@ -633,7 +633,7 @@
 	/* ---------- Empfänger ---------- */
 
 	var MAX_RECIPIENTS = 10;
-	var EMAIL_PATTERN = /^[^\s@,;<>"]+@[^\s@,;<>"]+\.[^\s@,;<>"]{2,}$/;
+	var EMAIL_PATTERN = /^[A-Za-z0-9!#$%&'*+\/=?^_`{|}~-]+(\.[A-Za-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@([A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?$/;
 
 	/**
 	 * Zerlegt die Eingabe (Komma, Semikolon oder Zeilenumbruch) in gültige und ungültige Angaben.

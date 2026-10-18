@@ -97,8 +97,15 @@ final class Settings {
 	 */
 	public static function all(): array {
 		$stored = get_option( self::OPTION, array() );
+		$stored = is_array( $stored ) ? $stored : array();
+		$values = array_merge( self::defaults(), array_intersect_key( $stored, self::fields() ) );
 
-		return array_merge( self::defaults(), is_array( $stored ) ? array_intersect_key( $stored, self::fields() ) : array() );
+		// Frühere Versionen speicherten den Standard-Empfänger als «email_admin_to».
+		if ( '' === trim( (string) $values['default_recipient'] ) && ! empty( $stored['email_admin_to'] ) && is_string( $stored['email_admin_to'] ) ) {
+			$values['default_recipient'] = $stored['email_admin_to'];
+		}
+
+		return $values;
 	}
 
 	/**

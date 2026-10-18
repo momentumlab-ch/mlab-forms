@@ -42,6 +42,14 @@ final class RecipientsTest extends TestCase {
 		$this->assertSame( array( 'alt@example.org' ), Recipients::defaults() );
 	}
 
+	public function test_alte_einstellung_bleibt_beim_speichern_erhalten(): void {
+		update_option( Settings::OPTION, array( 'email_admin_to' => 'alt@example.org' ) );
+
+		$saved = Settings::sanitize( array( Settings::TAB_KEY => 'spam' ) );
+
+		$this->assertSame( 'alt@example.org', $saved['default_recipient'] );
+	}
+
 	public function test_formular_ueberschreibt_den_standard(): void {
 		update_option( Settings::OPTION, array( 'default_recipient' => 'info@example.org' ) );
 		$submission = $this->submission( 'verkauf@example.org' );

@@ -97,15 +97,11 @@ final class Recipients {
 	/**
 	 * Standard-Empfänger: Einstellung, sonst Admin-Adresse der Website.
 	 *
-	 * Frühere Versionen speicherten die Einstellung als «email_admin_to»; sie gilt weiter, solange nichts Neues gespeichert ist.
 	 *
 	 * @return list<string>
 	 */
 	public static function defaults(): array {
-		$stored = get_option( Settings::OPTION, array() );
-		$legacy = is_array( $stored ) ? ( $stored['email_admin_to'] ?? '' ) : '';
-
-		foreach ( array( Settings::get( 'default_recipient' ), $legacy, get_option( 'admin_email' ) ) as $raw ) {
+		foreach ( array( Settings::get( 'default_recipient' ), get_option( 'admin_email' ) ) as $raw ) {
 			$list = self::valid( $raw );
 			if ( $list ) {
 				return $list;
