@@ -123,7 +123,7 @@ final class I18nValidator {
 			return;
 		}
 		$path .= '.i18n';
-		if ( ! is_array( $item['i18n'] ) || ( array_is_list( $item['i18n'] ) && $item['i18n'] ) ) {
+		if ( ! is_array( $item['i18n'] ) ) {
 			$this->error( $path, __( 'Muss ein JSON-Objekt sein.', 'mlab-forms' ) );
 			return;
 		}
@@ -132,7 +132,7 @@ final class I18nValidator {
 			if ( ! in_array( $code, $this->languages, true ) ) {
 				/* translators: %s: Sprachcode */
 				$this->error( $path . '.' . $code, sprintf( __( 'Die Sprache «%s» steht nicht in «languages».', 'mlab-forms' ), $code ) );
-			} elseif ( ! is_array( $texts ) || ( array_is_list( $texts ) && $texts ) ) {
+			} elseif ( ! is_array( $texts ) ) {
 				$this->error( $path . '.' . $code, __( 'Muss ein JSON-Objekt sein.', 'mlab-forms' ) );
 			} else {
 				$this->check_texts( $texts, $kind, $path . '.' . $code, $field );
@@ -174,7 +174,7 @@ final class I18nValidator {
 			$this->error( $path, __( 'Dieses Feld hat keine Optionen.', 'mlab-forms' ) );
 			return;
 		}
-		if ( ! is_array( $labels ) || ( array_is_list( $labels ) && $labels ) ) {
+		if ( ! is_array( $labels ) ) {
 			$this->error( $path, __( 'Muss ein JSON-Objekt sein.', 'mlab-forms' ) );
 			return;
 		}
@@ -182,7 +182,7 @@ final class I18nValidator {
 		foreach ( $labels as $value => $label ) {
 			if ( ! is_string( $label ) ) {
 				$this->error( $path . '.' . $value, __( 'Muss ein Text sein.', 'mlab-forms' ) );
-			} elseif ( null !== $known && ! in_array( (string) $value, $known, true ) ) {
+			} elseif ( null !== $known && ! isset( $known[ (string) $value ] ) ) {
 				/* translators: %s: Wert einer Option */
 				$this->error( $path . '.' . $value, sprintf( __( 'Das Feld hat keine Option mit dem Wert «%s».', 'mlab-forms' ), $value ) );
 			}
@@ -193,7 +193,7 @@ final class I18nValidator {
 	 * Werte der festen Optionen. Null, wenn eine Optionsquelle weitere liefert (dann sind sie nicht bekannt).
 	 *
 	 * @param array<string, mixed> $field Feld.
-	 * @return list<string>|null
+	 * @return array<string, true>|null Wert => true.
 	 */
 	private static function option_values( array $field ): ?array {
 		if ( isset( $field['options_source'] ) ) {
@@ -201,7 +201,7 @@ final class I18nValidator {
 		}
 		$values = array();
 		foreach ( (array) ( $field['options'] ?? array() ) as $option ) {
-			$values[] = (string) ( is_array( $option ) ? ( $option['value'] ?? '' ) : $option );
+			$values[ (string) ( is_array( $option ) ? ( $option['value'] ?? '' ) : $option ) ] = true;
 		}
 
 		return $values;

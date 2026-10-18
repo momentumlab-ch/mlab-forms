@@ -253,17 +253,39 @@ test( 'setOptionLabel: Beschriftung pro Wert, leer löscht und räumt auf', () =
 	assert.equal( 'i18n' in field, false );
 } );
 
-test( 'renameOption: Übersetzungen folgen dem Wert, wenn der Text der Wert ist', () => {
+test( 'renameOption und moveOptionLabels: Übersetzungen folgen dem Wert erst nach der Eingabe', () => {
 	const field = multi().fields[ 1 ];
+	let before = Core.renameOption( field, 0, 'Basel-Stadt' );
 
-	Core.renameOption( field, 0, 'Basel-Stadt' );
+	assert.equal( before, 'Basel' );
 	assert.equal( field.options[ 0 ], 'Basel-Stadt' );
+	assert.deepEqual( field.i18n.fr.options, { Basel: 'Bâle' }, 'beim Tippen bleibt alles stehen' );
+	assert.equal( Core.moveOptionLabels( field, before, 0 ), true );
 	assert.deepEqual( field.i18n.fr.options, { 'Basel-Stadt': 'Bâle' } );
 
-	Core.renameOption( field, 1, 'Berne' ); // Objekt mit label: der Wert bleibt
+	before = Core.renameOption( field, 1, 'Berne' ); // Objekt mit label: der Wert bleibt
 	assert.equal( field.options[ 1 ].value, 'bern' );
 	assert.equal( field.options[ 1 ].label, 'Berne' );
-	assert.deepEqual( field.i18n.fr.options, { 'Basel-Stadt': 'Bâle' } );
+	assert.equal( Core.moveOptionLabels( field, before, 1 ), false );
+} );
+
+test( 'moveOptionLabels: «AB» → «A» (existiert) → «AB» verliert nichts', () => {
+	const field = { id: 'o', type: 'select', options: [ 'A', 'AB' ], i18n: { fr: { options: { A: 'Un', AB: 'Un-B' } } } };
+	let before = Core.renameOption( field, 1, 'A' );
+
+	assert.equal( Core.moveOptionLabels( field, before, 1 ), false );
+	assert.deepEqual( field.i18n.fr.options, { A: 'Un', AB: 'Un-B' } );
+	before = Core.renameOption( field, 1, 'AB' );
+	assert.equal( Core.moveOptionLabels( field, before, 1 ), false );
+	assert.deepEqual( field.i18n.fr.options, { A: 'Un', AB: 'Un-B' } );
+} );
+
+test( 'moveOptionLabels: überschreibt keinen vorhandenen Übersetzungsschlüssel', () => {
+	const field = { id: 'o', options: [ 'X' ], i18n: { fr: { options: { X: 'x', Y: 'y' } } } };
+	const before = Core.renameOption( field, 0, 'Y' );
+
+	assert.equal( Core.moveOptionLabels( field, before, 0 ), false );
+	assert.deepEqual( field.i18n.fr.options, { X: 'x', Y: 'y' } );
 } );
 
 test( 'removeOption: löscht auch die Übersetzungen des Werts', () => {

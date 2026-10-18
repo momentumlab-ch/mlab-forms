@@ -96,6 +96,7 @@
 	function optionLine( app, field, index, count ) {
 		var options = field.options;
 		var isDefault = Core.optionIsDefault( options[ index ] );
+		var committed = Core.optionValue( options[ index ] );
 		var input = h( 'input', {
 			class: 'mlab-b-in',
 			value: Core.optionText( options[ index ] ),
@@ -104,6 +105,11 @@
 			autocomplete: 'off',
 			oninput: function () {
 				Core.renameOption( field, index, input.value );
+				app.change( 'text' );
+			},
+			onchange: function () {
+				Core.moveOptionLabels( field, committed, index );
+				committed = Core.optionValue( options[ index ] );
 				app.change( 'text' );
 			},
 		} );

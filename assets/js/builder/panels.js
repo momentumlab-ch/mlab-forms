@@ -222,6 +222,9 @@
 			] ),
 			languageHost,
 		] ) );
+		app.switchers = app.switchers.filter( function ( host ) {
+			return host.isConnected;
+		} );
 		app.switchers.push( languageHost );
 		ns.Languages.renderSwitcher( app, languageHost );
 		el.appendChild( h( 'p', { class: 'mlab-b-muted mlab-b-small mlab-b-center' }, app.t( 'previewNote' ) ) );

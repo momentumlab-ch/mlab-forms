@@ -110,6 +110,17 @@ final class SchemaI18nTest extends TestCase {
 		$this->assertContains( 'fields.0.i18n.fr.options', array_column( SchemaValidator::validate( $schema ), 'path' ) );
 	}
 
+	public function test_numerische_optionswerte_sind_speicherbar(): void {
+		$schema                                       = $this->schema();
+		$schema['fields'][1]['options']               = array( '0', '1' );
+		$schema['fields'][1]['i18n']['fr']['options'] = json_decode( '{"0":"Non","1":"Oui"}', true );
+
+		$this->assertSame( array(), SchemaValidator::validate( $schema ) );
+
+		$schema['fields'][1]['i18n']['fr']['options'] = json_decode( '{"0":"Non","2":"Peut-être"}', true );
+		$this->assertSame( array( 'fields.1.i18n.fr.options.2' ), array_column( SchemaValidator::validate( $schema ), 'path' ) );
+	}
+
 	public function test_optionen_mit_objekt_und_prepend_werden_erkannt(): void {
 		$schema                                       = $this->schema();
 		$schema['fields'][1]['options']               = array( array( 'value' => 'Basel', 'label' => 'Basel-Stadt' ), 'Bern' );

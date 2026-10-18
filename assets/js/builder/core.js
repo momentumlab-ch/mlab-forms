@@ -395,24 +395,51 @@
 	}
 
 	/**
-	 * Ändert den Text einer Option in der Standardsprache. Ist der Text zugleich der Wert, wandern die
-	 * Übersetzungen mit, sonst gäbe es Beschriftungen für Werte, die es nicht mehr gibt.
+	 * Ändert den Text einer Option in der Standardsprache. Die Übersetzungen bleiben unberührt;
+	 * sie wandern erst mit moveOptionLabels(), wenn die Eingabe abgeschlossen ist.
+	 *
+	 * @return {string} Der Wert der Option vor der Änderung.
 	 */
 	function renameOption( field, index, text ) {
 		var before = optionValue( field.options[ index ] );
-		var after;
 
 		setOptionText( field.options, index, text );
-		after = optionValue( field.options[ index ] );
-		if ( before === after ) {
-			return;
+		return before;
+	}
+
+	/**
+	 * Lässt die Übersetzungen dem neuen Wert einer Option folgen, wenn der Text zugleich der Wert ist.
+	 * Nichts wird verschoben oder überschrieben, wenn der neue Wert schon zu einer anderen Option gehört
+	 * oder schon als Übersetzungsschlüssel vorkommt.
+	 *
+	 * @return {boolean} true, wenn Übersetzungen verschoben wurden.
+	 */
+	function moveOptionLabels( field, before, index ) {
+		var after = optionValue( field.options[ index ] );
+		var owned = Object.prototype.hasOwnProperty;
+		var taken = field.options.some( function ( option, i ) {
+			return i !== index && optionValue( option ) === after;
+		} );
+		var clash = false;
+		var moved = false;
+
+		if ( before === after || taken ) {
+			return false;
 		}
 		forEachOptionLabels( field, function ( labels ) {
-			if ( Object.prototype.hasOwnProperty.call( labels, before ) ) {
+			clash = clash || owned.call( labels, after );
+		} );
+		if ( clash ) {
+			return false;
+		}
+		forEachOptionLabels( field, function ( labels ) {
+			if ( owned.call( labels, before ) ) {
 				labels[ after ] = labels[ before ];
 				delete labels[ before ];
+				moved = true;
 			}
 		} );
+		return moved;
 	}
 
 	/**
@@ -678,6 +705,7 @@
 		optionIsDefault: optionIsDefault,
 		setOptionText: setOptionText,
 		renameOption: renameOption,
+		moveOptionLabels: moveOptionLabels,
 		removeOption: removeOption,
 		languages: languages,
 		isMultilingual: isMultilingual,
