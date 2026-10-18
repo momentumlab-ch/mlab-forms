@@ -20,7 +20,7 @@ final class BuilderTexts {
 	 * @return array<string, string>
 	 */
 	public static function all(): array {
-		return array_merge( self::areas(), self::fields(), self::properties(), self::choices(), self::settings(), self::messages() );
+		return array_merge( self::areas(), self::fields(), self::properties(), self::choices(), self::settings(), self::languages(), self::messages() );
 	}
 
 	/**
@@ -169,6 +169,59 @@ final class BuilderTexts {
 			'thanksPageHint' => __( 'Optional. Wenn du eine Adresse einträgst, geht es nach dem Absenden dort weiter.', 'mlab-forms' ),
 			'retention'      => __( 'Aufbewahrung', 'mlab-forms' ),
 			'retentionHint'  => __( 'Wie lange gesendete Anfragen gespeichert bleiben, stellst du im Kasten «Aufbewahrung» rechts ein.', 'mlab-forms' ),
+		);
+	}
+
+	/**
+	 * Sprachen und Übersetzungen.
+	 *
+	 * @return array<string, string>
+	 */
+	private static function languages(): array {
+		return array(
+			'language'            => __( 'Sprache', 'mlab-forms' ),
+			'defaultLanguage'     => __( 'Standard', 'mlab-forms' ),
+			'addLanguage'         => __( 'Sprache hinzufügen', 'mlab-forms' ),
+			'removeLanguage'      => __( 'Sprache entfernen', 'mlab-forms' ),
+			'defaultLanguageNote' => __( 'Standardsprache: hier stehen die Texte, die ohne Übersetzung überall gelten.', 'mlab-forms' ),
+			'oneLanguageNote'     => __( 'Das Formular hat eine Sprache. Füge eine weitere hinzu, um Texte zu übersetzen.', 'mlab-forms' ),
+			/* translators: 1: Anzahl übersetzter Texte, 2: Anzahl aller Texte */
+			'translated'          => __( '%1$d von %2$d übersetzt', 'mlab-forms' ),
+			'notTranslated'       => __( 'Noch nicht übersetzt', 'mlab-forms' ),
+			/* translators: %s: Standardtext */
+			'sourceText'          => __( 'Standardtext: %s', 'mlab-forms' ),
+			/* translators: %s: Name der Sprache */
+			'translatingNote'     => __( 'Du übersetzt in %s. Ein leeres Feld zeigt den Standardtext.', 'mlab-forms' ),
+			'nothingToTranslate'  => __( 'Dieses Feld hat keine Texte zum Übersetzen.', 'mlab-forms' ),
+			'mailTranslateNote'   => __( 'Betreff und Text der E-Mails übersetzt du in der Experten-Ansicht (JSON) bei der Benachrichtigung unter «i18n». E-Mails an die Admin-Adresse erscheinen immer in der Standardsprache.', 'mlab-forms' ),
+			/* translators: %s: Name der Sprache */
+			'languageSwitched'    => __( 'Sprache: %s', 'mlab-forms' ),
+			/* translators: %s: Name der Sprache */
+			'languageAdded'       => __( 'Sprache «%s» hinzugefügt', 'mlab-forms' ),
+			/* translators: %s: Name der Sprache */
+			'languageRemoved'     => __( 'Sprache «%s» entfernt', 'mlab-forms' ),
+			/* translators: 1: Name der Sprache, 2: Anzahl Übersetzungen */
+			'removeLanguageAsk'   => __( 'Sprache «%1$s» entfernen? Dabei werden %2$d Übersetzungen gelöscht. Danach kannst du das noch kurz rückgängig machen.', 'mlab-forms' ),
+			/* translators: %s: Name der Sprache */
+			'removeLanguageNone'  => __( 'Sprache «%s» entfernen? Sie hat noch keine Übersetzungen.', 'mlab-forms' ),
+		);
+	}
+
+	/**
+	 * Namen der wählbaren Sprachen: Code => Name.
+	 *
+	 * @return array<string, string>
+	 */
+	public static function language_names(): array {
+		return array(
+			'de' => __( 'Deutsch', 'mlab-forms' ),
+			'fr' => __( 'Französisch', 'mlab-forms' ),
+			'it' => __( 'Italienisch', 'mlab-forms' ),
+			'en' => __( 'Englisch', 'mlab-forms' ),
+			'rm' => __( 'Rätoromanisch', 'mlab-forms' ),
+			'es' => __( 'Spanisch', 'mlab-forms' ),
+			'pt' => __( 'Portugiesisch', 'mlab-forms' ),
+			'nl' => __( 'Niederländisch', 'mlab-forms' ),
 		);
 	}
 

@@ -68,6 +68,11 @@
 			dirty: false,
 			memory: {},
 			tab: 'fields',
+			lang: '',
+			switchers: [],
+			translating: function () {
+				return Core.isMultilingual( app.schema ) && app.lang !== Core.defaultLanguage( app.schema );
+			},
 			t: function ( key ) {
 				return texts[ key ] || key;
 			},
@@ -96,13 +101,88 @@
 			ns.Inspector.render( app, parts.inspector );
 		}
 
+		/**
+		 * Hält die gewählte Sprache gültig, wenn sich die Sprachen des Schemas geändert haben
+		 * (Rückgängig, Vorlage, Experten-Ansicht).
+		 */
+		function normalizeLang() {
+			var codes = Core.languages( app.schema );
+
+			if ( codes.length < 2 ) {
+				app.lang = '';
+			} else if ( -1 === codes.indexOf( app.lang ) ) {
+				app.lang = codes[ 0 ];
+			}
+		}
+
+		function renderLanguages() {
+			normalizeLang();
+			ns.Languages.renderBar( app, parts.langbar );
+			app.switchers.forEach( function ( host ) {
+				ns.Languages.renderSwitcher( app, host );
+			} );
+		}
+
+		function renderAll() {
+			renderLanguages();
+			renderFields();
+			if ( 'settings' === app.tab ) {
+				ns.Panels.renderSettings( app, parts.views.settings );
+			}
+			if ( 'preview' === app.tab ) {
+				parts.preview.refresh();
+			}
+		}
+
 		app.change = function ( level ) {
 			hideUndo();
 			sync();
+			if ( 'structure' === level ) {
+				renderLanguages();
+			} else {
+				ns.Languages.updateCount( app, parts.langbar );
+			}
 			ns.Fields.renderCanvas( app, parts.canvas );
 			if ( 'structure' === level ) {
 				ns.Inspector.render( app, parts.inspector );
 			}
+		};
+
+		app.setLang = function ( code ) {
+			app.lang = code;
+			renderAll();
+			live.say( texts.languageSwitched.replace( '%s', ns.Languages.nameOf( app, code ) ) );
+		};
+
+		app.addLanguage = function ( code ) {
+			var snapshot = app.snapshot( 'lang-add' );
+
+			if ( Core.addLanguage( app.schema, code, app.config.siteLanguage ) ) {
+				app.lang = code;
+				sync();
+				renderAll();
+				app.offerUndo( texts.languageAdded.replace( '%s', ns.Languages.nameOf( app, code ) ), snapshot );
+			}
+		};
+
+		app.removeLanguage = function ( code ) {
+			var count = Core.countTranslations( app.schema, code );
+			var name = ns.Languages.nameOf( app, code );
+			var text = count ? texts.removeLanguageAsk.replace( '%1$s', name ).replace( '%2$d', count ) : texts.removeLanguageNone.replace( '%s', name );
+
+			ns.Dom.confirmDialog( rootEl, {
+				text: text,
+				cancelLabel: texts.cancel,
+				confirmLabel: texts.removeLanguage,
+				onConfirm: function () {
+					var snapshot = app.snapshot( 'lang-add' );
+
+					Core.removeLanguage( app.schema, code );
+					sync();
+					renderAll();
+					app.offerUndo( texts.languageRemoved.replace( '%s', name ), snapshot );
+				},
+			} );
 		};
 
 		app.select = function ( id, openSheet ) {
@@ -218,7 +298,7 @@
 			app.selectedId = snapshot.selectedId;
 			hideUndo();
 			sync();
-			renderFields();
+			renderAll();
 			live.say( texts.undone );
 			app.focus( snapshot.focus );
 		}
@@ -316,6 +396,7 @@
 			app.expert = on;
 			textarea.hidden = ! on;
 			parts.tabs.hidden = on;
+			parts.langbar.hidden = on;
 			parts.templates.hidden = on;
 			TABS.forEach( function ( tab ) {
 				parts.views[ tab ].hidden = on || tab !== app.tab;
@@ -346,6 +427,7 @@
 				app.selectedId = null;
 			}
 			setExpert( false );
+			renderLanguages();
 			renderFields();
 			showTab( app.tab );
 		}
@@ -383,6 +465,7 @@
 			} ) );
 			parts.templates = templateSelect;
 			parts.expertButton = h( 'button', { type: 'button', class: 'mlab-b-link', 'aria-pressed': 'false', onclick: toggleExpert }, texts.expert );
+			parts.langbar = h( 'div', { class: 'mlab-b-langbar' } );
 			parts.error = h( 'div', { class: 'mlab-b-alert', role: 'alert', hidden: true } );
 			parts.palette = h( 'aside', { class: 'mlab-b-panel mlab-b-pal-panel', 'aria-label': texts.palette } );
 			parts.canvas = h( 'div', { class: 'mlab-b-canvas-wrap' } );
@@ -408,6 +491,7 @@
 
 			rootEl.insertBefore( h( 'div', { class: 'mlab-b-bar' }, [ parts.tabs, h( 'span', { class: 'mlab-b-spacer' } ), templateSelect, parts.expertButton ] ), rootEl.firstChild );
 			rootEl.insertBefore( parts.error, textarea );
+			rootEl.insertBefore( parts.langbar, parts.error );
 			TABS.forEach( function ( tab ) {
 				rootEl.insertBefore( parts.views[ tab ], textarea );
 			} );
@@ -468,6 +552,7 @@
 					failure = error.message;
 				}
 			}
+			renderLanguages();
 			renderFields();
 			showTab( 'fields' );
 			if ( failure ) {

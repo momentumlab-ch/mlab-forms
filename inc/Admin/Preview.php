@@ -9,6 +9,7 @@ namespace MLab_Forms\Admin;
 
 use MLab_Forms\Capabilities;
 use MLab_Forms\Forms\Form;
+use MLab_Forms\Forms\Language;
 use MLab_Forms\Forms\SchemaValidator;
 use MLab_Forms\Frontend\Renderer;
 
@@ -51,8 +52,9 @@ final class Preview {
 			wp_send_json_error( array( 'message' => __( 'Das Formular ist zu gross für die Vorschau.', 'mlab-forms' ) ), 413 );
 		}
 		$schema = is_string( $json ) ? json_decode( $json, true ) : null;
+		$lang   = isset( $_POST['lang'] ) ? Language::normalize( sanitize_text_field( wp_unslash( $_POST['lang'] ) ) ) : '';
 
-		wp_send_json_success( self::respond( $schema ) );
+		wp_send_json_success( self::respond( $schema, $lang ) );
 	}
 
 	/**
@@ -67,10 +69,11 @@ final class Preview {
 	/**
 	 * Prüft das Schema und gibt die Vorschau oder die Fehler zurück.
 	 *
-	 * @param mixed $schema Dekodiertes Schema.
+	 * @param mixed  $schema Dekodiertes Schema.
+	 * @param string $lang   Sprache der Vorschau; leer oder unbekannt: Standardsprache.
 	 * @return array{ok: bool, document?: string, errors?: list<array{path: string, message: string}>}
 	 */
-	public static function respond( $schema ): array {
+	public static function respond( $schema, string $lang = '' ): array {
 		$errors = SchemaValidator::validate( $schema );
 		if ( $errors ) {
 			return array(
@@ -81,23 +84,24 @@ final class Preview {
 
 		return array(
 			'ok'       => true,
-			'document' => self::document( new Form( 0, '', (array) $schema ) ),
+			'document' => self::document( new Form( 0, '', (array) $schema ), $lang ),
 		);
 	}
 
 	/**
 	 * Vollständiges HTML-Dokument mit dem Formular und dessen Stylesheet.
 	 *
-	 * @param Form $form Formular.
+	 * @param Form   $form Formular.
+	 * @param string $lang Sprache der Vorschau.
 	 */
-	private static function document( Form $form ): string {
+	private static function document( Form $form, string $lang ): string {
 		$css  = plugins_url( 'assets/css/form.css', MLAB_FORMS_FILE ) . '?ver=' . rawurlencode( MLAB_FORMS_VERSION );
 		$dark = 'dark' === Renderer::style_of( $form );
 
-		return '<!doctype html><html lang="' . esc_attr( str_replace( '_', '-', get_locale() ) ) . '"><head><meta charset="utf-8">'
+		return '<!doctype html><html lang="' . esc_attr( '' !== $lang ? $lang : str_replace( '_', '-', get_locale() ) ) . '"><head><meta charset="utf-8">'
 			. '<meta name="viewport" content="width=device-width, initial-scale=1">'
 			. '<link rel="stylesheet" href="' . esc_url( $css ) . '">' // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- eigenes Dokument für den iframe, nicht die Admin-Seite.
 			. '<style>body{margin:0;padding:16px;font-family:system-ui,sans-serif;background:' . ( $dark ? '#1d2327' : '#fff' ) . '}</style>'
-			. '</head><body>' . Renderer::preview( $form ) . '</body></html>';
+			. '</head><body>' . Renderer::preview( $form, $lang ) . '</body></html>';
 	}
 }
