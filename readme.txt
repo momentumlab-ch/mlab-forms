@@ -4,7 +4,7 @@ Tags: formulare, kontakt, anfrage
 Requires at least: 6.9
 Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 0.5.0
+Stable tag: 0.6.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,7 @@ Anfrage- und Kontaktformulare für Kundenseiten von Momentum Lab.
 
 MomentumLab Forms hat einen eigenen Menüpunkt im Backend mit «Alle Formulare», «Neues Formular», «Anfragen» und «Einstellungen» (Tabs Allgemein, E-Mail, Spam-Schutz, Datenschutz, Updates).
 
-* Formulare als JSON-Schema mit Vorlagen (Kontakt, Anfrage, Gutschein), Prüfung beim Speichern und Revisionen.
+* Formular-Builder mit Bausteinen (Vorname, E-Mail, PLZ, Einwilligung …), eigenen Feldern, Pflichtfeldern, Auswahllisten und Vorschau. Dahinter steht ein JSON-Schema (Experten-Ansicht) mit Vorlagen (Kontakt, Anfrage, Gutschein), Prüfung beim Speichern und Revisionen.
 * Einbinden mit `[mlab_form id="123"]` oder `[mlab_form slug="kontakt"]`. Funktioniert auch ohne JavaScript und mit Seiten-Cache.
 * Anfragen mit Status, Notizen und CSV-Export; Benachrichtigungen mit Platzhaltern wie `{field:email}` und `{all_fields}`.
 * Spam-Schutz mit Honeypot, Mindestzeit und Limit pro IP (gehasht gespeichert). Optional Cloudflare Turnstile, Google reCAPTCHA v3, hCaptcha (nur einer pro Formular) und Akismet; die Schlüssel liegen nur in den Einstellungen.
@@ -26,6 +26,7 @@ MomentumLab Forms hat einen eigenen Menüpunkt im Backend mit «Alle Formulare»
 Filter:
 
 * `mlab_forms_field_types`: eigene Feldtypen ergänzen oder bestehende ersetzen (Typ => Klasse).
+* `mlab_forms_presets`: Bausteine des Builders ergänzen, ändern oder entfernen (je Baustein `key`, `name`, `hint`, optional `id_hint` und `field` mit dem Feld-Schema ohne `id`).
 * `mlab_forms_options_providers`: Quellen für Auswahllisten ergänzen (`options_source` im Formular).
 * `mlab_forms_style_vars`: CSS-Variablen der Formulare setzen, z. B. `--mlab-form-accent` aus den Theme-Farben.
 * `mlab_forms_client_ip`: IP-Adresse hinter einem Proxy oder CDN korrekt bestimmen.
@@ -56,6 +57,15 @@ Das Repository ist öffentlich, ein Token ist nicht nötig. Wird es privat, komm
 2. Auf main mergen. Der Workflow «Release» legt das Release `vX.Y.Z` mit `mlab-forms.zip` an, sobald es zur Version noch keines gibt. Ab dann sehen die Websites das Update.
 
 == Changelog ==
+
+= 0.6.0 =
+* Neuer Formular-Builder: Felder werden links aus Bausteinen gewählt, in der Mitte angeordnet und rechts bearbeitet. Reiter «Felder», «Einstellungen» und «Vorschau»; am Handy als Zeile mit Bausteinen und Eigenschaften als Blatt von unten. Alles lässt sich per Tastatur bedienen, Felder verschiebst du mit den Pfeilen.
+* Fertige Bausteine mit passender Prüfung und Autofill: Vorname, Nachname, E-Mail, Telefon, Firma, Adresse, PLZ, Ort, Land, Nachricht, Datum, Auswahlliste, Mehrfachauswahl, Einwilligung und Zwischentitel. Dazu «Eigenes Feld» mit frei wählbarer Art. Interne Feldnamen vergibt das System und lassen sich später ohne Folgen für gespeicherte Anfragen umbeschriften.
+* Pro Feld einstellbar: Pflichtfeld, Breite (voll, halb, Drittel), Platzhalter, Hilfetext, Standardwert. Bei Auswahllisten: Einträge hinzufügen, entfernen und per Pfeil verschieben, einen Eintrag als Standard markieren, leere erste Zeile «Bitte wählen» und Vorauswahl per Link.
+* Die Vorschau zeigt das Formular genau so, wie es auf der Seite erscheint, auch vor dem Speichern, am Handy oder Computer. Fehlt etwas, nennt sie das Feld und das Problem in einfachen Worten.
+* Der Reiter «Einstellungen» enthält Text des Absende-Buttons, Erfolgsmeldung und Danke-Seite. Das JSON bleibt über «Experten-Ansicht (JSON)» erreichbar und die Quelle der Wahrheit; bestehende Formulare, Revisionen und die Prüfung beim Speichern funktionieren unverändert.
+* Neue Formulare beginnen mit Vorname, Nachname, E-Mail, Nachricht und Einwilligung. Die mitgelieferten Vorlagen lassen sich weiterhin laden.
+* Für Entwickler: neuer Filter `mlab_forms_presets` für eigene Bausteine.
 
 = 0.5.0 =
 * Absender einstellbar: Name, E-Mail-Adresse und «Antwort an» (E-Mail des Besuchers oder feste Adresse), global und pro Formular. Ohne eigene Angabe verwendet WordPress seinen Standard-Absender; eine Absender-Adresse von einer fremden Domain wird auf der Einstellungsseite mit einem Hinweis markiert.

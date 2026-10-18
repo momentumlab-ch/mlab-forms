@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MomentumLab Forms 0.5.0\n"
+"Project-Id-Version: MomentumLab Forms 0.6.0\n"
 "Report-Msgid-Bugs-To: https://github.com/momentumlab-ch/mlab-forms/issues\n"
-"POT-Creation-Date: 2026-10-17T15:07:19+00:00\n"
-"PO-Revision-Date: 2026-10-17T15:07:19+00:00\n"
+"POT-Creation-Date: 2026-10-18T01:17:12+00:00\n"
+"PO-Revision-Date: 2026-10-18T01:17:12+00:00\n"
 "Last-Translator: Momentum Lab\n"
 "Language-Team: German (Switzerland)\n"
 "Language: de_CH\n"
@@ -41,11 +41,11 @@ msgstr "Momentum Lab"
 msgid "https://momentumlab.ch"
 msgstr "https://momentumlab.ch"
 
-#: inc/Admin/ConnectionTest.php:38 inc/Capabilities.php:45
+#: inc/Admin/ConnectionTest.php:37 inc/Admin/Preview.php:40 inc/Capabilities.php:45
 msgid "Dazu fehlt dir die Berechtigung."
 msgstr "Dazu fehlt dir die Berechtigung."
 
-#: inc/Admin/ConnectionTest.php:62
+#: inc/Admin/ConnectionTest.php:61
 msgid "Unbekannter Dienst."
 msgstr "Unbekannter Dienst."
 
@@ -53,7 +53,7 @@ msgstr "Unbekannter Dienst."
 msgid "Anfrage"
 msgstr "Anfrage"
 
-#: inc/Admin/EntriesListTable.php:52 inc/Forms/FormPostType.php:58
+#: inc/Admin/BuilderTexts.php:47 inc/Admin/EntriesListTable.php:52 inc/Admin/FormEditor.php:47 inc/Forms/FormPostType.php:58
 msgid "Formular"
 msgstr "Formular"
 
@@ -75,11 +75,12 @@ msgstr "Alle"
 msgid "Status: %s"
 msgstr "Status: %s"
 
+#. translators: %s: Status
 #: inc/Admin/EntriesListTable.php:107
 msgid "Endgültig löschen"
 msgstr "Endgültig löschen"
 
-#: inc/Admin/EntriesListTable.php:134 inc/Admin/Menu.php:48 inc/Admin/Menu.php:48 inc/Forms/FormPostType.php:62
+#: inc/Admin/EntriesListTable.php:134 inc/Admin/Menu.php:48 inc/Forms/FormPostType.php:62
 msgid "Alle Formulare"
 msgstr "Alle Formulare"
 
@@ -95,7 +96,7 @@ msgstr "CSV exportieren"
 msgid "Keine Anfragen gefunden."
 msgstr "Keine Anfragen gefunden."
 
-#: inc/Admin/EntriesPage.php:101 inc/Admin/EntriesPage.php:102 inc/Admin/EntriesPage.php:128 inc/Admin/FormEditor.php:246 inc/Privacy/Privacy.php:80
+#: inc/Admin/EntriesPage.php:101 inc/Admin/EntriesPage.php:102 inc/Admin/EntriesPage.php:128 inc/Admin/FormEditor.php:212 inc/Privacy/Privacy.php:80
 msgid "Anfragen"
 msgstr "Anfragen"
 
@@ -157,7 +158,7 @@ msgstr "Sprache"
 msgid "Herkunft"
 msgstr "Herkunft"
 
-#: inc/Admin/FieldRenderer.php:68
+#: inc/Admin/FieldRenderer.php:72
 msgid "Verbindung testen"
 msgstr "Verbindung testen"
 
@@ -167,23 +168,19 @@ msgstr "Verbindung testen"
 msgid "Gespeichert: %s. Leer lassen, damit er unverändert bleibt."
 msgstr "Gespeichert: %s. Leer lassen, damit er unverändert bleibt."
 
-#: inc/Admin/FieldRenderer.php:100
+#: inc/Admin/FieldRenderer.php:103
 msgid "Schlüssel entfernen"
 msgstr "Schlüssel entfernen"
 
-#: inc/Admin/FieldRenderer.php:48
+#: inc/Admin/FieldRenderer.php:52
 msgid "Diese Adresse gehört nicht zu deiner Website. Mails können im Spam landen."
 msgstr "Diese Adresse gehört nicht zu deiner Website. Mails können im Spam landen."
 
-#: inc/Admin/FieldRenderer.php:108
+#: inc/Admin/FieldRenderer.php:119
 msgid "Aktiv"
 msgstr "Aktiv"
 
-#: inc/Admin/FormEditor.php:47
-msgid "Formular-Schema (JSON)"
-msgstr "Formular-Schema (JSON)"
-
-#: inc/Admin/FormEditor.php:48
+#: inc/Admin/BuilderTexts.php:161 inc/Admin/FormEditor.php:48
 msgid "Aufbewahrung"
 msgstr "Aufbewahrung"
 
@@ -195,27 +192,19 @@ msgstr "Einbinden"
 msgid "Frühere Versionen"
 msgstr "Frühere Versionen"
 
-#: inc/Admin/FormEditor.php:65
-msgid "Das Schema beschreibt Felder, Benachrichtigungen und Einstellungen. Es wird beim Speichern geprüft."
-msgstr "Das Schema beschreibt Felder, Benachrichtigungen und Einstellungen. Es wird beim Speichern geprüft."
-
-#: inc/Admin/FormEditor.php:85
+#: inc/Admin/BuilderTexts.php:37
 msgid "Vorlage laden …"
 msgstr "Vorlage laden …"
 
-#: inc/Admin/FormEditor.php:94
-msgid "Das aktuelle Schema durch die Vorlage ersetzen?"
-msgstr "Das aktuelle Schema durch die Vorlage ersetzen?"
-
-#: inc/Admin/FormEditor.php:110
+#: inc/Admin/FormEditor.php:76
 msgid "Nach dem Veröffentlichen kannst du das Formular mit diesem Shortcode einbinden:"
 msgstr "Nach dem Veröffentlichen kannst du das Formular mit diesem Shortcode einbinden:"
 
-#: inc/Admin/FormEditor.php:123
+#: inc/Admin/FormEditor.php:89
 msgid "Noch keine früheren Versionen."
 msgstr "Noch keine früheren Versionen."
 
-#: inc/Admin/FormEditor.php:136
+#: inc/Admin/FormEditor.php:102
 msgid "Wiederherstellen"
 msgstr "Wiederherstellen"
 
@@ -225,15 +214,15 @@ msgstr "Wiederherstellen"
 msgid "Kein gültiges JSON: %s"
 msgstr "Kein gültiges JSON: %s"
 
-#: inc/Admin/FormEditor.php:215
+#: inc/Admin/FormEditor.php:181
 msgid "Das Schema wurde nicht gespeichert. Bitte korrigiere diese Punkte:"
 msgstr "Das Schema wurde nicht gespeichert. Bitte korrigiere diese Punkte:"
 
-#: inc/Admin/FormEditor.php:244
+#: inc/Admin/FormEditor.php:210
 msgid "Shortcode"
 msgstr "Shortcode"
 
-#: inc/Admin/Menu.php:49 inc/Admin/Menu.php:49 inc/Forms/FormPostType.php:59
+#: inc/Admin/Menu.php:49 inc/Forms/FormPostType.php:59
 msgid "Neues Formular"
 msgstr "Neues Formular"
 
@@ -269,7 +258,7 @@ msgstr "So lange bleiben gesendete Anfragen gespeichert. Danach kommen sie in de
 msgid "Anzahl Tage"
 msgstr "Anzahl Tage"
 
-#: inc/Admin/SettingsPage.php:61 inc/Admin/SettingsPage.php:62 inc/Admin/SettingsPage.php:149 inc/Admin/SettingsPage.php:232
+#: inc/Admin/BuilderTexts.php:35 inc/Admin/SettingsPage.php:61 inc/Admin/SettingsPage.php:62 inc/Admin/SettingsPage.php:149 inc/Admin/SettingsPage.php:232
 msgid "Einstellungen"
 msgstr "Einstellungen"
 
@@ -313,11 +302,11 @@ msgstr "Abgelehnt"
 msgid "Spam"
 msgstr "Spam"
 
-#: inc/Fields/CheckboxField.php:55 inc/Frontend/Renderer.php:291
+#: inc/Fields/CheckboxField.php:55 inc/Frontend/Renderer.php:332
 msgid "Bitte bestätige die Einwilligung."
 msgstr "Bitte bestätige die Einwilligung."
 
-#: inc/Fields/CheckboxField.php:56 inc/Frontend/Renderer.php:290
+#: inc/Fields/CheckboxField.php:56 inc/Frontend/Renderer.php:331
 msgid "Bitte setze diesen Haken."
 msgstr "Bitte setze diesen Haken."
 
@@ -349,11 +338,11 @@ msgstr "Nur eine Option darf «default» sein."
 msgid "Bitte wähle eine der angebotenen Möglichkeiten."
 msgstr "Bitte wähle eine der angebotenen Möglichkeiten."
 
-#: inc/Fields/ChoiceField.php:213
+#: inc/Admin/BuilderTexts.php:65 inc/Fields/ChoiceField.php:213
 msgid "Bitte wählen"
 msgstr "Bitte wählen"
 
-#: inc/Fields/DateField.php:23
+#: inc/Fields/DateField.php:23 inc/Forms/Presets.php:195
 msgid "Datum"
 msgstr "Datum"
 
@@ -371,7 +360,7 @@ msgstr "Bitte wähle ein späteres Datum."
 msgid "Bitte wähle ein früheres Datum."
 msgstr "Bitte wähle ein früheres Datum."
 
-#: inc/Fields/FieldType.php:72 inc/Frontend/Renderer.php:289
+#: inc/Fields/FieldType.php:72 inc/Frontend/Renderer.php:330
 msgid "Bitte fülle dieses Feld aus."
 msgstr "Bitte fülle dieses Feld aus."
 
@@ -379,11 +368,11 @@ msgstr "Bitte fülle dieses Feld aus."
 msgid "Text"
 msgstr "Text"
 
-#: inc/Fields/FieldTypes.php:61 inc/Settings.php:35
+#: inc/Fields/FieldTypes.php:61 inc/Forms/Presets.php:114 inc/Forms/Presets.php:118 inc/Settings.php:44
 msgid "E-Mail"
 msgstr "E-Mail"
 
-#: inc/Fields/FieldTypes.php:62
+#: inc/Fields/FieldTypes.php:62 inc/Forms/Presets.php:127 inc/Forms/Presets.php:131
 msgid "Telefon"
 msgstr "Telefon"
 
@@ -391,7 +380,7 @@ msgstr "Telefon"
 msgid "Verstecktes Feld"
 msgstr "Verstecktes Feld"
 
-#: inc/Fields/FieldTypes.php:67
+#: inc/Fields/FieldTypes.php:67 inc/Forms/Presets.php:198
 msgid "Auswahlliste"
 msgstr "Auswahlliste"
 
@@ -399,7 +388,7 @@ msgstr "Auswahlliste"
 msgid "Optionsfelder"
 msgstr "Optionsfelder"
 
-#: inc/Fields/FieldTypes.php:69
+#: inc/Fields/FieldTypes.php:69 inc/Forms/Presets.php:208 inc/Forms/Presets.php:212
 msgid "Mehrfachauswahl"
 msgstr "Mehrfachauswahl"
 
@@ -407,11 +396,11 @@ msgstr "Mehrfachauswahl"
 msgid "Checkbox"
 msgstr "Checkbox"
 
-#: inc/Fields/FieldTypes.php:71
+#: inc/Fields/FieldTypes.php:71 inc/Forms/Presets.php:218
 msgid "Einwilligung"
 msgstr "Einwilligung"
 
-#: inc/Fields/FieldTypes.php:72
+#: inc/Fields/FieldTypes.php:72 inc/Forms/Presets.php:229
 msgid "Zwischentitel"
 msgstr "Zwischentitel"
 
@@ -427,7 +416,7 @@ msgstr "Bitte gib eine gültige Telefonnummer ein."
 msgid "Bitte gib eine gültige Postleitzahl ein."
 msgstr "Bitte gib eine gültige Postleitzahl ein."
 
-#: inc/Fields/Formats.php:55 inc/Frontend/Renderer.php:293
+#: inc/Fields/Formats.php:55 inc/Frontend/Renderer.php:334
 msgid "Das Format stimmt nicht."
 msgstr "Das Format stimmt nicht."
 
@@ -461,19 +450,19 @@ msgstr "«format» muss «postcode_ch» oder «tel» sein."
 msgid "«pattern» ist kein gültiger regulärer Ausdruck."
 msgstr "«pattern» ist kein gültiger regulärer Ausdruck."
 
-#: inc/Fields/TextField.php:78 inc/Frontend/Renderer.php:292
+#: inc/Fields/TextField.php:78 inc/Frontend/Renderer.php:333
 msgid "Bitte gib eine gültige E-Mail-Adresse ein."
 msgstr "Bitte gib eine gültige E-Mail-Adresse ein."
 
-#: inc/Fields/TextareaField.php:25
+#: inc/Admin/Builder.php:189 inc/Fields/TextareaField.php:25 inc/Forms/Presets.php:194
 msgid "Mehrzeiliger Text"
 msgstr "Mehrzeiliger Text"
 
-#: inc/Forms/Form.php:163
+#: inc/Admin/Builder.php:127 inc/Forms/Form.php:163
 msgid "Senden"
 msgstr "Senden"
 
-#: inc/Forms/Form.php:164
+#: inc/Admin/Builder.php:128 inc/Forms/Form.php:164
 msgid "Danke! Wir haben deine Nachricht erhalten."
 msgstr "Danke! Wir haben deine Nachricht erhalten."
 
@@ -505,7 +494,8 @@ msgstr "Keine Formulare gefunden."
 msgid "Keine Formulare im Papierkorb."
 msgstr "Keine Formulare im Papierkorb."
 
-#: inc/Forms/SchemaValidator.php:56
+#. translators: %s: Fehlermeldung des JSON-Parsers
+#: inc/Admin/BuilderTexts.php:183 inc/Forms/SchemaValidator.php:56
 msgid "Das Schema muss ein JSON-Objekt sein."
 msgstr "Das Schema muss ein JSON-Objekt sein."
 
@@ -599,23 +589,23 @@ msgstr "Anfrage mit Angebot und Datum"
 msgid "Gutschein"
 msgstr "Gutschein"
 
-#: inc/Frontend/Renderer.php:140 inc/Submission/SubmissionHandler.php:51
+#: inc/Frontend/Renderer.php:181 inc/Submission/SubmissionHandler.php:51
 msgid "Bitte prüfe die markierten Felder."
 msgstr "Bitte prüfe die markierten Felder."
 
-#: inc/Frontend/Renderer.php:296
+#: inc/Frontend/Renderer.php:337
 msgid "Der Spam-Schutz prüft noch. Bitte warte einen Moment und sende dann nochmals."
 msgstr "Der Spam-Schutz prüft noch. Bitte warte einen Moment und sende dann nochmals."
 
-#: inc/Frontend/Renderer.php:297
+#: inc/Frontend/Renderer.php:338
 msgid "Der Spam-Schutz konnte nicht geladen werden. Bitte lade die Seite neu und versuche es nochmals."
 msgstr "Der Spam-Schutz konnte nicht geladen werden. Bitte lade die Seite neu und versuche es nochmals."
 
-#: inc/Frontend/Renderer.php:298
+#: inc/Frontend/Renderer.php:339
 msgid "Bitte prüfe diesen Wert."
 msgstr "Bitte prüfe diesen Wert."
 
-#: inc/Frontend/Renderer.php:299
+#: inc/Frontend/Renderer.php:340
 msgid "Das hat leider nicht geklappt. Bitte versuche es später nochmals."
 msgstr "Das hat leider nicht geklappt. Bitte versuche es später nochmals."
 
@@ -657,59 +647,59 @@ msgstr "Zum Schutz vor Spam nutzen wir auf Formularen hCaptcha. Dabei werden tec
 msgid "Den Inhalt von Anfragen prüfen wir mit Akismet auf Spam. Dazu werden dein Name (sofern das Formular ihn als Namensfeld kennzeichnet), deine E-Mail-Adresse, deine Nachricht, deine IP-Adresse, Angaben deines Browsers, die Herkunftsseite und die Adresse der Seite (ohne Parameter) an Akismet (Automattic) übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA)."
 msgstr "Den Inhalt von Anfragen prüfen wir mit Akismet auf Spam. Dazu werden dein Name (sofern das Formular ihn als Namensfeld kennzeichnet), deine E-Mail-Adresse, deine Nachricht, deine IP-Adresse, Angaben deines Browsers, die Herkunftsseite und die Adresse der Seite (ohne Parameter) an Akismet (Automattic) übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA)."
 
-#: inc/Settings.php:34
+#: inc/Settings.php:43
 msgid "Allgemein"
 msgstr "Allgemein"
 
-#: inc/Settings.php:36
+#: inc/Settings.php:45
 msgid "Spam-Schutz"
 msgstr "Spam-Schutz"
 
-#: inc/Settings.php:37
+#: inc/Settings.php:46
 msgid "Datenschutz"
 msgstr "Datenschutz"
 
-#: inc/Settings.php:38
+#: inc/Settings.php:47
 msgid "Updates"
 msgstr "Updates"
 
-#: inc/Settings.php:51
+#: inc/Settings.php:60
 msgid "Absender"
 msgstr "Absender"
 
-#: inc/Settings.php:52
+#: inc/Settings.php:61
 msgid "Die Absender-E-Mail sollte zu deiner eigenen Domain passen (zum Beispiel info@deine-firma.ch). Sonst stufen viele Postfächer die Nachrichten als Spam ein."
 msgstr "Die Absender-E-Mail sollte zu deiner eigenen Domain passen (zum Beispiel info@deine-firma.ch). Sonst stufen viele Postfächer die Nachrichten als Spam ein."
 
-#: inc/Settings.php:56
+#: inc/Settings.php:65
 msgid "Spam-Dienste"
 msgstr "Spam-Dienste"
 
-#: inc/Settings.php:57
+#: inc/Settings.php:66
 msgid "Honeypot und Mindestzeit sind immer aktiv. Die folgenden Dienste sind ausgeschaltet, bis du sie hier einrichtest und im Formular wählst. Sie senden Daten an Dritte. Speichere zuerst, dann kannst du die Verbindung testen."
 msgstr "Honeypot und Mindestzeit sind immer aktiv. Die folgenden Dienste sind ausgeschaltet, bis du sie hier einrichtest und im Formular wählst. Sie senden Daten an Dritte. Speichere zuerst, dann kannst du die Verbindung testen."
 
-#: inc/Spam/Akismet.php:61
+#: inc/Spam/Akismet.php:68
 msgid "Bitte trage zuerst einen Akismet-Schlüssel ein und speichere."
 msgstr "Bitte trage zuerst einen Akismet-Schlüssel ein und speichere."
 
-#: inc/Spam/Akismet.php:75 inc/Spam/Captcha.php:65
+#: inc/Spam/Akismet.php:82 inc/Spam/Captcha.php:68
 msgid "Der Dienst ist gerade nicht erreichbar. Bitte versuche es später nochmals."
 msgstr "Der Dienst ist gerade nicht erreichbar. Bitte versuche es später nochmals."
 
-#: inc/Spam/Akismet.php:82 inc/Spam/Captcha.php:77
+#: inc/Spam/Akismet.php:89 inc/Spam/Captcha.php:80
 msgid "Verbindung funktioniert."
 msgstr "Verbindung funktioniert."
 
-#: inc/Spam/Akismet.php:86
+#: inc/Spam/Akismet.php:93
 msgid "Akismet hat den Schlüssel abgelehnt. Bitte prüfe ihn."
 msgstr "Akismet hat den Schlüssel abgelehnt. Bitte prüfe ihn."
 
-#: inc/Spam/Captcha.php:57
+#: inc/Spam/Captcha.php:60
 msgid "Bitte trage zuerst beide Schlüssel ein und speichere."
 msgstr "Bitte trage zuerst beide Schlüssel ein und speichere."
 
-#: inc/Spam/Captcha.php:71
+#: inc/Spam/Captcha.php:74
 msgid "Der Dienst hat den geheimen Schlüssel abgelehnt. Bitte prüfe ihn."
 msgstr "Der Dienst hat den geheimen Schlüssel abgelehnt. Bitte prüfe ihn."
 
@@ -896,3 +886,502 @@ msgstr "Ausschalten, damit beim Löschen des Plugins alle Formulare, Anfragen un
 #: inc/updater.php:54
 msgid "Updates sind nicht aktiv: In wp-config.php fehlt die Konstante MLAB_FORMS_GITHUB_TOKEN."
 msgstr "Updates sind nicht aktiv: In wp-config.php fehlt die Konstante MLAB_FORMS_GITHUB_TOKEN."
+
+#: inc/Admin/Builder.php:185 inc/Forms/Presets.php:110 inc/Forms/Presets.php:111 inc/Forms/Presets.php:135 inc/Forms/Presets.php:160
+msgid "Kurzer Text"
+msgstr "Kurzer Text"
+
+#: inc/Admin/Builder.php:186 inc/Forms/Presets.php:115
+msgid "Prüft das Format"
+msgstr "Prüft das Format"
+
+#: inc/Admin/Builder.php:187 inc/Forms/Presets.php:128
+msgid "Prüft die Nummer"
+msgstr "Prüft die Nummer"
+
+#: inc/Admin/Builder.php:188
+msgid "Nicht sichtbar, mit festem Wert"
+msgstr "Nicht sichtbar, mit festem Wert"
+
+#: inc/Admin/Builder.php:190
+msgid "Nur Zahlen"
+msgstr "Nur Zahlen"
+
+#: inc/Admin/Builder.php:191 inc/Forms/Presets.php:195
+msgid "Prüft das Datum"
+msgstr "Prüft das Datum"
+
+#: inc/Admin/Builder.php:192
+msgid "Eine Option aus einer Liste"
+msgstr "Eine Option aus einer Liste"
+
+#: inc/Admin/Builder.php:193
+msgid "Eine Option, alle sichtbar"
+msgstr "Eine Option, alle sichtbar"
+
+#: inc/Admin/Builder.php:194 inc/Forms/Presets.php:209
+msgid "Mehrere Optionen wählen"
+msgstr "Mehrere Optionen wählen"
+
+#: inc/Admin/Builder.php:195
+msgid "Einzelnes Häkchen"
+msgstr "Einzelnes Häkchen"
+
+#: inc/Admin/Builder.php:196
+msgid "Pflicht-Häkchen mit Datenschutz-Link"
+msgstr "Pflicht-Häkchen mit Datenschutz-Link"
+
+#: inc/Admin/Builder.php:197 inc/Forms/Presets.php:229
+msgid "Nur eine Überschrift"
+msgstr "Nur eine Überschrift"
+
+#: inc/Admin/Builder.php:198
+msgid "Eigener Text mit Formatierung"
+msgstr "Eigener Text mit Formatierung"
+
+#: inc/Admin/Builder.php:91
+msgid "Formular als JSON"
+msgstr "Formular als JSON"
+
+#: inc/Admin/BuilderTexts.php:100
+msgid "Muss vor dem Senden ausgefüllt sein"
+msgstr "Muss vor dem Senden ausgefüllt sein"
+
+#: inc/Admin/BuilderTexts.php:101
+msgid "Breite"
+msgstr "Breite"
+
+#: inc/Admin/BuilderTexts.php:102
+msgid "Voll"
+msgstr "Voll"
+
+#: inc/Admin/BuilderTexts.php:103
+msgid "Halb"
+msgstr "Halb"
+
+#: inc/Admin/BuilderTexts.php:104
+msgid "Drittel"
+msgstr "Drittel"
+
+#: inc/Admin/BuilderTexts.php:105
+msgid "Prüfung"
+msgstr "Prüfung"
+
+#: inc/Admin/BuilderTexts.php:106
+msgid "Keine besondere Prüfung"
+msgstr "Keine besondere Prüfung"
+
+#: inc/Admin/BuilderTexts.php:107
+msgid "Schweizer Postleitzahl"
+msgstr "Schweizer Postleitzahl"
+
+#: inc/Admin/BuilderTexts.php:108
+msgid "Kleinster Wert"
+msgstr "Kleinster Wert"
+
+#: inc/Admin/BuilderTexts.php:109
+msgid "Grösster Wert"
+msgstr "Grösster Wert"
+
+#: inc/Admin/BuilderTexts.php:110
+msgid "Nur Daten ab heute"
+msgstr "Nur Daten ab heute"
+
+#: inc/Admin/BuilderTexts.php:111
+msgid "Frühere Daten werden abgelehnt"
+msgstr "Frühere Daten werden abgelehnt"
+
+#: inc/Admin/BuilderTexts.php:112
+msgid "Mit der Datenschutzerklärung verlinken"
+msgstr "Mit der Datenschutzerklärung verlinken"
+
+#: inc/Admin/BuilderTexts.php:113
+msgid "Der Text wird zum Link auf deine Datenschutzseite."
+msgstr "Der Text wird zum Link auf deine Datenschutzseite."
+
+#: inc/Admin/BuilderTexts.php:114
+msgid "Wird automatisch geprüft:"
+msgstr "Wird automatisch geprüft:"
+
+#: inc/Admin/BuilderTexts.php:115
+msgid "gültige E-Mail-Adresse"
+msgstr "gültige E-Mail-Adresse"
+
+#: inc/Admin/BuilderTexts.php:116
+msgid "gültige Telefonnummer"
+msgstr "gültige Telefonnummer"
+
+#: inc/Admin/BuilderTexts.php:117
+msgid "gültige Postleitzahl"
+msgstr "gültige Postleitzahl"
+
+#: inc/Admin/BuilderTexts.php:118
+msgid "gültiges Datum"
+msgstr "gültiges Datum"
+
+#: inc/Admin/BuilderTexts.php:119
+msgid "nur Zahlen"
+msgstr "nur Zahlen"
+
+#: inc/Admin/BuilderTexts.php:130
+msgid "Einträge"
+msgstr "Einträge"
+
+#: inc/Admin/BuilderTexts.php:131
+msgid "Eintrag"
+msgstr "Eintrag"
+
+#: inc/Admin/BuilderTexts.php:132
+msgid "Eintrag hinzufügen"
+msgstr "Eintrag hinzufügen"
+
+#: inc/Admin/BuilderTexts.php:133
+msgid "Neuer Eintrag"
+msgstr "Neuer Eintrag"
+
+#: inc/Admin/BuilderTexts.php:134
+msgid "Eintrag entfernen"
+msgstr "Eintrag entfernen"
+
+#: inc/Admin/BuilderTexts.php:135
+msgid "Als Standard festlegen"
+msgstr "Als Standard festlegen"
+
+#: inc/Admin/BuilderTexts.php:136
+msgid "Der Stern markiert den Standard-Eintrag. Es gibt höchstens einen."
+msgstr "Der Stern markiert den Standard-Eintrag. Es gibt höchstens einen."
+
+#: inc/Admin/BuilderTexts.php:137 inc/Forms/Presets.php:204 inc/Forms/Presets.php:214
+msgid "Option 1"
+msgstr "Option 1"
+
+#: inc/Admin/BuilderTexts.php:138 inc/Forms/Presets.php:204 inc/Forms/Presets.php:214
+msgid "Option 2"
+msgstr "Option 2"
+
+#: inc/Admin/BuilderTexts.php:139
+msgid "Es braucht mindestens einen Eintrag."
+msgstr "Es braucht mindestens einen Eintrag."
+
+#: inc/Admin/BuilderTexts.php:140
+msgid "Leere erste Zeile anzeigen"
+msgstr "Leere erste Zeile anzeigen"
+
+#: inc/Admin/BuilderTexts.php:141
+msgid "Zeigt «Bitte wählen» zuoberst."
+msgstr "Zeigt «Bitte wählen» zuoberst."
+
+#: inc/Admin/BuilderTexts.php:142
+msgid "Vorauswahl per Link erlauben"
+msgstr "Vorauswahl per Link erlauben"
+
+#. translators: %s: Name des URL-Parameters
+#: inc/Admin/BuilderTexts.php:144
+msgid "Ein Link wie …/kontakt/?%s=Eintrag wählt den Eintrag vor. Ausgeschaltet, gelten nur die Einträge oben."
+msgstr "Ein Link wie …/kontakt/?%s=Eintrag wählt den Eintrag vor. Ausgeschaltet, gelten nur die Einträge oben."
+
+#: inc/Admin/BuilderTexts.php:145
+msgid "Für Entwickler: Filter mlab_forms_options_providers"
+msgstr "Für Entwickler: Filter mlab_forms_options_providers"
+
+#: inc/Admin/BuilderTexts.php:156
+msgid "Nach dem Absenden"
+msgstr "Nach dem Absenden"
+
+#: inc/Admin/BuilderTexts.php:157
+msgid "Text des Absende-Buttons"
+msgstr "Text des Absende-Buttons"
+
+#: inc/Admin/BuilderTexts.php:158
+msgid "Erfolgsmeldung"
+msgstr "Erfolgsmeldung"
+
+#: inc/Admin/BuilderTexts.php:159
+msgid "Danke-Seite (Adresse)"
+msgstr "Danke-Seite (Adresse)"
+
+#: inc/Admin/BuilderTexts.php:160
+msgid "Optional. Wenn du eine Adresse einträgst, geht es nach dem Absenden dort weiter."
+msgstr "Optional. Wenn du eine Adresse einträgst, geht es nach dem Absenden dort weiter."
+
+#: inc/Admin/BuilderTexts.php:162
+msgid "Wie lange gesendete Anfragen gespeichert bleiben, stellst du im Kasten «Aufbewahrung» rechts ein."
+msgstr "Wie lange gesendete Anfragen gespeichert bleiben, stellst du im Kasten «Aufbewahrung» rechts ein."
+
+#: inc/Admin/BuilderTexts.php:173
+msgid "Vorschau des Formulars"
+msgstr "Vorschau des Formulars"
+
+#: inc/Admin/BuilderTexts.php:174
+msgid "Grösse der Vorschau"
+msgstr "Grösse der Vorschau"
+
+#: inc/Admin/BuilderTexts.php:175
+msgid "So sieht das Formular auf deiner Seite aus. Absenden ist hier ausgeschaltet."
+msgstr "So sieht das Formular auf deiner Seite aus. Absenden ist hier ausgeschaltet."
+
+#: inc/Admin/BuilderTexts.php:176
+msgid "Vorschau wird geladen …"
+msgstr "Vorschau wird geladen …"
+
+#: inc/Admin/BuilderTexts.php:177
+msgid "Die Vorschau ist noch nicht möglich. Bitte korrigiere:"
+msgstr "Die Vorschau ist noch nicht möglich. Bitte korrigiere:"
+
+#: inc/Admin/BuilderTexts.php:178
+msgid "Die Vorschau konnte nicht geladen werden. Bitte versuche es nochmals."
+msgstr "Die Vorschau konnte nicht geladen werden. Bitte versuche es nochmals."
+
+#: inc/Admin/BuilderTexts.php:179
+msgid "Handy"
+msgstr "Handy"
+
+#: inc/Admin/BuilderTexts.php:180
+msgid "Computer"
+msgstr "Computer"
+
+#: inc/Admin/BuilderTexts.php:184
+msgid "Das Schema braucht eine Liste «fields»."
+msgstr "Das Schema braucht eine Liste «fields»."
+
+#: inc/Admin/BuilderTexts.php:33
+msgid "Bereich"
+msgstr "Bereich"
+
+#: inc/Admin/BuilderTexts.php:34
+msgid "Felder"
+msgstr "Felder"
+
+#: inc/Admin/BuilderTexts.php:36
+msgid "Vorschau"
+msgstr "Vorschau"
+
+#: inc/Admin/BuilderTexts.php:38
+msgid "Das aktuelle Formular durch die Vorlage ersetzen?"
+msgstr "Das aktuelle Formular durch die Vorlage ersetzen?"
+
+#: inc/Admin/BuilderTexts.php:39
+msgid "Vorlage geladen"
+msgstr "Vorlage geladen"
+
+#: inc/Admin/BuilderTexts.php:40
+msgid "Experten-Ansicht (JSON)"
+msgstr "Experten-Ansicht (JSON)"
+
+#: inc/Admin/BuilderTexts.php:41
+msgid "Zurück zum Builder"
+msgstr "Zurück zum Builder"
+
+#: inc/Admin/BuilderTexts.php:42
+msgid "Bausteine"
+msgstr "Bausteine"
+
+#: inc/Admin/BuilderTexts.php:43
+msgid "Eigenes Feld"
+msgstr "Eigenes Feld"
+
+#: inc/Admin/BuilderTexts.php:44
+msgid "Art selbst wählen"
+msgstr "Art selbst wählen"
+
+#: inc/Admin/BuilderTexts.php:45
+msgid "Wähle, welche Art von Eingabe du brauchst."
+msgstr "Wähle, welche Art von Eingabe du brauchst."
+
+#: inc/Admin/BuilderTexts.php:46
+msgid "Abbrechen"
+msgstr "Abbrechen"
+
+#: inc/Admin/BuilderTexts.php:48
+msgid "Deine Änderungen gelten erst, wenn du das Formular speicherst oder aktualisierst."
+msgstr "Deine Änderungen gelten erst, wenn du das Formular speicherst oder aktualisierst."
+
+#: inc/Admin/BuilderTexts.php:59
+msgid "Das Formular ist noch leer. Wähle links einen Baustein."
+msgstr "Das Formular ist noch leer. Wähle links einen Baustein."
+
+#: inc/Admin/BuilderTexts.php:60
+msgid "Feld"
+msgstr "Feld"
+
+#: inc/Admin/BuilderTexts.php:61
+msgid "Nach oben"
+msgstr "Nach oben"
+
+#: inc/Admin/BuilderTexts.php:62
+msgid "Nach unten"
+msgstr "Nach unten"
+
+#: inc/Admin/BuilderTexts.php:63
+msgid "Duplizieren"
+msgstr "Duplizieren"
+
+#: inc/Admin/BuilderTexts.php:64
+msgid "Entfernen"
+msgstr "Entfernen"
+
+#: inc/Admin/BuilderTexts.php:66
+msgid " (Kopie)"
+msgstr " (Kopie)"
+
+#. translators: %s: Name des Felds
+#: inc/Admin/BuilderTexts.php:68
+msgid "Feld «%s» hinzugefügt"
+msgstr "Feld «%s» hinzugefügt"
+
+#. translators: %s: Name des Felds
+#: inc/Admin/BuilderTexts.php:70
+msgid "Feld «%1$s» steht jetzt an Position %2$d"
+msgstr "Feld «%1$s» steht jetzt an Position %2$d"
+
+#. translators: 1: Name des Felds, 2: Position
+#: inc/Admin/BuilderTexts.php:72
+msgid "Feld «%s» dupliziert"
+msgstr "Feld «%s» dupliziert"
+
+#. translators: %s: Name des Felds
+#: inc/Admin/BuilderTexts.php:74
+msgid "Feld «%s» entfernt"
+msgstr "Feld «%s» entfernt"
+
+#. translators: %s: Name des Felds
+#: inc/Admin/BuilderTexts.php:75
+msgid "Das Formular braucht mindestens ein Feld."
+msgstr "Das Formular braucht mindestens ein Feld."
+
+#: inc/Admin/BuilderTexts.php:76
+msgid "Die Beschriftung fehlt."
+msgstr "Die Beschriftung fehlt."
+
+#. translators: %s: Name des Felds
+#: inc/Admin/BuilderTexts.php:78
+msgid "Feld «%s»:"
+msgstr "Feld «%s»:"
+
+#: inc/Admin/BuilderTexts.php:89
+msgid "Eigenschaften"
+msgstr "Eigenschaften"
+
+#: inc/Admin/BuilderTexts.php:90
+msgid "Wähle ein Feld aus, um es zu bearbeiten."
+msgstr "Wähle ein Feld aus, um es zu bearbeiten."
+
+#: inc/Admin/BuilderTexts.php:91
+msgid "Fertig"
+msgstr "Fertig"
+
+#: inc/Admin/BuilderTexts.php:92
+msgid "Beschriftung"
+msgstr "Beschriftung"
+
+#: inc/Admin/BuilderTexts.php:93
+msgid "Titel"
+msgstr "Titel"
+
+#: inc/Admin/BuilderTexts.php:94
+msgid "Platzhalter"
+msgstr "Platzhalter"
+
+#: inc/Admin/BuilderTexts.php:95
+msgid "Text der leeren ersten Zeile"
+msgstr "Text der leeren ersten Zeile"
+
+#: inc/Admin/BuilderTexts.php:96
+msgid "Hilfetext"
+msgstr "Hilfetext"
+
+#: inc/Admin/BuilderTexts.php:97
+msgid "Inhalt (HTML)"
+msgstr "Inhalt (HTML)"
+
+#: inc/Admin/BuilderTexts.php:98
+msgid "Standardwert"
+msgstr "Standardwert"
+
+#: inc/Admin/BuilderTexts.php:99
+msgid "Pflichtfeld"
+msgstr "Pflichtfeld"
+
+#: inc/Forms/Presets.php:110
+msgid "Vorname"
+msgstr "Vorname"
+
+#: inc/Forms/Presets.php:111
+msgid "Nachname"
+msgstr "Nachname"
+
+#: inc/Forms/Presets.php:135
+msgid "Firma"
+msgstr "Firma"
+
+#: inc/Forms/Presets.php:146
+msgid "Adresse"
+msgstr "Adresse"
+
+#: inc/Forms/Presets.php:146
+msgid "Strasse und Nummer"
+msgstr "Strasse und Nummer"
+
+#: inc/Forms/Presets.php:149 inc/Forms/Presets.php:153
+msgid "PLZ"
+msgstr "PLZ"
+
+#: inc/Forms/Presets.php:150
+msgid "Prüft die Postleitzahl"
+msgstr "Prüft die Postleitzahl"
+
+#: inc/Forms/Presets.php:160
+msgid "Ort"
+msgstr "Ort"
+
+#: inc/Forms/Presets.php:163 inc/Forms/Presets.php:167
+msgid "Land"
+msgstr "Land"
+
+#: inc/Forms/Presets.php:164
+msgid "Auswahl der Länder"
+msgstr "Auswahl der Länder"
+
+#: inc/Forms/Presets.php:173
+msgid "Schweiz"
+msgstr "Schweiz"
+
+#: inc/Forms/Presets.php:176
+msgid "Deutschland"
+msgstr "Deutschland"
+
+#: inc/Forms/Presets.php:177
+msgid "Österreich"
+msgstr "Österreich"
+
+#: inc/Forms/Presets.php:178
+msgid "Liechtenstein"
+msgstr "Liechtenstein"
+
+#: inc/Forms/Presets.php:179
+msgid "Frankreich"
+msgstr "Frankreich"
+
+#: inc/Forms/Presets.php:180
+msgid "Italien"
+msgstr "Italien"
+
+#: inc/Forms/Presets.php:194
+msgid "Nachricht"
+msgstr "Nachricht"
+
+#: inc/Forms/Presets.php:199
+msgid "Eine Option wählen"
+msgstr "Eine Option wählen"
+
+#: inc/Forms/Presets.php:202
+msgid "Auswahl"
+msgstr "Auswahl"
+
+#: inc/Forms/Presets.php:219
+msgid "Pflicht-Häkchen mit Link zur Datenschutzerklärung"
+msgstr "Pflicht-Häkchen mit Link zur Datenschutzerklärung"
+
+#: inc/Forms/Presets.php:222
+msgid "Ich bin mit der Verarbeitung meiner Angaben einverstanden."
+msgstr "Ich bin mit der Verarbeitung meiner Angaben einverstanden."
