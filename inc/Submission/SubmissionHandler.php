@@ -10,6 +10,7 @@ namespace MLab_Forms\Submission;
 use MLab_Forms\Entries\EntryRepository;
 use MLab_Forms\Forms\Form;
 use MLab_Forms\Forms\FormRepository;
+use MLab_Forms\Forms\Language;
 use MLab_Forms\Mail\MergeTags;
 use MLab_Forms\Mail\Notifier;
 use MLab_Forms\Privacy\IpHasher;
@@ -28,7 +29,7 @@ final class SubmissionHandler {
 	 * Verarbeitet eine Absendung.
 	 *
 	 * @param int                  $form_id Formular.
-	 * @param array<string, mixed> $request Ungeslashte Daten: mlab (Felder), mlab_hp, mlab_ts, mlab_source, mlab_referrer.
+	 * @param array<string, mixed> $request Ungeslashte Daten: mlab (Felder), mlab_hp, mlab_ts, mlab_source, mlab_referrer, mlab_lang.
 	 */
 	public static function handle( int $form_id, array $request ): SubmissionResult {
 		$form = FormRepository::find( $form_id );
@@ -36,6 +37,7 @@ final class SubmissionHandler {
 			return new SubmissionResult( SubmissionResult::NOT_FOUND, __( 'Dieses Formular gibt es nicht mehr.', 'mlab-forms' ) );
 		}
 
+		$form    = self::localize( $form, $request );
 		$ip_hash = IpHasher::hash( IpHasher::client_ip() );
 		$spam    = SpamGuard::check( $form, $request, $ip_hash );
 		if ( SpamGuard::RATE_LIMITED === $spam ) {
@@ -56,7 +58,7 @@ final class SubmissionHandler {
 			return $blocked;
 		}
 
-		$submission = new Submission( $form, $values, self::meta( $request, $ip_hash ) );
+		$submission = new Submission( $form, $values, self::meta( $request, $ip_hash, $form->language() ) );
 		if ( ! self::store( $submission ) ) {
 			return new SubmissionResult( SubmissionResult::ERROR, __( 'Die Anfrage konnte nicht gespeichert werden. Bitte versuche es noch einmal.', 'mlab-forms' ), array(), $values );
 		}
@@ -65,6 +67,16 @@ final class SubmissionHandler {
 		Notifier::send_all( $submission );
 
 		return self::success( $form, $submission );
+	}
+
+	/**
+	 * Das Formular in der Sprache der Absendung. Eine unbekannte Sprache ergibt die Standardsprache.
+	 *
+	 * @param Form                 $form    Formular.
+	 * @param array<string, mixed> $request Daten mit «mlab_lang».
+	 */
+	public static function localize( Form $form, array $request ): Form {
+		return $form->localized( Language::from_request( $request['mlab_lang'] ?? null, $form->languages() ) );
 	}
 
 	/**
@@ -142,9 +154,10 @@ final class SubmissionHandler {
 	 *
 	 * @param array<string, mixed> $request Daten.
 	 * @param string               $ip_hash Gehashte IP.
+	 * @param string               $lang    Sprache des Formulars; leer bei einsprachigen Formularen (dann gilt die Sprache der Website).
 	 * @return array<string, mixed>
 	 */
-	private static function meta( array $request, string $ip_hash ): array {
+	private static function meta( array $request, string $ip_hash, string $lang ): array {
 		$source = esc_url_raw( (string) ( $request['mlab_source'] ?? '' ) );
 		$query  = array();
 		wp_parse_str( (string) wp_parse_url( $source, PHP_URL_QUERY ), $query );
@@ -155,7 +168,7 @@ final class SubmissionHandler {
 			'source'     => $source,
 			'referrer'   => esc_url_raw( (string) ( $request['mlab_referrer'] ?? '' ) ),
 			'utm'        => array_map( 'sanitize_text_field', array_intersect_key( $query, array_flip( self::UTM_KEYS ) ) ),
-			'language'   => determine_locale(),
+			'language'   => '' !== $lang ? $lang : determine_locale(),
 			'ip_hash'    => $ip_hash,
 			'user_agent' => mb_substr( $agent, 0, 200 ),
 		);
@@ -167,7 +180,7 @@ final class SubmissionHandler {
 	 * @param Form            $form       Formular.
 	 * @param Submission|null $submission Absendung; null bei Spam.
 	 */
-	private static function success( Form $form, ?Submission $submission ): SubmissionResult {
+	public static function success( Form $form, ?Submission $submission ): SubmissionResult {
 		$tracking = (array) $form->setting( 'tracking' );
 		$params   = array( 'form_id' => $form->id );
 		foreach ( (array) ( $tracking['ga4_params'] ?? array() ) as $key => $template ) {

@@ -28,14 +28,30 @@ final class Notifier {
 	 * @return int Anzahl erfolgreich versendeter E-Mails.
 	 */
 	public static function send_all( Submission $submission ): int {
-		$sent = 0;
-		foreach ( (array) $submission->form->setting( 'notifications' ) as $notification ) {
-			if ( is_array( $notification ) && ( $notification['enabled'] ?? true ) && self::send( $notification, $submission ) ) {
+		$sent    = 0;
+		$default = $submission->in_language( $submission->form->default_language() );
+		foreach ( (array) $submission->form->setting( 'notifications' ) as $index => $notification ) {
+			// Mails an die Admin-Adresse erscheinen in der Standardsprache: die Sprache, in der das Formular eingerichtet wurde.
+			$source = self::is_for_admin( (array) $notification, $submission ) ? $default : $submission;
+			$notice = (array) ( ( (array) $source->form->setting( 'notifications' ) )[ $index ] ?? $notification );
+			if ( ( $notice['enabled'] ?? true ) && self::send( $notice, $source ) ) {
 				++$sent;
 			}
 		}
 
 		return $sent;
+	}
+
+	/**
+	 * Geht die Benachrichtigung nur an die Admin-Adresse (und nicht an den Besucher oder andere)?
+	 *
+	 * @param array<string, mixed> $notification Benachrichtigung.
+	 * @param Submission           $submission   Absendung.
+	 */
+	private static function is_for_admin( array $notification, Submission $submission ): bool {
+		$to = self::addresses( (string) ( $notification['to'] ?? '' ), $submission );
+
+		return array() !== $to && array() === array_filter( $to, static fn( string $email ) => 0 !== strcasecmp( $email, MergeTags::admin_email() ) );
 	}
 
 	/**

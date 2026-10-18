@@ -152,3 +152,29 @@ function get_locale() {
 function add_query_arg( $key, $value, $url ) {
 	return $url . ( str_contains( $url, '?' ) ? '&' : '?' ) . $key . '=' . $value;
 }
+
+function determine_locale() {
+	return $GLOBALS['mlab_test']['locale'] ?? 'de_CH';
+}
+
+function pll_current_language() {
+	return $GLOBALS['mlab_test']['polylang'] ?? false;
+}
+
+function wp_mail( $to, $subject, $message, $headers = '' ) {
+	$GLOBALS['mlab_mails'][] = array(
+		'to'      => (array) $to,
+		'subject' => $subject,
+		'body'    => $message,
+		'headers' => $headers,
+	);
+	return true;
+}
+
+function sanitize_key( $key ) {
+	return preg_replace( '/[^a-z0-9_\-]/', '', strtolower( (string) $key ) );
+}
+
+function remove_query_arg( $key, $url ) {
+	return $url;
+}

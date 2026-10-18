@@ -64,6 +64,7 @@ final class SchemaValidator {
 			$this->check_settings( $schema['settings'] );
 		}
 		$this->check_fields( $schema['fields'] ?? null );
+		$this->errors = array_merge( $this->errors, I18nValidator::validate( $schema ) );
 	}
 
 	/**
