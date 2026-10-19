@@ -117,7 +117,7 @@ class FileField extends FieldType {
 		}
 
 		$check = wp_check_filetype_and_ext( $value['tmp_name'], $value['name'] );
-		$ext   = strtolower( (string) ( $check['ext'] ?? '' ) );
+		$ext   = strtolower( (string) $check['ext'] );
 		if ( '' === $ext || ! in_array( $ext, self::accept( $field ), true ) ) {
 			return $this->type_message( $field );
 		}

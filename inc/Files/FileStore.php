@@ -109,7 +109,7 @@ final class FileStore {
 		return array(
 			'name' => $name,
 			'size' => (int) filesize( $target ),
-			'type' => (string) ( $check['type'] ?? 'application/octet-stream' ),
+			'type' => false !== $check['type'] ? $check['type'] : 'application/octet-stream',
 			'path' => $folder . '/' . $name,
 		);
 	}
