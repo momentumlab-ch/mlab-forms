@@ -60,16 +60,25 @@ final class ChoiceListTest extends TestCase {
 	public function test_leere_erste_zeile_ist_bei_select_standard(): void {
 		$html = Form::type_of( $this->field() )->render( $this->field(), '', null );
 
-		$this->assertMatchesRegularExpression( '/<select[^>]*><option value="">Bitte wählen<\/option><option value="eins"/', $html );
+		$this->assertMatchesRegularExpression( '/<select[^>]*><option value="" selected>Bitte wählen<\/option><option value="eins"/', $html );
 	}
 
 	public function test_leere_erste_zeile_mit_eigenem_text_oder_ohne(): void {
 		$with_text = array( 'placeholder' => 'Angebot wählen …' ) + $this->field();
 		$without   = array( 'empty_first' => false ) + $this->field();
 
-		$this->assertStringContainsString( '<option value="">Angebot wählen …</option>', Form::type_of( $with_text )->render( $with_text, '', null ) );
+		$this->assertStringContainsString( '<option value="" selected>Angebot wählen …</option>', Form::type_of( $with_text )->render( $with_text, '', null ) );
 		$this->assertStringNotContainsString( '<option value="">', Form::type_of( $without )->render( $without, '', null ) );
 		$this->assertStringContainsString( '<option value="eins"', Form::type_of( $without )->render( $without, '', null ) );
+	}
+
+	public function test_leere_erste_zeile_ist_bei_pflicht_nicht_waehlbar(): void {
+		$required = array( 'required' => true ) + $this->field();
+		$optional = $this->field();
+
+		$this->assertStringContainsString( '<option value="" disabled selected>Bitte wählen</option>', Form::type_of( $required )->render( $required, '', null ) );
+		$this->assertStringNotContainsString( 'disabled', Form::type_of( $optional )->render( $optional, '', null ) );
+		$this->assertStringNotContainsString( '<option value="" disabled selected>', Form::type_of( $required )->render( $required, 'eins', null ) );
 	}
 
 	public function test_radio_hat_keine_leere_zeile(): void {

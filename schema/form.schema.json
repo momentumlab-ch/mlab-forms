@@ -27,6 +27,7 @@
 				"success_message": { "type": "string" },
 				"redirect_url": { "type": "string", "description": "Danke-Seite nach dem Absenden (optional)." },
 				"store_entries": { "type": "boolean", "default": true },
+				"required_note": { "type": "boolean", "default": true, "description": "Hinweis «* Pflichtfeld» über den Feldern, sobald es Pflichtfelder gibt." },
 				"retention_days": { "type": "integer", "minimum": 0, "maximum": 3650, "default": 365, "description": "Aufbewahrung in Tagen. 0 heisst unbegrenzt." },
 				"style": { "enum": [ "", "light", "dark" ], "description": "Leer: Farbschema aus den Plugin-Einstellungen." },
 				"spam": {
@@ -106,7 +107,7 @@
 			"properties": {
 				"id": { "type": "string", "pattern": "^[a-z0-9_]{1,64}$" },
 				"type": {
-					"enum": [ "text", "email", "tel", "textarea", "number", "select", "radio", "checkbox", "checkbox_group", "date", "hidden", "consent", "heading", "html" ],
+					"enum": [ "text", "email", "tel", "textarea", "number", "select", "radio", "checkbox", "checkbox_group", "date", "hidden", "consent", "file", "heading", "html" ],
 					"description": "Weitere Typen über den Filter mlab_forms_field_types."
 				},
 				"label": { "type": "string" },
@@ -123,6 +124,8 @@
 				"format": { "enum": [ "postcode_ch", "tel" ], "description": "Eingebaute Formatprüfung für Textfelder. postcode_ch: vierstellige Schweizer Postleitzahl. Telefonfelder prüfen immer als Telefonnummer." },
 				"empty_first": { "type": "boolean", "default": true, "description": "Auswahlliste: leere erste Zeile («Bitte wählen» oder placeholder)." },
 				"rows": { "type": "integer", "minimum": 1 },
+				"accept": { "type": "array", "items": { "type": "string", "pattern": "^\\.?[a-zA-Z0-9]{1,8}$" }, "description": "Datei-Feld: erlaubte Endungen, Standard [\"pdf\", \"doc\", \"docx\"]. Geprüft werden Endung und Inhalt." },
+				"max_size": { "type": "number", "exclusiveMinimum": 0, "maximum": 20, "description": "Datei-Feld: Höchstgrösse in MB, Standard 5. Das Limit des Servers gilt zusätzlich." },
 				"content": { "type": "string", "description": "HTML für den Typ html." },
 				"link": { "type": "string", "description": "Link bei consent, z. B. {privacy_url}." },
 				"options": { "type": "array", "items": { "$ref": "#/$defs/option" } },

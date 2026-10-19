@@ -8,6 +8,7 @@
 namespace MLab_Forms\Entries;
 
 use MLab_Forms\Database\Installer;
+use MLab_Forms\Files\FileStore;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -252,6 +253,9 @@ final class EntryRepository {
 		}
 
 		$in = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
+		foreach ( (array) $wpdb->get_col( $wpdb->prepare( "SELECT data FROM %i WHERE id IN ({$in})", Installer::entries_table(), ...$ids ) ) as $data ) {
+			FileStore::delete_values( (array) json_decode( (string) $data, true ) );
+		}
 		$wpdb->query( $wpdb->prepare( "DELETE FROM %i WHERE entry_id IN ({$in})", Installer::notes_table(), ...$ids ) );
 
 		$deleted = (int) $wpdb->query( $wpdb->prepare( "DELETE FROM %i WHERE id IN ({$in})", Installer::entries_table(), ...$ids ) );

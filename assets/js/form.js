@@ -64,6 +64,9 @@
 	}
 
 	function message( el, messages ) {
+		if ( el.validity.valueMissing && el.type === 'file' ) {
+			return messages.fileMissing || messages.valueMissing;
+		}
 		if ( el.validity.valueMissing && el.type === 'checkbox' ) {
 			return el.closest( '.mlab-form__field--consent' ) ? messages.consent : messages.checkbox;
 		}
@@ -86,7 +89,28 @@
 		}
 	};
 
+	/* Grösse und Endung wie Fields\FileField; den Inhalt prüft nur der Server. */
+	function fileMessage( el ) {
+		var file = el.files && el.files[ 0 ];
+		if ( ! file ) {
+			return '';
+		}
+		var max = parseInt( el.getAttribute( 'data-max-size' ), 10 );
+		if ( max && file.size > max ) {
+			return el.getAttribute( 'data-size-message' ) || '';
+		}
+		var accept = ( el.getAttribute( 'accept' ) || '' ).toLowerCase().split( ',' ).filter( Boolean );
+		var name = file.name.toLowerCase();
+		var ok = ! accept.length || accept.some( function ( ext ) {
+			return name.slice( -ext.length ) === ext;
+		} );
+		return ok ? '' : el.getAttribute( 'data-type-message' ) || '';
+	}
+
 	function formatMessage( el, messages ) {
+		if ( el.type === 'file' ) {
+			return fileMessage( el );
+		}
 		var format = el.getAttribute( 'data-format' );
 		var value = el.value.trim();
 		return format && formats[ format ] && value !== '' && ! formats[ format ]( value ) ? messages[ format ] : '';

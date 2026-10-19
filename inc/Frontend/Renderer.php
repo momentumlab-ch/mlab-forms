@@ -7,6 +7,7 @@
 
 namespace MLab_Forms\Frontend;
 
+use MLab_Forms\Fields\FileField;
 use MLab_Forms\Fields\Formats;
 use MLab_Forms\Forms\Form;
 use MLab_Forms\Forms\Language;
@@ -129,6 +130,7 @@ final class Renderer {
 
 		$inner = self::summary( $result )
 			. self::hidden_inputs( $form )
+			. self::required_note( $form )
 			. self::fields_html( $form, $result )
 			. Widget::html( $form )
 			. self::submit_button( $form );
@@ -138,6 +140,7 @@ final class Renderer {
 			array(
 				'method'         => 'post',
 				'action'         => admin_url( 'admin-post.php' ),
+				'enctype'        => self::has_files( $form ) ? 'multipart/form-data' : null,
 				'data-mlab-form' => true,
 				'data-rest'      => rest_url( RestController::NAMESPACE . '/submit' ),
 				'data-prefill'   => wp_json_encode( self::prefill_config( $form ) ),
@@ -145,6 +148,41 @@ final class Renderer {
 			) + Widget::form_attributes( $form ),
 			$inner
 		);
+	}
+
+	/**
+	 * Hat das Formular ein Datei-Feld?
+	 *
+	 * @param Form $form Formular.
+	 */
+	private static function has_files( Form $form ): bool {
+		foreach ( $form->prepared_fields() as $field ) {
+			if ( Form::type_of( $field ) instanceof FileField ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Hinweis «* Pflichtfeld», wenn das Formular Pflichtfelder hat.
+	 *
+	 * Abschalten pro Formular mit settings.required_note = false.
+	 *
+	 * @param Form $form Formular.
+	 */
+	private static function required_note( Form $form ): string {
+		if ( false === $form->setting( 'required_note' ) ) {
+			return '';
+		}
+		foreach ( $form->prepared_fields() as $field ) {
+			if ( ! empty( $field['required'] ) && Form::type_of( $field )->is_input() ) {
+				return Html::tag( 'p', array( 'class' => 'mlab-form__required-note' ), '<span class="mlab-form__required" aria-hidden="true">*</span> ' . esc_html__( 'Pflichtfeld', 'mlab-forms' ) );
+			}
+		}
+
+		return '';
 	}
 
 	/**
@@ -356,6 +394,7 @@ final class Renderer {
 			'captchaPending'  => __( 'Der Spam-Schutz prüft noch. Bitte warte einen Moment und sende dann nochmals.', 'mlab-forms' ),
 			'captcha'         => __( 'Der Spam-Schutz konnte nicht geladen werden. Bitte lade die Seite neu und versuche es nochmals.', 'mlab-forms' ),
 			'invalid'         => __( 'Bitte prüfe diesen Wert.', 'mlab-forms' ),
+			'fileMissing'     => __( 'Bitte wähle eine Datei aus.', 'mlab-forms' ),
 			'server'          => __( 'Das hat leider nicht geklappt. Bitte versuche es später nochmals.', 'mlab-forms' ),
 		);
 	}

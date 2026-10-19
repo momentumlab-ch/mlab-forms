@@ -217,6 +217,7 @@ final class Builder {
 			'checkbox_group' => __( 'Mehrere Optionen wählen', 'mlab-forms' ),
 			'checkbox'       => __( 'Einzelnes Häkchen', 'mlab-forms' ),
 			'consent'        => __( 'Pflicht-Häkchen mit Datenschutz-Link', 'mlab-forms' ),
+			'file'           => __( 'Eine Datei, z. B. Lebenslauf', 'mlab-forms' ),
 			'heading'        => __( 'Nur eine Überschrift', 'mlab-forms' ),
 			'html'           => __( 'Eigener Text mit Formatierung', 'mlab-forms' ),
 		);

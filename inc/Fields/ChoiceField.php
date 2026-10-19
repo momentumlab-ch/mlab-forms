@@ -176,7 +176,16 @@ class ChoiceField extends FieldType {
 		$html  = '';
 		$empty = self::empty_label( $field );
 		if ( null !== $empty ) {
-			$html .= Html::tag( 'option', array( 'value' => '' ), esc_html( $empty ) );
+			// Bei Pflichtfeldern ist die leere Zeile nur Hinweis und lässt sich nicht wählen.
+			$html .= Html::tag(
+				'option',
+				array(
+					'value'    => '',
+					'disabled' => ! empty( $field['required'] ),
+					'selected' => '' === $value,
+				),
+				esc_html( $empty )
+			);
 		}
 
 		$groups = array();

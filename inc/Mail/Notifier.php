@@ -7,6 +7,7 @@
 
 namespace MLab_Forms\Mail;
 
+use MLab_Forms\Files\FileStore;
 use MLab_Forms\Submission\Submission;
 
 defined( 'ABSPATH' ) || exit;
@@ -30,9 +31,11 @@ final class Notifier {
 		$default = $submission->in_language( $submission->form->default_language() );
 		foreach ( (array) $submission->form->setting( 'notifications' ) as $index => $notification ) {
 			// Mails an die Admin-Adresse erscheinen in der Standardsprache: die Sprache, in der das Formular eingerichtet wurde.
-			$source = self::is_for_admin( (array) $notification, $submission ) ? $default : $submission;
-			$notice = (array) ( ( (array) $source->form->setting( 'notifications' ) )[ $index ] ?? $notification );
-			if ( ( $notice['enabled'] ?? true ) && self::send( $notice, $source ) ) {
+			$for_admin = self::is_for_admin( (array) $notification, $submission );
+			$source    = $for_admin ? $default : $submission;
+			$notice    = (array) ( ( (array) $source->form->setting( 'notifications' ) )[ $index ] ?? $notification );
+			// Hochgeladene Dateien gehen nur an die Empfänger der Seite, nie zurück an den Besucher.
+			if ( ( $notice['enabled'] ?? true ) && self::send( $notice, $source, $for_admin ? self::attachments( $submission ) : array() ) ) {
 				++$sent;
 			}
 		}
@@ -88,8 +91,9 @@ final class Notifier {
 	 *
 	 * @param array<string, mixed> $notification Einstellungen der Benachrichtigung.
 	 * @param Submission           $submission   Absendung.
+	 * @param list<string>         $attachments  Absolute Pfade.
 	 */
-	private static function send( array $notification, Submission $submission ): bool {
+	private static function send( array $notification, Submission $submission, array $attachments = array() ): bool {
 		$to = self::recipients( $notification, $submission );
 		if ( ! $to ) {
 			return false;
@@ -98,7 +102,17 @@ final class Notifier {
 		$subject = Sender::single_line( MergeTags::replace( (string) ( $notification['subject'] ?? '' ), $submission ) );
 		$body    = MergeTags::replace( (string) ( $notification['body'] ?? '{all_fields}' ), $submission );
 
-		return wp_mail( $to, $subject, $body, self::headers( $notification, $submission ) );
+		return wp_mail( $to, $subject, $body, self::headers( $notification, $submission ), $attachments );
+	}
+
+	/**
+	 * Gespeicherte Dateien der Absendung als Anhänge.
+	 *
+	 * @param Submission $submission Absendung.
+	 * @return list<string>
+	 */
+	private static function attachments( Submission $submission ): array {
+		return array_values( array_filter( array_map( array( FileStore::class, 'absolute' ), FileStore::files_in( $submission->values ) ) ) );
 	}
 
 	/**

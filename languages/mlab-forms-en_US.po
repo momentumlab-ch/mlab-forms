@@ -1686,3 +1686,42 @@ msgid ""
 "An diese Adresse(n) gehen die Anfragen, wenn ein Formular keine eigene Adresse hat. Mehrere Adressen trennst du mit Komma. Leer lassen für die Admin-E-Mail der Website."
 msgstr ""
 "Enquiries go to this address(es) when a form has none of its own. Separate several addresses with a comma. Leave empty for the website's admin email."
+
+msgid "Datei"
+msgstr "File"
+
+msgid "accept muss eine Liste von Dateiendungen sein, z. B. [\"pdf\", \"docx\"]."
+msgstr "accept must be a list of file extensions, e.g. [\"pdf\", \"docx\"]."
+
+msgid "max_size ist die Grösse in MB, höchstens %d."
+msgstr "max_size is the size in MB, at most %d."
+
+msgid "Bitte wähle eine Datei aus."
+msgstr "Please choose a file."
+
+msgid "Die Datei konnte nicht hochgeladen werden. Bitte versuche es nochmals."
+msgstr "The file could not be uploaded. Please try again."
+
+msgid "Bitte lade eine Datei im Format %s hoch."
+msgstr "Please upload a file in %s format."
+
+msgid "Die Datei ist zu gross. Erlaubt sind höchstens %s."
+msgstr "The file is too large. The maximum is %s."
+
+msgid "%1$s, höchstens %2$s"
+msgstr "%1$s, max. %2$s"
+
+msgid "Du darfst diese Datei nicht öffnen."
+msgstr "You are not allowed to open this file."
+
+msgid "Die Datei gibt es nicht mehr."
+msgstr "This file no longer exists."
+
+msgid "Die Datei konnte nicht gespeichert werden. Bitte versuche es noch einmal."
+msgstr "The file could not be saved. Please try again."
+
+msgid "Dateien"
+msgstr "Files"
+
+msgid "Eine Datei, z. B. Lebenslauf"
+msgstr "One file, e.g. a CV"

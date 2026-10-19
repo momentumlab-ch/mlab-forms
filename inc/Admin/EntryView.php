@@ -10,6 +10,7 @@ namespace MLab_Forms\Admin;
 use MLab_Forms\Entries\EntryFormatter;
 use MLab_Forms\Entries\EntryRepository;
 use MLab_Forms\Entries\Status;
+use MLab_Forms\Files\FileStore;
 use MLab_Forms\Html;
 
 defined( 'ABSPATH' ) || exit;
@@ -57,6 +58,27 @@ final class EntryView {
 	private function render_fields(): void {
 		echo '<h2>' . esc_html__( 'Angaben', 'mlab-forms' ) . '</h2>';
 		$this->table( EntryFormatter::rows( $this->entry ), true );
+		$this->render_files();
+	}
+
+	/**
+	 * Links zu hochgeladenen Dateien.
+	 */
+	private function render_files(): void {
+		$files = FileStore::files_in( (array) $this->entry['data'] );
+		if ( ! $files ) {
+			return;
+		}
+		echo '<h3>' . esc_html__( 'Dateien', 'mlab-forms' ) . '</h3><ul>';
+		foreach ( $files as $field_id => $file ) {
+			printf(
+				'<li><a href="%s">%s</a> (%s)</li>',
+				esc_url( FileStore::download_url( (int) $this->entry['id'], (string) $field_id ) ),
+				esc_html( (string) $file['name'] ),
+				esc_html( size_format( (int) $file['size'] ) )
+			);
+		}
+		echo '</ul>';
 	}
 
 	/**

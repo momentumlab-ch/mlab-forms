@@ -69,6 +69,7 @@ final class FieldTypes {
 			'checkbox_group' => new ChoiceField( 'checkbox_group', __( 'Mehrfachauswahl', 'mlab-forms' ) ),
 			'checkbox'       => new CheckboxField( 'checkbox', __( 'Checkbox', 'mlab-forms' ) ),
 			'consent'        => new CheckboxField( 'consent', __( 'Einwilligung', 'mlab-forms' ) ),
+			'file'           => new FileField(),
 			'heading'        => new ContentField( 'heading', __( 'Zwischentitel', 'mlab-forms' ) ),
 			'html'           => new ContentField( 'html', __( 'HTML', 'mlab-forms' ) ),
 		);

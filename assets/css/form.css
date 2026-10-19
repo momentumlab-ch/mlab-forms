@@ -213,3 +213,34 @@
 	height: 1px;
 	overflow: hidden;
 }
+
+/* Hinweis «* Pflichtfeld» und Datei-Feld. */
+.mlab-form__required-note {
+	margin: 0 0 1em;
+	font-size: .875em;
+	opacity: .85;
+}
+
+.mlab-form__field--file input[type="file"] {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 100%;
+	padding: .6rem;
+	border: 1.5px dashed var(--mlab-form-muted, currentColor);
+	border-radius: var(--mlab-form-radius, 6px);
+	background: var(--mlab-form-input-bg, transparent);
+	color: var(--mlab-form-text, inherit);
+	font: inherit;
+	cursor: pointer;
+}
+
+.mlab-form__field--file input[type="file"]::file-selector-button {
+	margin-right: .75rem;
+	padding: .6rem 1rem;
+	border: 0;
+	border-radius: 999px;
+	background: var(--mlab-form-accent, #222);
+	color: var(--mlab-form-accent-text, #fff);
+	font: inherit;
+	cursor: pointer;
+}
