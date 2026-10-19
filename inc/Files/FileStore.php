@@ -193,7 +193,8 @@ final class FileStore {
 		}
 
 		nocache_headers();
-		header( 'Content-Type: ' . ( (string) ( $file['type'] ?? '' ) ?: 'application/octet-stream' ) );
+		$type = (string) ( $file['type'] ?? '' );
+		header( 'Content-Type: ' . ( '' !== $type ? $type : 'application/octet-stream' ) );
 		header( 'Content-Disposition: attachment; filename="' . str_replace( array( '"', "\r", "\n" ), '', (string) $file['name'] ) . '"' );
 		header( 'Content-Length: ' . (string) filesize( $path ) );
 		header( 'X-Content-Type-Options: nosniff' );
