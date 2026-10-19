@@ -1616,3 +1616,42 @@ msgstr "Es sind höchstens %d Adressen möglich."
 #: inc/options.php:36
 msgid "An diese Adresse(n) gehen die Anfragen, wenn ein Formular keine eigene Adresse hat. Mehrere Adressen trennst du mit Komma. Leer lassen für die Admin-E-Mail der Website."
 msgstr "An diese Adresse(n) gehen die Anfragen, wenn ein Formular keine eigene Adresse hat. Mehrere Adressen trennst du mit Komma. Leer lassen für die Admin-E-Mail der Website."
+
+msgid "Datei"
+msgstr "Datei"
+
+msgid "accept muss eine Liste von Dateiendungen sein, z. B. [\"pdf\", \"docx\"]."
+msgstr "accept muss eine Liste von Dateiendungen sein, z. B. [\"pdf\", \"docx\"]."
+
+msgid "max_size ist die Grösse in MB, höchstens %d."
+msgstr "max_size ist die Grösse in MB, höchstens %d."
+
+msgid "Bitte wähle eine Datei aus."
+msgstr "Bitte wähle eine Datei aus."
+
+msgid "Die Datei konnte nicht hochgeladen werden. Bitte versuche es nochmals."
+msgstr "Die Datei konnte nicht hochgeladen werden. Bitte versuche es nochmals."
+
+msgid "Bitte lade eine Datei im Format %s hoch."
+msgstr "Bitte lade eine Datei im Format %s hoch."
+
+msgid "Die Datei ist zu gross. Erlaubt sind höchstens %s."
+msgstr "Die Datei ist zu gross. Erlaubt sind höchstens %s."
+
+msgid "%1$s, höchstens %2$s"
+msgstr "%1$s, höchstens %2$s"
+
+msgid "Du darfst diese Datei nicht öffnen."
+msgstr "Du darfst diese Datei nicht öffnen."
+
+msgid "Die Datei gibt es nicht mehr."
+msgstr "Die Datei gibt es nicht mehr."
+
+msgid "Die Datei konnte nicht gespeichert werden. Bitte versuche es noch einmal."
+msgstr "Die Datei konnte nicht gespeichert werden. Bitte versuche es noch einmal."
+
+msgid "Dateien"
+msgstr "Dateien"
+
+msgid "Eine Datei, z. B. Lebenslauf"
+msgstr "Eine Datei, z. B. Lebenslauf"

@@ -1,5 +1,12 @@
 == Changelog ==
 
+= 0.8.0 =
+* Neues Feld «Datei» für einen Upload, z. B. den Lebenslauf. Erlaubt sind standardmässig PDF, DOC und DOCX bis 5 MB; Endungen (`accept`) und Grösse in MB (`max_size`, höchstens 20) lassen sich pro Feld einstellen. Der Server prüft Endung und Inhalt der Datei.
+* Hochgeladene Dateien liegen geschützt unter `wp-content/uploads/mlab-forms/`, ohne direkten Zugriff aus dem Web. In der Anfrage im Backend gibt es einen Link zum Herunterladen, nur für Benutzer, die Anfragen sehen dürfen. Die Datei hängt an der Mail an die Empfänger der Seite, nie an der Bestätigung an den Besucher.
+* Dateien werden mit ihrer Anfrage gelöscht: beim Aufräumen nach der Aufbewahrungsfrist, bei der Datenlöschung nach DSGVO/DSG und beim Löschen des Plugins (wenn die Daten nicht behalten werden). Speichert ein Formular keine Anfragen, wird die Datei nach dem Versand gelöscht.
+* Formulare mit Pflichtfeldern zeigen oben den Hinweis «* Pflichtfeld». Ausschalten pro Formular mit `settings.required_note = false`.
+* Auswahllisten mit Pflicht: Die erste Zeile «Bitte wählen» ist nur noch Hinweis und lässt sich nicht mehr auswählen.
+
 = 0.7.1 =
 * Jedes Formular kann an eine eigene Adresse senden. Im Builder unter «Einstellungen › Empfänger» trägst du eine oder mehrere Adressen ein (z. B. verkauf@firma.ch, info@firma.ch). Ist das Feld leer, gehen die Anfragen wie bisher an den Standard-Empfänger. Eine ungültige Adresse meldet der Builder sofort am Feld; der Server lehnt sie beim Speichern mit einer verständlichen Meldung ab.
 * Der Standard-Empfänger in den Einstellungen (Tab «E-Mail», Abschnitt «Absender») darf jetzt mehrere Adressen enthalten. Ist er leer, gilt die Admin-E-Mail der Website.

@@ -81,6 +81,7 @@ final class SchemaValidator {
 			$this->optional_string( $settings, $key, 'settings.' . $key );
 		}
 		$this->optional_bool( $settings, 'store_entries', 'settings.store_entries' );
+		$this->optional_bool( $settings, 'required_note', 'settings.required_note' );
 		$this->optional_setting_int( $settings, 'retention_days', 'retention_days', 'settings.retention_days' );
 		if ( isset( $settings['style'] ) && '' !== $settings['style'] && ! isset( Settings::fields()['style_preset']['options'][ $settings['style'] ] ) ) {
 			$this->error( 'settings.style', __( '«style» muss «light» oder «dark» sein.', 'mlab-forms' ) );

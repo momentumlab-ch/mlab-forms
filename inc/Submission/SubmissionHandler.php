@@ -8,6 +8,8 @@
 namespace MLab_Forms\Submission;
 
 use MLab_Forms\Entries\EntryRepository;
+use MLab_Forms\Fields\FileField;
+use MLab_Forms\Files\FileStore;
 use MLab_Forms\Forms\Form;
 use MLab_Forms\Forms\FormRepository;
 use MLab_Forms\Forms\Language;
@@ -28,10 +30,11 @@ final class SubmissionHandler {
 	/**
 	 * Verarbeitet eine Absendung.
 	 *
-	 * @param int                  $form_id Formular.
-	 * @param array<string, mixed> $request Ungeslashte Daten: mlab (Felder), mlab_hp, mlab_ts, mlab_source, mlab_referrer, mlab_lang.
+	 * @param int                       $form_id Formular.
+	 * @param array<string, mixed>      $request Ungeslashte Daten: mlab (Felder), mlab_hp, mlab_ts, mlab_source, mlab_referrer, mlab_lang.
+	 * @param array<string, mixed>|null $files   Uploads je Feld-ID; null liest sie aus $_FILES.
 	 */
-	public static function handle( int $form_id, array $request ): SubmissionResult {
+	public static function handle( int $form_id, array $request, ?array $files = null ): SubmissionResult {
 		$form = FormRepository::find( $form_id );
 		if ( null === $form ) {
 			return new SubmissionResult( SubmissionResult::NOT_FOUND, __( 'Dieses Formular gibt es nicht mehr.', 'mlab-forms' ) );
@@ -48,25 +51,90 @@ final class SubmissionHandler {
 			return self::success( $form, null );
 		}
 
-		[ $values, $errors ] = self::process_fields( $form, (array) ( $request['mlab'] ?? array() ) );
+		$input               = array_merge( self::without_file_fields( $form, (array) ( $request['mlab'] ?? array() ) ), $files ?? self::uploaded_files() );
+		[ $values, $errors ] = self::process_fields( $form, $input );
+		$plain               = self::without_uploads( $values );
 		if ( $errors ) {
-			return new SubmissionResult( SubmissionResult::INVALID, __( 'Bitte prüfe die markierten Felder.', 'mlab-forms' ), $errors, $values );
+			return new SubmissionResult( SubmissionResult::INVALID, __( 'Bitte prüfe die markierten Felder.', 'mlab-forms' ), $errors, $plain );
 		}
 
-		$blocked = self::service_result( SpamGuard::check_services( $form, $request, $values, $ip_hash ), $values );
+		$blocked = self::service_result( SpamGuard::check_services( $form, $request, $plain, $ip_hash ), $plain );
 		if ( null !== $blocked ) {
 			return $blocked;
 		}
 
+		$values = FileStore::persist( $values );
+		if ( null === $values ) {
+			return new SubmissionResult( SubmissionResult::ERROR, __( 'Die Datei konnte nicht gespeichert werden. Bitte versuche es noch einmal.', 'mlab-forms' ), array(), $plain );
+		}
+
 		$submission = new Submission( $form, $values, self::meta( $request, $ip_hash, $form->language() ) );
 		if ( ! self::store( $submission ) ) {
-			return new SubmissionResult( SubmissionResult::ERROR, __( 'Die Anfrage konnte nicht gespeichert werden. Bitte versuche es noch einmal.', 'mlab-forms' ), array(), $values );
+			FileStore::delete_values( $values );
+			return new SubmissionResult( SubmissionResult::ERROR, __( 'Die Anfrage konnte nicht gespeichert werden. Bitte versuche es noch einmal.', 'mlab-forms' ), array(), $plain );
 		}
 
 		SpamGuard::count( $ip_hash );
 		Notifier::send_all( $submission );
 
+		// Ohne gespeicherte Anfrage braucht es die Dateien nach dem Versand nicht mehr.
+		if ( null === $submission->entry_id ) {
+			FileStore::delete_values( $values );
+		}
+
 		return self::success( $form, $submission );
+	}
+
+	/**
+	 * Uploads aus $_FILES['mlab'] als Feld-ID => Eintrag (name, type, tmp_name, error, size).
+	 *
+	 * @return array<string, array<string, mixed>>
+	 */
+	private static function uploaded_files(): array {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput -- öffentliches Formular, Schutz über SpamGuard; FileField prüft die Werte.
+		$raw = isset( $_FILES['mlab'] ) && is_array( $_FILES['mlab'] ) ? $_FILES['mlab'] : array();
+		if ( ! isset( $raw['name'] ) || ! is_array( $raw['name'] ) ) {
+			return array();
+		}
+
+		$files = array();
+		foreach ( array_keys( $raw['name'] ) as $id ) {
+			if ( ! is_string( $id ) || is_array( $raw['name'][ $id ] ) ) {
+				continue;
+			}
+			foreach ( array( 'name', 'type', 'tmp_name', 'error', 'size' ) as $key ) {
+				$files[ $id ][ $key ] = $raw[ $key ][ $id ] ?? null;
+			}
+		}
+
+		return $files;
+	}
+
+	/**
+	 * Entfernt Werte von Datei-Feldern aus den POST-Daten: Dateien kommen nur als echter Upload.
+	 *
+	 * @param Form                 $form  Formular.
+	 * @param array<string, mixed> $input Feld-ID => Rohwert.
+	 * @return array<string, mixed>
+	 */
+	private static function without_file_fields( Form $form, array $input ): array {
+		foreach ( $form->prepared_fields() as $field ) {
+			if ( Form::type_of( $field ) instanceof FileField ) {
+				unset( $input[ $field['id'] ] );
+			}
+		}
+
+		return $input;
+	}
+
+	/**
+	 * Werte ohne Uploads, z. B. für Spam-Dienste und zum erneuten Ausfüllen.
+	 *
+	 * @param array<string, mixed> $values Werte.
+	 * @return array<string, mixed>
+	 */
+	private static function without_uploads( array $values ): array {
+		return array_map( static fn( $value ) => is_array( $value ) && ! empty( $value['upload'] ) ? null : $value, $values );
 	}
 
 	/**

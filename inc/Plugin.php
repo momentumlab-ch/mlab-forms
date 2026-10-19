@@ -16,6 +16,7 @@ use MLab_Forms\Admin\Preview;
 use MLab_Forms\Admin\SettingsPage;
 use MLab_Forms\Admin\UpdatesTab;
 use MLab_Forms\Entries\Retention;
+use MLab_Forms\Files\FileStore;
 use MLab_Forms\Forms\FormPostType;
 use MLab_Forms\Frontend\Assets;
 use MLab_Forms\Frontend\Shortcode;
@@ -49,6 +50,7 @@ final class Plugin {
 			new PostHandler(),
 			new Retention(),
 			new Privacy(),
+			new FileStore(),
 		);
 		if ( is_admin() ) {
 			array_push( $modules, new Menu(), new FormEditor(), new Builder(), new Preview(), new EntriesPage(), new SettingsPage(), new UpdatesTab(), new ConnectionTest() );

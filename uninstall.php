@@ -36,6 +36,14 @@ foreach ( $mlab_forms_ids as $mlab_forms_id ) {
 }
 
 Installer::drop_tables();
+
+$mlab_forms_dir = trailingslashit( (string) wp_upload_dir( null, false )['basedir'] ) . 'mlab-forms';
+if ( is_dir( $mlab_forms_dir ) ) {
+	require_once ABSPATH . 'wp-admin/includes/file.php';
+	WP_Filesystem();
+	global $wp_filesystem;
+	$wp_filesystem->rmdir( $mlab_forms_dir, true );
+}
 Capabilities::revoke();
 delete_option( Settings::OPTION );
 delete_option( Activator::VERSION_OPTION );

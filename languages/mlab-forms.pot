@@ -2,7 +2,7 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MomentumLab Forms 0.7.1\n"
+"Project-Id-Version: MomentumLab Forms 0.8.0\n"
 "Report-Msgid-Bugs-To: https://github.com/momentumlab-ch/mlab-forms/issues\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1610,4 +1610,43 @@ msgstr ""
 
 #: inc/options.php:36
 msgid "An diese Adresse(n) gehen die Anfragen, wenn ein Formular keine eigene Adresse hat. Mehrere Adressen trennst du mit Komma. Leer lassen für die Admin-E-Mail der Website."
+msgstr ""
+
+msgid "Datei"
+msgstr ""
+
+msgid "accept muss eine Liste von Dateiendungen sein, z. B. [\"pdf\", \"docx\"]."
+msgstr ""
+
+msgid "max_size ist die Grösse in MB, höchstens %d."
+msgstr ""
+
+msgid "Bitte wähle eine Datei aus."
+msgstr ""
+
+msgid "Die Datei konnte nicht hochgeladen werden. Bitte versuche es nochmals."
+msgstr ""
+
+msgid "Bitte lade eine Datei im Format %s hoch."
+msgstr ""
+
+msgid "Die Datei ist zu gross. Erlaubt sind höchstens %s."
+msgstr ""
+
+msgid "%1$s, höchstens %2$s"
+msgstr ""
+
+msgid "Du darfst diese Datei nicht öffnen."
+msgstr ""
+
+msgid "Die Datei gibt es nicht mehr."
+msgstr ""
+
+msgid "Die Datei konnte nicht gespeichert werden. Bitte versuche es noch einmal."
+msgstr ""
+
+msgid "Dateien"
+msgstr ""
+
+msgid "Eine Datei, z. B. Lebenslauf"
 msgstr ""
