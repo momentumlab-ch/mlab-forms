@@ -77,7 +77,7 @@ final class WhatsApp {
 	 * @param array<string, string>|string $atts Attribute.
 	 */
 	public function shortcode( $atts ): string {
-		$atts = shortcode_atts(
+		$atts     = shortcode_atts(
 			array(
 				'label' => __( 'Per WhatsApp anfragen', 'mlab-forms' ),
 				'offer' => '',
