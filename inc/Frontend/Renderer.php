@@ -143,6 +143,7 @@ final class Renderer {
 				'enctype'        => self::has_files( $form ) ? 'multipart/form-data' : null,
 				'data-mlab-form' => true,
 				'data-rest'      => rest_url( RestController::NAMESPACE . '/submit' ),
+				'data-started'   => rest_url( RestController::NAMESPACE . '/started' ),
 				'data-prefill'   => wp_json_encode( self::prefill_config( $form ) ),
 				'data-messages'  => wp_json_encode( self::client_messages() ),
 			) + Widget::form_attributes( $form ),

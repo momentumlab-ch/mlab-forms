@@ -4,7 +4,7 @@ Tags: formulare, kontakt, anfrage
 Requires at least: 6.9
 Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 0.8.0
+Stable tag: 0.9.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,11 @@ Das Repository ist öffentlich, ein Token ist nicht nötig. Wird es privat, komm
 2. Auf main mergen. Der Workflow «Release» legt das Release `vX.Y.Z` mit `mlab-forms.zip` an, sobald es zur Version noch keines gibt. Ab dann sehen die Websites das Update.
 
 == Changelog ==
+
+= 0.9.0 =
+* Neu: WhatsApp-Knopf. Nummer und vorausgefüllte Nachricht unter Einstellungen › Allgemein, {page} setzt den Titel der Seite ein. Als Shortcode [mlab_whatsapp] (Attribute label, offer, text, class) oder als runder Knopf unten rechts auf allen Seiten (Standard aus). Ein normaler Link zu wa.me: kein Skript, kein Cookie.
+* Neu: Formular-Abbrüche. Das Skript meldet einmal pro Seitenaufruf die erste Eingabe (nur die Formular-ID, per sendBeacon). Gespeichert wird eine Zahl pro Formular und Tag, 400 Tage lang, höchstens 1000 pro Tag. Starts::funnel() liefert angefangen, gesendet und abgebrochen, z. B. für MomentumLab Insights.
+* Neu: Nach dem Senden löst das Formular das Ereignis «mlab-forms:sent» aus. Die Meldung an Google Analytics (generate_lead) bleibt wie bisher und läuft nur, wenn Analytics geladen und erlaubt ist.
 
 = 0.8.0 =
 * Neues Feld «Datei» für einen Upload, z. B. den Lebenslauf. Erlaubt sind standardmässig PDF, DOC und DOCX bis 5 MB; Endungen (`accept`) und Grösse in MB (`max_size`, höchstens 20) lassen sich pro Feld einstellen. Der Server prüft Endung und Inhalt der Datei.

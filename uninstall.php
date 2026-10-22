@@ -36,6 +36,7 @@ foreach ( $mlab_forms_ids as $mlab_forms_id ) {
 }
 
 Installer::drop_tables();
+delete_option( \MLab_Forms\Entries\Starts::OPTION );
 
 $mlab_forms_dir = trailingslashit( (string) wp_upload_dir( null, false )['basedir'] ) . 'mlab-forms';
 if ( is_dir( $mlab_forms_dir ) ) {

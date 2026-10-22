@@ -16,10 +16,12 @@ use MLab_Forms\Admin\Preview;
 use MLab_Forms\Admin\SettingsPage;
 use MLab_Forms\Admin\UpdatesTab;
 use MLab_Forms\Entries\Retention;
+use MLab_Forms\Entries\Starts;
 use MLab_Forms\Files\FileStore;
 use MLab_Forms\Forms\FormPostType;
 use MLab_Forms\Frontend\Assets;
 use MLab_Forms\Frontend\Shortcode;
+use MLab_Forms\Frontend\WhatsApp;
 use MLab_Forms\Privacy\Privacy;
 use MLab_Forms\Submission\PostHandler;
 use MLab_Forms\Submission\RestController;
@@ -51,6 +53,8 @@ final class Plugin {
 			new Retention(),
 			new Privacy(),
 			new FileStore(),
+			new WhatsApp(),
+			new Starts(),
 		);
 		if ( is_admin() ) {
 			array_push( $modules, new Menu(), new FormEditor(), new Builder(), new Preview(), new EntriesPage(), new SettingsPage(), new UpdatesTab(), new ConnectionTest() );
