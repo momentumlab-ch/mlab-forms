@@ -55,6 +55,11 @@ final class Settings {
 	 */
 	public static function sections(): array {
 		return array(
+			'whatsapp' => array(
+				'tab'   => 'general',
+				'title' => __( 'WhatsApp', 'mlab-forms' ),
+				'text'  => __( 'Ein Knopf, der WhatsApp mit einer vorausgefüllten Nachricht öffnet. Auf einer Seite mit dem Shortcode [mlab_whatsapp], oder als runder Knopf unten rechts auf allen Seiten. Es ist ein normaler Link: Es wird nichts von WhatsApp geladen und kein Cookie gesetzt.', 'mlab-forms' ),
+			),
 			'sender'   => array(
 				'tab'   => 'email',
 				'title' => __( 'Absender', 'mlab-forms' ),

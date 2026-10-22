@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 0.9.0 =
+* Neu: WhatsApp-Knopf. Nummer und vorausgefüllte Nachricht unter Einstellungen › Allgemein, {page} setzt den Titel der Seite ein. Als Shortcode [mlab_whatsapp] (Attribute label, offer, text, class) oder als runder Knopf unten rechts auf allen Seiten (Standard aus). Ein normaler Link zu wa.me: kein Skript, kein Cookie.
+* Neu: Formular-Abbrüche. Das Skript meldet einmal pro Seitenaufruf die erste Eingabe (nur die Formular-ID, per sendBeacon). Gespeichert wird eine Zahl pro Formular und Tag, 400 Tage lang, höchstens 1000 pro Tag. Starts::funnel() liefert angefangen, gesendet und abgebrochen, z. B. für MomentumLab Insights.
+* Neu: Nach dem Senden löst das Formular das Ereignis «mlab-forms:sent» aus. Die Meldung an Google Analytics (generate_lead) bleibt wie bisher und läuft nur, wenn Analytics geladen und erlaubt ist.
+
 = 0.8.0 =
 * Neues Feld «Datei» für einen Upload, z. B. den Lebenslauf. Erlaubt sind standardmässig PDF, DOC und DOCX bis 5 MB; Endungen (`accept`) und Grösse in MB (`max_size`, höchstens 20) lassen sich pro Feld einstellen. Der Server prüft Endung und Inhalt der Datei.
 * Hochgeladene Dateien liegen geschützt unter `wp-content/uploads/mlab-forms/`, ohne direkten Zugriff aus dem Web. In der Anfrage im Backend gibt es einen Link zum Herunterladen, nur für Benutzer, die Anfragen sehen dürfen. Die Datei hängt an der Mail an die Empfänger der Seite, nie an der Bestätigung an den Besucher.

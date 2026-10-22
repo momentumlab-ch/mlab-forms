@@ -177,6 +177,8 @@
 		if ( tracking.event && typeof window.gtag === 'function' ) {
 			window.gtag( 'event', tracking.event, tracking.params || {} );
 		}
+		// Für andere Skripte (z. B. Auswertungen): gesendet, mit Formular-ID.
+		document.dispatchEvent( new window.CustomEvent( 'mlab-forms:sent', { detail: { formId: parseInt( ( form.querySelector( '[name=form_id]' ) || {} ).value, 10 ) || 0 } } ) );
 		if ( data.redirect ) {
 			window.location.assign( data.redirect );
 			return;
@@ -262,8 +264,30 @@
 		} );
 	}
 
+	/* Formular-Abbrüche: die erste Eingabe einmal melden. Nur die Formular-ID, kein Inhalt, kein Cookie. */
+	function watchStart( form ) {
+		var url = form.getAttribute( 'data-started' );
+		var idField = form.querySelector( '[name=form_id]' );
+		if ( ! url || ! idField || ! navigator.sendBeacon ) {
+			return;
+		}
+		function started( event ) {
+			if ( ! fieldId( event.target && event.target.name ) ) {
+				return;
+			}
+			form.removeEventListener( 'input', started );
+			form.removeEventListener( 'change', started );
+			var data = new window.FormData();
+			data.append( 'form_id', idField.value );
+			navigator.sendBeacon( url, data );
+		}
+		form.addEventListener( 'input', started );
+		form.addEventListener( 'change', started );
+	}
+
 	function init( form ) {
 		form.noValidate = true;
+		watchStart( form );
 		form.querySelector( '[name=mlab_referrer]' ).value = document.referrer;
 		form.querySelector( '[name=mlab_source]' ).value = window.location.href.split( '#' )[ 0 ];
 		setupPrefill( form );
