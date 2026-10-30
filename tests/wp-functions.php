@@ -161,6 +161,14 @@ function pll_current_language() {
 	return $GLOBALS['mlab_test']['polylang'] ?? false;
 }
 
+function is_admin() {
+	return ! empty( $GLOBALS['mlab_test']['is_admin'] );
+}
+
+function mlab_ml_current_language() {
+	return $GLOBALS['mlab_test']['mlab_ml'] ?? '';
+}
+
 function wp_mail( $to, $subject, $message, $headers = '' ) {
 	$GLOBALS['mlab_mails'][] = array(
 		'to'      => (array) $to,

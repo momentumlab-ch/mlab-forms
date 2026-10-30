@@ -107,4 +107,27 @@ final class LanguageTest extends TestCase {
 		$this->assertSame( 'de', Language::from_request( null, $languages ) );
 		$this->assertSame( 'de', Language::from_request( array( 'fr' ), $languages ) );
 	}
+
+	public function test_mlab_multilingual_vor_der_sprache_der_website(): void {
+		$GLOBALS['mlab_test']['locale'] = 'de_CH';
+		$GLOBALS['mlab_test']['mlab_ml'] = 'fr';
+
+		$this->assertSame( 'fr', Language::page() );
+	}
+
+	public function test_mlab_multilingual_im_backend_ignoriert(): void {
+		$GLOBALS['mlab_test']['locale']   = 'it_CH';
+		$GLOBALS['mlab_test']['mlab_ml']  = 'fr';
+		$GLOBALS['mlab_test']['is_admin'] = true;
+
+		$this->assertSame( 'it', Language::page() );
+	}
+
+	public function test_spam_schutz_bekommt_die_seitensprache(): void {
+		$GLOBALS['mlab_test']['mlab_ml'] = 'fr';
+		$this->assertSame( 'fr', Language::captcha() );
+
+		$GLOBALS['mlab_test']['mlab_ml'] = 'rm';
+		$this->assertSame( '', Language::captcha(), 'Unbekannte Sprache: der Anbieter wählt selbst.' );
+	}
 }

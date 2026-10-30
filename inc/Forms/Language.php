@@ -12,13 +12,15 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Bestimmt die Sprache, in der ein Formular erscheint.
  *
- * Quelle ist die Sprache der Seite: WPML, Polylang oder die Sprache der Website. Ein Formular
+ * Quelle ist die Sprache der Seite: WPML, Polylang, MomentumLab Multilingual oder die Sprache der Website. Ein Formular
  * zeigt diese Sprache nur, wenn es sie pflegt, sonst seine Standardsprache (die erste in «languages»).
- * Es gibt keine Abhängigkeit von WPML oder Polylang; ihre Funktionen werden nur genutzt, wenn sie existieren.
+ * Es gibt keine Abhängigkeit von diesen Plugins; ihre Funktionen werden nur genutzt, wenn sie existieren.
  */
 final class Language {
 
 	public const PATTERN = '/^[a-z]{2,3}$/D';
+
+	private const CAPTCHA_LANGUAGES = array( 'de', 'fr', 'it', 'en', 'es', 'pt', 'nl', 'pl', 'sv', 'da', 'nb', 'fi', 'cs', 'sk', 'hu', 'ro', 'tr', 'ru', 'uk', 'ja', 'ko', 'el' );
 
 	/**
 	 * Ist der Wert ein Sprachcode wie «de» oder «gsw»?
@@ -46,7 +48,7 @@ final class Language {
 	/**
 	 * Sprache der aktuellen Seite als Code, leer wenn unbekannt.
 	 *
-	 * Reihenfolge: WPML, Polylang, Sprache der Website.
+	 * Reihenfolge: WPML, Polylang, MomentumLab Multilingual, Sprache der Website.
 	 */
 	public static function page(): string {
 		// Filter von WPML, nicht von diesem Plugin.
@@ -56,7 +58,30 @@ final class Language {
 			$code = self::normalize( pll_current_language() );
 		}
 
+		// MomentumLab Multilingual liefert im Backend nur die Standardsprache, dort gilt die Sprache der Website.
+		if ( '' === $code && function_exists( 'mlab_ml_current_language' ) && ! is_admin() ) {
+			$code = self::normalize( mlab_ml_current_language() );
+		}
+
 		return '' !== $code ? $code : self::normalize( determine_locale() );
+	}
+
+	/**
+	 * Sprachcode für das Widget des Spam-Schutzes, leer für «automatisch».
+	 *
+	 * Nur Sprachen, die die Anbieter kennen; bei anderen wählt der Anbieter nach dem Browser.
+	 */
+	public static function captcha(): string {
+		$code = self::page();
+
+		/**
+		 * Sprache des Spam-Schutz-Widgets überschreiben.
+		 *
+		 * @param string $code Code der Seite, z. B. «fr»; leer für «automatisch».
+		 */
+		$code = self::normalize( apply_filters( 'mlab_forms_captcha_language', $code ) );
+
+		return in_array( $code, self::CAPTCHA_LANGUAGES, true ) ? $code : '';
 	}
 
 	/**

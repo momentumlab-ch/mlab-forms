@@ -1,0 +1,1744 @@
+# Copyright (C) 2026 Momentum Lab
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: MomentumLab Forms 0.8.0\n"
+"Report-Msgid-Bugs-To: https://github.com/momentumlab-ch/mlab-forms/issues\n"
+"Last-Translator: Momentum Lab\n"
+"Language-Team: French (France)\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-10-18T11:17:13+00:00\n"
+"PO-Revision-Date: 2026-10-30T09:03:10+00:00\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: mlab-forms\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. Plugin Name of the plugin
+#: mlab-forms.php:3
+#: inc/Admin/Menu.php:40
+#: inc/Admin/Menu.php:41
+msgid "MomentumLab Forms"
+msgstr "MomentumLab Forms"
+
+#. Plugin URI of the plugin
+#: mlab-forms.php:4
+msgid "https://github.com/momentumlab-ch/mlab-forms"
+msgstr "https://github.com/momentumlab-ch/mlab-forms"
+
+#. Description of the plugin
+#: mlab-forms.php:5
+msgid "Anfrage- und Kontaktformulare für Kundenseiten von Momentum Lab."
+msgstr ""
+"Formulaires de demande et de contact pour les sites clients de Momentum Lab."
+
+#. Author of the plugin
+#: mlab-forms.php:9
+msgid "Momentum Lab"
+msgstr "Momentum Lab"
+
+#. Author URI of the plugin
+#: mlab-forms.php:10
+msgid "https://momentumlab.ch"
+msgstr "https://momentumlab.ch"
+
+#: inc/Admin/ConnectionTest.php:37 inc/Admin/Preview.php:46 inc/Capabilities.php:45
+msgid "Dazu fehlt dir die Berechtigung."
+msgstr "Vous n'avez pas l'autorisation nécessaire."
+
+#: inc/Admin/ConnectionTest.php:61
+msgid "Unbekannter Dienst."
+msgstr "Service inconnu."
+
+#: inc/Admin/EntriesListTable.php:51
+msgid "Anfrage"
+msgstr "Demande"
+
+#: inc/Admin/BuilderTexts.php:47 inc/Admin/EntriesListTable.php:52 inc/Admin/FormEditor.php:47 inc/Forms/FormPostType.php:58
+msgid "Formular"
+msgstr "Formulaire"
+
+#: inc/Admin/EntriesListTable.php:53 inc/Admin/EntryView.php:78
+msgid "Status"
+msgstr "Statut"
+
+#: inc/Admin/EntriesListTable.php:54 inc/Admin/EntryView.php:124
+msgid "Eingegangen"
+msgstr "Reçue"
+
+#: inc/Admin/EntriesListTable.php:87
+msgid "Alle"
+msgstr "Toutes"
+
+#. translators: %s: Status
+#: inc/Admin/EntriesListTable.php:105
+#, php-format
+msgid "Status: %s"
+msgstr "Statut : %s"
+
+#: inc/Admin/EntriesListTable.php:107
+msgid "Endgültig löschen"
+msgstr "Supprimer définitivement"
+
+#: inc/Admin/EntriesListTable.php:134 inc/Admin/Menu.php:48 inc/Forms/FormPostType.php:62
+msgid "Alle Formulare"
+msgstr "Tous les formulaires"
+
+#: inc/Admin/EntriesListTable.php:139
+msgid "Filtern"
+msgstr "Filtrer"
+
+#: inc/Admin/EntriesListTable.php:140
+msgid "CSV exportieren"
+msgstr "Exporter en CSV"
+
+#: inc/Admin/EntriesListTable.php:192
+msgid "Keine Anfragen gefunden."
+msgstr "Aucune demande trouvée."
+
+#: inc/Admin/EntriesPage.php:101 inc/Admin/EntriesPage.php:102 inc/Admin/EntriesPage.php:128 inc/Admin/FormEditor.php:212 inc/Privacy/Privacy.php:80
+msgid "Anfragen"
+msgstr "Demandes"
+
+#: inc/Admin/EntriesPage.php:135
+msgid "Anfragen durchsuchen"
+msgstr "Rechercher des demandes"
+
+#: inc/Admin/EntryView.php:37
+msgid "Alle Anfragen"
+msgstr "Toutes les demandes"
+
+#. translators: 1: Nummer, 2: Formular
+#: inc/Admin/EntryView.php:41
+#, php-format
+msgid "Anfrage #%1$d · %2$s"
+msgstr "Demande n° %1$d · %2$s"
+
+#: inc/Admin/EntryView.php:58
+msgid "Angaben"
+msgstr "Informations"
+
+#: inc/Admin/EntryView.php:82
+msgid "Status speichern"
+msgstr "Enregistrer le statut"
+
+#: inc/Admin/EntryView.php:91
+msgid "Notizen und Verlauf"
+msgstr "Notes et historique"
+
+#: inc/Admin/EntryView.php:95
+msgid "Noch keine Notizen."
+msgstr "Aucune note pour le moment."
+
+#: inc/Admin/EntryView.php:103
+msgid "System"
+msgstr "Système"
+
+#: inc/Admin/EntryView.php:111
+msgid "Neue Notiz (nur intern sichtbar)"
+msgstr "Nouvelle note (visible en interne uniquement)"
+
+#: inc/Admin/EntryView.php:113
+msgid "Notiz speichern"
+msgstr "Enregistrer la note"
+
+#: inc/Admin/EntryView.php:125
+msgid "Seite"
+msgstr "Page"
+
+#: inc/Admin/EntryView.php:126
+msgid "Referrer"
+msgstr "Referrer"
+
+#: inc/Admin/BuilderTexts.php:192 inc/Admin/EntryView.php:127
+msgid "Sprache"
+msgstr "Langue"
+
+#: inc/Admin/EntryView.php:133
+msgid "Herkunft"
+msgstr "Provenance"
+
+#: inc/Admin/FieldRenderer.php:72
+msgid "Verbindung testen"
+msgstr "Tester la connexion"
+
+#. translators: %s: maskierter Schlüssel
+#: inc/Admin/FieldRenderer.php:98
+#, php-format
+msgid "Gespeichert: %s. Leer lassen, damit er unverändert bleibt."
+msgstr ""
+"Enregistrée : %s. Laissez le champ vide pour la conserver telle quelle."
+
+#: inc/Admin/FieldRenderer.php:103
+msgid "Schlüssel entfernen"
+msgstr "Supprimer la clé"
+
+#: inc/Admin/FieldRenderer.php:52
+msgid ""
+"Diese Adresse gehört nicht zu deiner Website. Mails können im Spam landen."
+msgstr ""
+"Cette adresse n'appartient pas à votre site web. Les e-mails risquent d'arriver dans les spams."
+
+#: inc/Admin/FieldRenderer.php:119
+msgid "Aktiv"
+msgstr "Actif"
+
+#: inc/Admin/BuilderTexts.php:180 inc/Admin/FormEditor.php:48
+msgid "Aufbewahrung"
+msgstr "Conservation"
+
+#: inc/Admin/FormEditor.php:49
+msgid "Einbinden"
+msgstr "Intégration"
+
+#: inc/Admin/FormEditor.php:50
+msgid "Frühere Versionen"
+msgstr "Versions précédentes"
+
+#: inc/Admin/BuilderTexts.php:37
+msgid "Vorlage laden …"
+msgstr "Charger un modèle …"
+
+#: inc/Admin/FormEditor.php:76
+msgid ""
+"Nach dem Veröffentlichen kannst du das Formular mit diesem Shortcode einbinden:"
+msgstr ""
+"Après la publication, vous pouvez intégrer le formulaire à l'aide de ce shortcode :"
+
+#: inc/Admin/FormEditor.php:89
+msgid "Noch keine früheren Versionen."
+msgstr "Aucune version précédente pour le moment."
+
+#: inc/Admin/FormEditor.php:102
+msgid "Wiederherstellen"
+msgstr "Restaurer"
+
+#. translators: %s: Fehlermeldung des JSON-Parsers
+#: inc/Admin/BuilderTexts.php:254 inc/Admin/FormEditor.php:132
+#, php-format
+msgid "Kein gültiges JSON: %s"
+msgstr "JSON non valide : %s"
+
+#: inc/Admin/FormEditor.php:181
+msgid "Das Schema wurde nicht gespeichert. Bitte korrigiere diese Punkte:"
+msgstr ""
+"Le schéma n'a pas été enregistré. Veuillez corriger les points suivants :"
+
+#: inc/Admin/FormEditor.php:210
+msgid "Shortcode"
+msgstr "Shortcode"
+
+#: inc/Admin/Menu.php:49 inc/Forms/FormPostType.php:59
+msgid "Neues Formular"
+msgstr "Nouveau formulaire"
+
+#: inc/Admin/RetentionBox.php:35
+msgid "30 Tage"
+msgstr "30 jours"
+
+#: inc/Admin/RetentionBox.php:36
+msgid "90 Tage"
+msgstr "90 jours"
+
+#: inc/Admin/RetentionBox.php:37
+msgid "1 Jahr"
+msgstr "1 an"
+
+#: inc/Admin/RetentionBox.php:38
+msgid "2 Jahre"
+msgstr "2 ans"
+
+#: inc/Admin/RetentionBox.php:39
+msgid "Unbegrenzt"
+msgstr "Illimitée"
+
+#: inc/Admin/RetentionBox.php:40
+msgid "Eigene Anzahl Tage"
+msgstr "Nombre de jours personnalisé"
+
+#: inc/Admin/RetentionBox.php:55
+msgid ""
+"So lange bleiben gesendete Anfragen gespeichert. Danach kommen sie in den Papierkorb und werden nach 30 Tagen endgültig gelöscht."
+msgstr ""
+"Les demandes envoyées sont conservées pendant cette durée. Ensuite, elles sont placées dans la corbeille et supprimées définitivement après 30 jours."
+
+#: inc/Admin/RetentionBox.php:140
+msgid "Anzahl Tage"
+msgstr "Nombre de jours"
+
+#: inc/Admin/BuilderTexts.php:35 inc/Admin/SettingsPage.php:61 inc/Admin/SettingsPage.php:62 inc/Admin/SettingsPage.php:149 inc/Admin/SettingsPage.php:232
+msgid "Einstellungen"
+msgstr "Réglages"
+
+#: inc/Admin/SettingsPage.php:87
+msgid "Teste die Verbindung …"
+msgstr "Test de la connexion en cours …"
+
+#: inc/Admin/SettingsPage.php:88
+msgid "Der Test hat nicht geklappt. Bitte versuche es nochmals."
+msgstr "Le test a échoué. Veuillez réessayer."
+
+#: inc/Admin/UpdatesTab.php:41
+msgid "Installierte Version"
+msgstr "Version installée"
+
+#: inc/Admin/UpdatesTab.php:45
+msgid "Neueste Version"
+msgstr "Dernière version"
+
+#: inc/Entries/Status.php:26
+msgid "Neu"
+msgstr "Nouvelle"
+
+#: inc/Entries/Status.php:27
+msgid "In Bearbeitung"
+msgstr "En cours de traitement"
+
+#: inc/Entries/Status.php:28
+msgid "Beantwortet"
+msgstr "Répondue"
+
+#: inc/Entries/Status.php:29
+msgid "Gebucht"
+msgstr "Réservée"
+
+#: inc/Entries/Status.php:30
+msgid "Abgelehnt"
+msgstr "Refusée"
+
+#: inc/Entries/Status.php:31
+msgid "Spam"
+msgstr "Spam"
+
+#: inc/Fields/CheckboxField.php:55 inc/Frontend/Renderer.php:351
+msgid "Bitte bestätige die Einwilligung."
+msgstr "Veuillez confirmer votre consentement."
+
+#: inc/Fields/CheckboxField.php:56 inc/Frontend/Renderer.php:350
+msgid "Bitte setze diesen Haken."
+msgstr "Veuillez cocher cette case."
+
+#: inc/Fields/CheckboxField.php:69
+msgid "Ja"
+msgstr "Oui"
+
+#: inc/Fields/CheckboxField.php:69
+msgid "Nein"
+msgstr "Non"
+
+#: inc/Fields/CheckboxField.php:119
+msgid "Datenschutzerklärung"
+msgstr "Déclaration de protection des données"
+
+#: inc/Fields/ChoiceField.php:45
+msgid "Das Feld braucht «options» oder «options_source»."
+msgstr "Le champ nécessite « options » ou « options_source »."
+
+#: inc/Fields/ChoiceField.php:83
+msgid "«default» einer Option muss true oder false sein."
+msgstr "« default » d'une option doit être true ou false."
+
+#: inc/Fields/ChoiceField.php:89
+msgid "Nur eine Option darf «default» sein."
+msgstr "Une seule option peut être « default »."
+
+#: inc/Fields/ChoiceField.php:121
+msgid "Bitte wähle eine der angebotenen Möglichkeiten."
+msgstr "Veuillez choisir l'une des possibilités proposées."
+
+#: inc/Admin/BuilderTexts.php:65 inc/Fields/ChoiceField.php:213
+msgid "Bitte wählen"
+msgstr "Veuillez choisir"
+
+#: inc/Fields/DateField.php:23 inc/Forms/Presets.php:214
+msgid "Datum"
+msgstr "Date"
+
+#. translators: %s: min oder max
+#: inc/Fields/DateField.php:36
+#, php-format
+msgid "«%s» muss ein Datum (JJJJ-MM-TT) oder «today» sein."
+msgstr "« %s » doit être une date (AAAA-MM-JJ) ou « today »."
+
+#: inc/Fields/DateField.php:70
+msgid "Bitte wähle ein späteres Datum."
+msgstr "Veuillez choisir une date ultérieure."
+
+#: inc/Fields/DateField.php:73
+msgid "Bitte wähle ein früheres Datum."
+msgstr "Veuillez choisir une date antérieure."
+
+#: inc/Fields/FieldType.php:72 inc/Frontend/Renderer.php:349
+msgid "Bitte fülle dieses Feld aus."
+msgstr "Veuillez remplir ce champ."
+
+#: inc/Fields/FieldTypes.php:60
+msgid "Text"
+msgstr "Texte"
+
+#: inc/Fields/FieldTypes.php:61 inc/Forms/Presets.php:133 inc/Forms/Presets.php:137 inc/Settings.php:44
+msgid "E-Mail"
+msgstr "E-mail"
+
+#: inc/Fields/FieldTypes.php:62 inc/Forms/Presets.php:146 inc/Forms/Presets.php:150
+msgid "Telefon"
+msgstr "Téléphone"
+
+#: inc/Fields/FieldTypes.php:63
+msgid "Verstecktes Feld"
+msgstr "Champ masqué"
+
+#: inc/Fields/FieldTypes.php:67 inc/Forms/Presets.php:217
+msgid "Auswahlliste"
+msgstr "Liste déroulante"
+
+#: inc/Fields/FieldTypes.php:68
+msgid "Optionsfelder"
+msgstr "Boutons radio"
+
+#: inc/Fields/FieldTypes.php:69 inc/Forms/Presets.php:227 inc/Forms/Presets.php:231
+msgid "Mehrfachauswahl"
+msgstr "Sélection multiple"
+
+#: inc/Fields/FieldTypes.php:70
+msgid "Checkbox"
+msgstr "Case à cocher"
+
+#: inc/Fields/FieldTypes.php:71 inc/Forms/Presets.php:237
+msgid "Einwilligung"
+msgstr "Consentement"
+
+#: inc/Fields/FieldTypes.php:72 inc/Forms/Presets.php:248
+msgid "Zwischentitel"
+msgstr "Intertitre"
+
+#: inc/Fields/FieldTypes.php:73
+msgid "HTML"
+msgstr "HTML"
+
+#: inc/Fields/Formats.php:53
+msgid "Bitte gib eine gültige Telefonnummer ein."
+msgstr "Veuillez saisir un numéro de téléphone valide."
+
+#: inc/Fields/Formats.php:54
+msgid "Bitte gib eine gültige Postleitzahl ein."
+msgstr "Veuillez saisir un code postal valide."
+
+#: inc/Fields/Formats.php:55 inc/Frontend/Renderer.php:353
+msgid "Das Format stimmt nicht."
+msgstr "Le format n'est pas correct."
+
+#: inc/Fields/NumberField.php:23
+msgid "Zahl"
+msgstr "Nombre"
+
+#. translators: %s: min oder max
+#: inc/Fields/NumberField.php:36
+#, php-format
+msgid "«%s» muss eine Zahl sein."
+msgstr "« %s » doit être un nombre."
+
+#. translators: %s: kleinster Wert
+#: inc/Fields/NumberField.php:69
+#, php-format
+msgid "Der Wert muss mindestens %s sein."
+msgstr "La valeur doit être au minimum %s."
+
+#. translators: %s: grösster Wert
+#: inc/Fields/NumberField.php:73
+#, php-format
+msgid "Der Wert darf höchstens %s sein."
+msgstr "La valeur doit être au maximum %s."
+
+#: inc/Fields/TextField.php:45
+msgid "«format» muss «postcode_ch» oder «tel» sein."
+msgstr "« format » doit être « postcode_ch » ou « tel »."
+
+#: inc/Fields/TextField.php:48
+msgid "«pattern» ist kein gültiger regulärer Ausdruck."
+msgstr "« pattern » n'est pas une expression régulière valide."
+
+#: inc/Fields/TextField.php:78 inc/Frontend/Renderer.php:352
+msgid "Bitte gib eine gültige E-Mail-Adresse ein."
+msgstr "Veuillez saisir une adresse e-mail valide."
+
+#: inc/Admin/Builder.php:212 inc/Fields/TextareaField.php:25 inc/Forms/Presets.php:213
+msgid "Mehrzeiliger Text"
+msgstr "Texte sur plusieurs lignes"
+
+#: inc/Admin/Builder.php:132 inc/Forms/Form.php:230
+msgid "Senden"
+msgstr "Envoyer"
+
+#: inc/Admin/Builder.php:133 inc/Forms/Form.php:231
+msgid "Danke! Wir haben deine Nachricht erhalten."
+msgstr "Merci ! Nous avons bien reçu votre message."
+
+#: inc/Forms/Form.php:247
+msgid "Neue Anfrage: {form_title}"
+msgstr "Nouvelle demande : {form_title}"
+
+#: inc/Forms/FormPostType.php:57
+msgid "Formulare"
+msgstr "Formulaires"
+
+#: inc/Forms/FormPostType.php:60
+msgid "Neues Formular erstellen"
+msgstr "Créer un nouveau formulaire"
+
+#: inc/Forms/FormPostType.php:61
+msgid "Formular bearbeiten"
+msgstr "Modifier le formulaire"
+
+#: inc/Forms/FormPostType.php:63
+msgid "Formulare durchsuchen"
+msgstr "Rechercher des formulaires"
+
+#: inc/Forms/FormPostType.php:64
+msgid "Keine Formulare gefunden."
+msgstr "Aucun formulaire trouvé."
+
+#: inc/Forms/FormPostType.php:65
+msgid "Keine Formulare im Papierkorb."
+msgstr "Aucun formulaire dans la corbeille."
+
+#: inc/Admin/BuilderTexts.php:255 inc/Forms/SchemaValidator.php:57
+msgid "Das Schema muss ein JSON-Objekt sein."
+msgstr "Le schéma doit être un objet JSON."
+
+#. translators: %d: erwartete Version
+#: inc/Forms/SchemaValidator.php:62
+#, php-format
+msgid "«schema_version» muss %d sein."
+msgstr "« schema_version » doit être %d."
+
+#: inc/Forms/SchemaValidator.php:86
+msgid "«style» muss «light» oder «dark» sein."
+msgstr "« style » doit être « light » ou « dark »."
+
+#: inc/Forms/SchemaValidator.php:129
+msgid ""
+"«provider» muss leer, «turnstile», «recaptcha» oder «hcaptcha» sein. Es ist nur ein Dienst gleichzeitig möglich."
+msgstr ""
+"« provider » doit être vide, « turnstile », « recaptcha » ou « hcaptcha ». Un seul service peut être actif à la fois."
+
+#: inc/Forms/SchemaValidator.php:145
+msgid "Das ist keine gültige E-Mail-Adresse."
+msgstr "Ce n'est pas une adresse e-mail valide."
+
+#: inc/Forms/SchemaValidator.php:149
+msgid "«reply_to_mode» muss leer, «visitor» oder «fixed» sein."
+msgstr "« reply_to_mode » doit être vide, « visitor » ou « fixed »."
+
+#: inc/Forms/SchemaValidator.php:160
+msgid "Muss eine Liste sein."
+msgstr "Doit être une liste."
+
+#. translators: %s: Schlüssel
+#: inc/Forms/SchemaValidator.php:171
+#, php-format
+msgid "«%s» fehlt."
+msgstr "« %s » est manquant."
+
+#: inc/Forms/SchemaValidator.php:186
+msgid "«fields» muss eine Liste mit mindestens einem Feld sein."
+msgstr "« fields » doit être une liste contenant au moins un champ."
+
+#: inc/Forms/SchemaValidator.php:198
+msgid "«id» muss aus Kleinbuchstaben, Ziffern und _ bestehen."
+msgstr "« id » doit se composer de minuscules, de chiffres et de _."
+
+#. translators: %s: Feld-ID
+#: inc/Forms/SchemaValidator.php:201
+#, php-format
+msgid "Die id «%s» kommt mehrfach vor."
+msgstr "L'id « %s » apparaît plusieurs fois."
+
+#. translators: %s: Typ
+#: inc/Forms/SchemaValidator.php:218
+#, php-format
+msgid "Unbekannter Feldtyp «%s»."
+msgstr "Type de champ inconnu « %s »."
+
+#: inc/Forms/SchemaValidator.php:222
+msgid "«label» fehlt."
+msgstr "« label » est manquant."
+
+#: inc/Forms/SchemaValidator.php:225
+msgid "«width» muss full, half oder third sein."
+msgstr "« width » doit être full, half ou third."
+
+#: inc/Forms/I18nValidator.php:127 inc/Forms/I18nValidator.php:136 inc/Forms/I18nValidator.php:178 inc/Forms/SchemaValidator.php:249
+msgid "Muss ein JSON-Objekt sein."
+msgstr "Doit être un objet JSON."
+
+#: inc/Forms/I18nValidator.php:160 inc/Forms/I18nValidator.php:184 inc/Forms/SchemaValidator.php:108 inc/Forms/SchemaValidator.php:263
+msgid "Muss ein Text sein."
+msgstr "Doit être un texte."
+
+#: inc/Forms/SchemaValidator.php:276
+msgid "Muss true oder false sein."
+msgstr "Doit être true ou false."
+
+#. translators: 1: Minimum, 2: Maximum
+#: inc/Forms/SchemaValidator.php:293
+#, php-format
+msgid "Muss eine ganze Zahl von %1$d bis %2$d sein."
+msgstr "Doit être un nombre entier de %1$d à %2$d."
+
+#: inc/Forms/Templates.php:24
+msgid "Kontakt"
+msgstr "Contact"
+
+#: inc/Forms/Templates.php:25
+msgid "Anfrage mit Angebot und Datum"
+msgstr "Demande avec offre et date"
+
+#: inc/Forms/Templates.php:26
+msgid "Gutschein"
+msgstr "Bon d'achat"
+
+#: inc/Frontend/Renderer.php:197 inc/Submission/SubmissionHandler.php:53
+msgid "Bitte prüfe die markierten Felder."
+msgstr "Veuillez vérifier les champs signalés."
+
+#: inc/Frontend/Renderer.php:356
+msgid ""
+"Der Spam-Schutz prüft noch. Bitte warte einen Moment und sende dann nochmals."
+msgstr ""
+"La protection anti-spam est encore en cours de vérification. Veuillez patienter un instant, puis renvoyer le formulaire."
+
+#: inc/Frontend/Renderer.php:357
+msgid ""
+"Der Spam-Schutz konnte nicht geladen werden. Bitte lade die Seite neu und versuche es nochmals."
+msgstr ""
+"La protection anti-spam n'a pas pu être chargée. Veuillez recharger la page et réessayer."
+
+#: inc/Frontend/Renderer.php:358
+msgid "Bitte prüfe diesen Wert."
+msgstr "Veuillez vérifier cette valeur."
+
+#: inc/Frontend/Renderer.php:359
+msgid "Das hat leider nicht geklappt. Bitte versuche es später nochmals."
+msgstr "Malheureusement, l'envoi a échoué. Veuillez réessayer plus tard."
+
+#: inc/Frontend/Shortcode.php:49
+msgid "MomentumLab Forms: Formular nicht gefunden oder nicht veröffentlicht."
+msgstr "MomentumLab Forms : formulaire introuvable ou non publié."
+
+#: inc/Privacy/Privacy.php:40 inc/Privacy/Privacy.php:55
+msgid "MomentumLab Forms: Anfragen"
+msgstr "MomentumLab Forms : demandes"
+
+#: inc/Privacy/Privacy.php:163
+msgid ""
+"Wenn du uns über ein Formular auf dieser Website eine Anfrage sendest, speichern wir deine Angaben, um die Anfrage zu bearbeiten und dir zu antworten. Dazu gehören die Felder des Formulars, die Seite, von der du sie gesendet hast, die Sprache des Formulars und eine verschlüsselte Kennung deiner IP-Adresse (keine IP-Adresse im Klartext). Die Kennung dient nur dem Schutz vor Spam.\n"
+"\n"
+"Du bekommst eine Bestätigung per E-Mail, falls das Formular dies vorsieht. Anfragen werden nach der festgelegten Aufbewahrungsfrist (standardmässig 365 Tage) automatisch gelöscht. Du kannst jederzeit Auskunft über deine gespeicherten Daten verlangen oder ihre Löschung beantragen.\n"
+"\n"
+"Zur Bearbeitung von Anfragen kann ein KI-Assistent eingesetzt werden. Er liest Anfragen, fasst sie zusammen und erstellt Antwortentwürfe. Diese Entwürfe prüfen wir, bevor wir sie senden; die KI versendet selbst keine Nachrichten. Rechtsgrundlage ist in der Schweiz das revDSG, für Gäste aus der EU Art. 6 Abs. 1 lit. b DSGVO (Bearbeitung deiner Anfrage)."
+msgstr ""
+"Lorsque vous nous envoyez une demande au moyen d'un formulaire de ce site web, nous enregistrons vos données afin de traiter la demande et de vous répondre. Cela comprend les champs du formulaire, la page à partir de laquelle vous l'avez envoyée, la langue du formulaire et un identifiant chiffré de votre adresse IP (pas d'adresse IP en clair). Cet identifiant sert uniquement à la protection contre le spam.\n"
+"\n"
+"Vous recevez une confirmation par e-mail si le formulaire le prévoit. Les demandes sont supprimées automatiquement à l'expiration du délai de conservation fixé (par défaut 365 jours). Vous pouvez à tout moment demander des renseignements sur vos données enregistrées ou en demander la suppression.\n"
+"\n"
+"Un assistant IA peut être utilisé pour traiter les demandes. Il lit les demandes, les résume et prépare des projets de réponse. Nous contrôlons ces projets avant de les envoyer ; l'IA n'envoie elle-même aucun message. La base juridique est la LPD révisée en Suisse et, pour les visiteurs de l'UE, l'art. 6, al. 1, let. b RGPD (traitement de votre demande)."
+
+#: inc/Privacy/Privacy.php:175
+msgid ""
+"Zum Schutz vor Spam nutzen wir auf Formularen Cloudflare Turnstile. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an Cloudflare übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA)."
+msgstr ""
+"Pour protéger nos formulaires contre le spam, nous utilisons Cloudflare Turnstile. À cette occasion, des données techniques de votre navigateur et votre adresse IP sont transmises à Cloudflare, y compris vers des pays situés hors de Suisse et de l'EEE (p. ex. les États-Unis)."
+
+#: inc/Privacy/Privacy.php:176
+msgid ""
+"Zum Schutz vor Spam nutzen wir auf Formularen Google reCAPTCHA v3. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an Google übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA)."
+msgstr ""
+"Pour protéger nos formulaires contre le spam, nous utilisons Google reCAPTCHA v3. À cette occasion, des données techniques de votre navigateur et votre adresse IP sont transmises à Google, y compris vers des pays situés hors de Suisse et de l'EEE (p. ex. les États-Unis)."
+
+#: inc/Privacy/Privacy.php:177
+msgid ""
+"Zum Schutz vor Spam nutzen wir auf Formularen hCaptcha. Dabei werden technische Angaben deines Browsers und deine IP-Adresse an hCaptcha übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA)."
+msgstr ""
+"Pour protéger nos formulaires contre le spam, nous utilisons hCaptcha. À cette occasion, des données techniques de votre navigateur et votre adresse IP sont transmises à hCaptcha, y compris vers des pays situés hors de Suisse et de l'EEE (p. ex. les États-Unis)."
+
+#: inc/Privacy/Privacy.php:178
+msgid ""
+"Den Inhalt von Anfragen prüfen wir mit Akismet auf Spam. Dazu werden dein Name (sofern das Formular ihn als Namensfeld kennzeichnet), deine E-Mail-Adresse, deine Nachricht, deine IP-Adresse, Angaben deines Browsers, die Herkunftsseite und die Adresse der Seite (ohne Parameter) an Akismet (Automattic) übertragen, auch in Länder ausserhalb der Schweiz und des EWR (z. B. USA)."
+msgstr ""
+"Nous faisons vérifier le contenu des demandes par Akismet afin de détecter le spam. À cette fin, votre nom (si le formulaire le désigne comme champ de nom), votre adresse e-mail, votre message, votre adresse IP, des données de votre navigateur, la page de provenance et l'adresse de la page (sans paramètres) sont transmis à Akismet (Automattic), y compris vers des pays situés hors de Suisse et de l'EEE (p. ex. les États-Unis)."
+
+#: inc/Settings.php:43
+msgid "Allgemein"
+msgstr "Général"
+
+#: inc/Settings.php:45
+msgid "Spam-Schutz"
+msgstr "Protection anti-spam"
+
+#: inc/Settings.php:46
+msgid "Datenschutz"
+msgstr "Protection des données"
+
+#: inc/Settings.php:47
+msgid "Updates"
+msgstr "Mises à jour"
+
+#: inc/Settings.php:60
+msgid "Absender"
+msgstr "Expéditeur"
+
+#: inc/Settings.php:61
+msgid ""
+"Die Absender-E-Mail sollte zu deiner eigenen Domain passen (zum Beispiel info@deine-firma.ch). Sonst stufen viele Postfächer die Nachrichten als Spam ein."
+msgstr ""
+"L'adresse e-mail de l'expéditeur devrait correspondre à votre propre domaine (par exemple info@votre-entreprise.ch). Sinon, de nombreuses boîtes mail classent les messages comme spam."
+
+#: inc/Settings.php:65
+msgid "Spam-Dienste"
+msgstr "Services anti-spam"
+
+#: inc/Settings.php:66
+msgid ""
+"Honeypot und Mindestzeit sind immer aktiv. Die folgenden Dienste sind ausgeschaltet, bis du sie hier einrichtest und im Formular wählst. Sie senden Daten an Dritte. Speichere zuerst, dann kannst du die Verbindung testen."
+msgstr ""
+"Le honeypot et le temps minimal sont toujours actifs. Les services suivants sont désactivés jusqu'à ce que vous les configuriez ici et les choisissiez dans le formulaire. Ils envoient des données à des tiers. Enregistrez d'abord, vous pourrez ensuite tester la connexion."
+
+#: inc/Spam/Akismet.php:68
+msgid "Bitte trage zuerst einen Akismet-Schlüssel ein und speichere."
+msgstr "Veuillez d'abord saisir une clé Akismet et enregistrer."
+
+#: inc/Spam/Akismet.php:82 inc/Spam/Captcha.php:68
+msgid ""
+"Der Dienst ist gerade nicht erreichbar. Bitte versuche es später nochmals."
+msgstr ""
+"Le service n'est pas joignable pour le moment. Veuillez réessayer plus tard."
+
+#: inc/Spam/Akismet.php:89 inc/Spam/Captcha.php:80
+msgid "Verbindung funktioniert."
+msgstr "La connexion fonctionne."
+
+#: inc/Spam/Akismet.php:93
+msgid "Akismet hat den Schlüssel abgelehnt. Bitte prüfe ihn."
+msgstr "Akismet a refusé la clé. Veuillez la vérifier."
+
+#: inc/Spam/Captcha.php:60
+msgid "Bitte trage zuerst beide Schlüssel ein und speichere."
+msgstr "Veuillez d'abord saisir les deux clés et enregistrer."
+
+#: inc/Spam/Captcha.php:74
+msgid "Der Dienst hat den geheimen Schlüssel abgelehnt. Bitte prüfe ihn."
+msgstr "Le service a refusé la clé secrète. Veuillez la vérifier."
+
+#: inc/Spam/Widget.php:80
+msgid "Für den Spam-Schutz braucht dieses Formular JavaScript."
+msgstr "Pour la protection anti-spam, ce formulaire nécessite JavaScript."
+
+#: inc/Submission/SubmissionHandler.php:37
+msgid "Dieses Formular gibt es nicht mehr."
+msgstr "Ce formulaire n'existe plus."
+
+#: inc/Submission/SubmissionHandler.php:44
+msgid ""
+"Zu viele Anfragen in kurzer Zeit. Bitte versuche es später noch einmal."
+msgstr "Trop de demandes en peu de temps. Veuillez réessayer plus tard."
+
+#: inc/Submission/SubmissionHandler.php:63
+msgid ""
+"Die Anfrage konnte nicht gespeichert werden. Bitte versuche es noch einmal."
+msgstr "La demande n'a pas pu être enregistrée. Veuillez réessayer."
+
+#: inc/Submission/SubmissionHandler.php:90
+msgid ""
+"Der Spam-Schutz ist gerade nicht erreichbar, bitte versuche es später nochmals."
+msgstr ""
+"La protection anti-spam n'est pas joignable pour le moment, veuillez réessayer plus tard."
+
+#: inc/Submission/SubmissionHandler.php:93
+msgid ""
+"Der Spam-Schutz hat deine Anfrage nicht angenommen. Bitte lade die Seite neu und versuche es nochmals."
+msgstr ""
+"La protection anti-spam n'a pas accepté votre demande. Veuillez recharger la page et réessayer."
+
+#: inc/options.php:16
+msgid "Formular-Styling laden"
+msgstr "Charger le style des formulaires"
+
+#: inc/options.php:18
+msgid "Ausschalten, wenn das Theme die Formulare selbst gestaltet."
+msgstr ""
+"À désactiver si le thème gère lui-même la mise en forme des formulaires."
+
+#: inc/options.php:23
+msgid "Farbschema"
+msgstr "Jeu de couleurs"
+
+#: inc/options.php:26
+msgid "Hell"
+msgstr "Clair"
+
+#: inc/options.php:27
+msgid "Dunkel"
+msgstr "Sombre"
+
+#: inc/options.php:34
+msgid "Standard-Empfänger"
+msgstr "Destinataire par défaut"
+
+#: inc/options.php:42
+msgid "Absendername"
+msgstr "Nom de l'expéditeur"
+
+#: inc/options.php:44
+msgid ""
+"Leer lassen für den Standard von WordPress. Ist nur die Absender-E-Mail gesetzt, gilt der Name der Website."
+msgstr ""
+"Laissez vide pour utiliser la valeur par défaut de WordPress. Si seule l'adresse e-mail de l'expéditeur est renseignée, le nom du site web est utilisé."
+
+#: inc/options.php:50
+msgid "Absender-E-Mail"
+msgstr "E-mail de l'expéditeur"
+
+#: inc/options.php:52
+msgid ""
+"Leer lassen für den Standard von WordPress (wordpress@deine-domain). WP Mail SMTP kann diesen Wert übersteuern."
+msgstr ""
+"Laissez vide pour utiliser la valeur par défaut de WordPress (wordpress@votre-domaine). WP Mail SMTP peut remplacer cette valeur."
+
+#: inc/options.php:58
+msgid "Antwort an"
+msgstr "Répondre à"
+
+#: inc/options.php:61
+msgid "E-Mail des Besuchers"
+msgstr "E-mail du visiteur"
+
+#: inc/options.php:62
+msgid "Feste Adresse"
+msgstr "Adresse fixe"
+
+#: inc/options.php:69
+msgid "Feste Antwort-Adresse"
+msgstr "Adresse de réponse fixe"
+
+#: inc/options.php:71
+msgid "Wird nur bei «Feste Adresse» verwendet."
+msgstr "N'est utilisée que pour « Adresse fixe »."
+
+#: inc/options.php:76
+msgid "Honeypot verwenden"
+msgstr "Utiliser le honeypot"
+
+#: inc/options.php:82
+msgid "Mindestzeit zum Ausfüllen (Sekunden)"
+msgstr "Temps minimal de remplissage (secondes)"
+
+#: inc/options.php:86
+msgid "Schnellere Absendungen gelten als Spam. 0 schaltet die Prüfung aus."
+msgstr ""
+"Les envois plus rapides sont considérés comme du spam. 0 désactive le contrôle."
+
+#: inc/options.php:91
+msgid "Maximal Anfragen pro Stunde und Absender"
+msgstr "Nombre maximal de demandes par heure et par expéditeur"
+
+#: inc/options.php:95
+msgid "Gezählt wird pro gehashter IP-Adresse. 0 schaltet die Begrenzung aus."
+msgstr "Le décompte se fait par adresse IP hachée. 0 désactive la limitation."
+
+#: inc/options.php:101
+msgid "Spam-Dienst"
+msgstr "Service anti-spam"
+
+#: inc/options.php:104
+msgid "Keiner"
+msgstr "Aucun"
+
+#: inc/options.php:109
+msgid ""
+"Es kann nur ein Dienst gleichzeitig aktiv sein. Jedes Formular darf das im Schema («settings.spam.provider») übersteuern."
+msgstr ""
+"Un seul service peut être actif à la fois. Chaque formulaire peut le remplacer dans le schéma (« settings.spam.provider »)."
+
+#: inc/options.php:115
+msgid "Akismet verwenden"
+msgstr "Utiliser Akismet"
+
+#: inc/options.php:117
+msgid ""
+"Prüft den Inhalt jeder Anfrage bei Akismet. Dafür werden Name (nur aus Feldern, die als Name gekennzeichnet sind), E-Mail, Nachricht, IP-Adresse, Browser-Angaben, Herkunftsseite und Seiten-Adresse ohne Parameter an Akismet (Automattic) gesendet, auch in die USA. Andere Textfelder bleiben aussen vor."
+msgstr ""
+"Fait vérifier le contenu de chaque demande par Akismet. À cette fin, le nom (uniquement issu de champs désignés comme nom), l'e-mail, le message, l'adresse IP, les données du navigateur, la page de provenance et l'adresse de la page sans paramètres sont envoyés à Akismet (Automattic), y compris vers les États-Unis. Les autres champs de texte ne sont pas transmis."
+
+#: inc/options.php:123
+msgid "Turnstile: Site-Key"
+msgstr "Turnstile : Site-Key"
+
+#: inc/options.php:130
+msgid "Turnstile: Secret-Key"
+msgstr "Turnstile : Secret-Key"
+
+#: inc/options.php:138
+msgid "reCAPTCHA: Site-Key"
+msgstr "reCAPTCHA : Site-Key"
+
+#: inc/options.php:140
+msgid ""
+"Datenschutz: Google reCAPTCHA überträgt Daten deiner Besucher (u. a. IP-Adresse und Browser-Angaben) an Google, auch in die USA. Nimm den Dienst in die Datenschutzerklärung auf und prüfe, ob du eine Einwilligung brauchst. Er ist standardmässig aus."
+msgstr ""
+"Protection des données : Google reCAPTCHA transmet des données de vos visiteurs (notamment l'adresse IP et des données du navigateur) à Google, y compris vers les États-Unis. Mentionnez ce service dans la déclaration de protection des données et vérifiez si un consentement est nécessaire. Il est désactivé par défaut."
+
+#: inc/options.php:146
+msgid "reCAPTCHA: Secret-Key"
+msgstr "reCAPTCHA : Secret-Key"
+
+#: inc/options.php:154
+msgid "hCaptcha: Site-Key"
+msgstr "hCaptcha : Site-Key"
+
+#: inc/options.php:161
+msgid "hCaptcha: Secret-Key"
+msgstr "hCaptcha : Secret-Key"
+
+#: inc/options.php:169
+msgid "Akismet: API-Schlüssel"
+msgstr "Akismet : clé API"
+
+#: inc/options.php:171
+msgid ""
+"Leer lassen, wenn das Akismet-Plugin aktiv ist: dann wird dessen Schlüssel verwendet."
+msgstr ""
+"Laissez vide si le plugin Akismet est actif : sa clé sera alors utilisée."
+
+#: inc/options.php:177
+msgid "Anfragen aufbewahren (Tage)"
+msgstr "Conserver les demandes (jours)"
+
+#: inc/options.php:181
+msgid ""
+"Standard für Formulare ohne eigene Angabe. 0 heisst unbegrenzt. Ältere Anfragen kommen zuerst in den Papierkorb und werden nach 30 Tagen endgültig gelöscht."
+msgstr ""
+"Valeur par défaut pour les formulaires sans indication propre. 0 signifie illimitée. Les demandes plus anciennes sont d'abord placées dans la corbeille, puis supprimées définitivement après 30 jours."
+
+#: inc/options.php:186
+msgid "Daten beim Löschen des Plugins behalten"
+msgstr "Conserver les données lors de la suppression du plugin"
+
+#: inc/options.php:188
+msgid ""
+"Ausschalten, damit beim Löschen des Plugins alle Formulare, Anfragen und Einstellungen entfernt werden."
+msgstr ""
+"À désactiver pour que tous les formulaires, demandes et réglages soient supprimés lors de la suppression du plugin."
+
+#: inc/updater.php:54
+msgid ""
+"Updates sind nicht aktiv: In wp-config.php fehlt die Konstante MLAB_FORMS_GITHUB_TOKEN."
+msgstr ""
+"Les mises à jour ne sont pas actives : la constante MLAB_FORMS_GITHUB_TOKEN est absente de wp-config.php."
+
+#: inc/Admin/Builder.php:208 inc/Forms/Presets.php:129 inc/Forms/Presets.php:130 inc/Forms/Presets.php:154 inc/Forms/Presets.php:179
+msgid "Kurzer Text"
+msgstr "Texte court"
+
+#: inc/Admin/Builder.php:209 inc/Forms/Presets.php:134
+msgid "Prüft das Format"
+msgstr "Vérifie le format"
+
+#: inc/Admin/Builder.php:210 inc/Forms/Presets.php:147
+msgid "Prüft die Nummer"
+msgstr "Vérifie le numéro"
+
+#: inc/Admin/Builder.php:211
+msgid "Nicht sichtbar, mit festem Wert"
+msgstr "Invisible, avec une valeur fixe"
+
+#: inc/Admin/Builder.php:213
+msgid "Nur Zahlen"
+msgstr "Chiffres uniquement"
+
+#: inc/Admin/Builder.php:214 inc/Forms/Presets.php:214
+msgid "Prüft das Datum"
+msgstr "Vérifie la date"
+
+#: inc/Admin/Builder.php:215
+msgid "Eine Option aus einer Liste"
+msgstr "Une option dans une liste"
+
+#: inc/Admin/Builder.php:216
+msgid "Eine Option, alle sichtbar"
+msgstr "Une option, toutes visibles"
+
+#: inc/Admin/Builder.php:217 inc/Forms/Presets.php:228
+msgid "Mehrere Optionen wählen"
+msgstr "Choisir plusieurs options"
+
+#: inc/Admin/Builder.php:218
+msgid "Einzelnes Häkchen"
+msgstr "Une seule case"
+
+#: inc/Admin/Builder.php:219
+msgid "Pflicht-Häkchen mit Datenschutz-Link"
+msgstr "Case obligatoire avec lien vers la protection des données"
+
+#: inc/Admin/Builder.php:220 inc/Forms/Presets.php:248
+msgid "Nur eine Überschrift"
+msgstr "Un simple titre"
+
+#: inc/Admin/Builder.php:221
+msgid "Eigener Text mit Formatierung"
+msgstr "Texte personnalisé avec mise en forme"
+
+#: inc/Admin/Builder.php:94
+msgid "Formular als JSON"
+msgstr "Formulaire en JSON"
+
+#: inc/Admin/BuilderTexts.php:106
+msgid "Muss vor dem Senden ausgefüllt sein"
+msgstr "Doit être rempli avant l'envoi"
+
+#: inc/Admin/BuilderTexts.php:107
+msgid "Breite"
+msgstr "Largeur"
+
+#: inc/Admin/BuilderTexts.php:108
+msgid "Voll"
+msgstr "Pleine"
+
+#: inc/Admin/BuilderTexts.php:109
+msgid "Halb"
+msgstr "Moitié"
+
+#: inc/Admin/BuilderTexts.php:110
+msgid "Drittel"
+msgstr "Tiers"
+
+#: inc/Admin/BuilderTexts.php:111
+msgid "Prüfung"
+msgstr "Contrôle"
+
+#: inc/Admin/BuilderTexts.php:112
+msgid "Keine besondere Prüfung"
+msgstr "Aucun contrôle particulier"
+
+#: inc/Admin/BuilderTexts.php:113
+msgid "Schweizer Postleitzahl"
+msgstr "Code postal suisse"
+
+#: inc/Admin/BuilderTexts.php:114
+msgid "Kleinster Wert"
+msgstr "Valeur minimale"
+
+#: inc/Admin/BuilderTexts.php:115
+msgid "Grösster Wert"
+msgstr "Valeur maximale"
+
+#: inc/Admin/BuilderTexts.php:116
+msgid "Nur Daten ab heute"
+msgstr "Uniquement les dates à partir d'aujourd'hui"
+
+#: inc/Admin/BuilderTexts.php:117
+msgid "Frühere Daten werden abgelehnt"
+msgstr "Les dates antérieures sont refusées"
+
+#: inc/Admin/BuilderTexts.php:118
+msgid "Mit der Datenschutzerklärung verlinken"
+msgstr "Lier à la déclaration de protection des données"
+
+#: inc/Admin/BuilderTexts.php:119
+msgid "Der Text wird zum Link auf deine Datenschutzseite."
+msgstr "Le texte devient un lien vers votre page de protection des données."
+
+#: inc/Admin/BuilderTexts.php:120
+msgid "Wird automatisch geprüft:"
+msgstr "Contrôlé automatiquement :"
+
+#: inc/Admin/BuilderTexts.php:121
+msgid "gültige E-Mail-Adresse"
+msgstr "adresse e-mail valide"
+
+#: inc/Admin/BuilderTexts.php:122
+msgid "gültige Telefonnummer"
+msgstr "numéro de téléphone valide"
+
+#: inc/Admin/BuilderTexts.php:123
+msgid "gültige Postleitzahl"
+msgstr "code postal valide"
+
+#: inc/Admin/BuilderTexts.php:124
+msgid "gültiges Datum"
+msgstr "date valide"
+
+#: inc/Admin/BuilderTexts.php:125
+msgid "nur Zahlen"
+msgstr "chiffres uniquement"
+
+#: inc/Admin/BuilderTexts.php:136
+msgid "Einträge"
+msgstr "Entrées"
+
+#: inc/Admin/BuilderTexts.php:137
+msgid "Eintrag"
+msgstr "Entrée"
+
+#: inc/Admin/BuilderTexts.php:138
+msgid "Eintrag hinzufügen"
+msgstr "Ajouter une entrée"
+
+#: inc/Admin/BuilderTexts.php:139
+msgid "Neuer Eintrag"
+msgstr "Nouvelle entrée"
+
+#: inc/Admin/BuilderTexts.php:140
+msgid "Eintrag entfernen"
+msgstr "Supprimer l'entrée"
+
+#: inc/Admin/BuilderTexts.php:141
+msgid "Als Standard festlegen"
+msgstr "Définir par défaut"
+
+#: inc/Admin/BuilderTexts.php:142
+msgid "Der Stern markiert den Standard-Eintrag. Es gibt höchstens einen."
+msgstr "L'étoile marque l'entrée par défaut. Il ne peut y en avoir qu'une."
+
+#: inc/Admin/BuilderTexts.php:143 inc/Forms/Presets.php:223 inc/Forms/Presets.php:233
+msgid "Option 1"
+msgstr "Option 1"
+
+#: inc/Admin/BuilderTexts.php:144 inc/Forms/Presets.php:223 inc/Forms/Presets.php:233
+msgid "Option 2"
+msgstr "Option 2"
+
+#: inc/Admin/BuilderTexts.php:148
+msgid "Es braucht mindestens einen Eintrag."
+msgstr "Il faut au moins une entrée."
+
+#: inc/Admin/BuilderTexts.php:149
+msgid "Leere erste Zeile anzeigen"
+msgstr "Afficher une première ligne vide"
+
+#: inc/Admin/BuilderTexts.php:150
+msgid "Zeigt «Bitte wählen» zuoberst."
+msgstr "Affiche « Veuillez choisir » tout en haut."
+
+#: inc/Admin/BuilderTexts.php:151
+msgid "Vorauswahl per Link erlauben"
+msgstr "Autoriser la présélection par lien"
+
+#. translators: %s: Name des URL-Parameters
+#: inc/Admin/BuilderTexts.php:153
+#, php-format
+msgid ""
+"Ein Link wie …/kontakt/?%s=Eintrag wählt den Eintrag vor. Ausgeschaltet, gelten nur die Einträge oben."
+msgstr ""
+"Un lien tel que …/contact/?%s=entrée présélectionne l'entrée. Si l'option est désactivée, seules les entrées ci-dessus sont valables."
+
+#: inc/Admin/BuilderTexts.php:154
+msgid "Für Entwickler: Filter mlab_forms_options_providers"
+msgstr "Pour les développeurs : filtre mlab_forms_options_providers"
+
+#: inc/Admin/BuilderTexts.php:165
+msgid "Nach dem Absenden"
+msgstr "Après l'envoi"
+
+#: inc/Admin/BuilderTexts.php:166
+msgid "Text des Absende-Buttons"
+msgstr "Texte du bouton d'envoi"
+
+#: inc/Admin/BuilderTexts.php:167
+msgid "Erfolgsmeldung"
+msgstr "Message de confirmation"
+
+#: inc/Admin/BuilderTexts.php:168
+msgid "Danke-Seite (Adresse)"
+msgstr "Page de remerciement (adresse)"
+
+#: inc/Admin/BuilderTexts.php:169
+msgid ""
+"Optional. Wenn du eine Adresse einträgst, geht es nach dem Absenden dort weiter."
+msgstr ""
+"Facultatif. Si vous saisissez une adresse, la personne y est redirigée après l'envoi."
+
+#: inc/Admin/BuilderTexts.php:181
+msgid ""
+"Wie lange gesendete Anfragen gespeichert bleiben, stellst du im Kasten «Aufbewahrung» rechts ein."
+msgstr ""
+"La durée de conservation des demandes envoyées se règle dans l'encadré « Conservation » à droite."
+
+#: inc/Admin/BuilderTexts.php:245
+msgid "Vorschau des Formulars"
+msgstr "Aperçu du formulaire"
+
+#: inc/Admin/BuilderTexts.php:246
+msgid "Grösse der Vorschau"
+msgstr "Taille de l'aperçu"
+
+#: inc/Admin/BuilderTexts.php:247
+msgid ""
+"So sieht das Formular auf deiner Seite aus. Absenden ist hier ausgeschaltet."
+msgstr ""
+"Voici à quoi ressemble le formulaire sur votre page. L'envoi est désactivé ici."
+
+#: inc/Admin/BuilderTexts.php:248
+msgid "Vorschau wird geladen …"
+msgstr "Chargement de l'aperçu …"
+
+#: inc/Admin/BuilderTexts.php:249
+msgid "Die Vorschau ist noch nicht möglich. Bitte korrigiere:"
+msgstr "L'aperçu n'est pas encore possible. Veuillez corriger :"
+
+#: inc/Admin/BuilderTexts.php:250
+msgid "Die Vorschau konnte nicht geladen werden. Bitte versuche es nochmals."
+msgstr "L'aperçu n'a pas pu être chargé. Veuillez réessayer."
+
+#: inc/Admin/BuilderTexts.php:251
+msgid "Handy"
+msgstr "Mobile"
+
+#: inc/Admin/BuilderTexts.php:252
+msgid "Computer"
+msgstr "Ordinateur"
+
+#: inc/Admin/BuilderTexts.php:256
+msgid "Das Schema braucht eine Liste «fields»."
+msgstr "Le schéma nécessite une liste « fields »."
+
+#: inc/Admin/BuilderTexts.php:33
+msgid "Bereich"
+msgstr "Zone"
+
+#: inc/Admin/BuilderTexts.php:34
+msgid "Felder"
+msgstr "Champs"
+
+#: inc/Admin/BuilderTexts.php:36
+msgid "Vorschau"
+msgstr "Aperçu"
+
+#: inc/Admin/BuilderTexts.php:38
+msgid "Das aktuelle Formular durch die Vorlage ersetzen?"
+msgstr "Remplacer le formulaire actuel par le modèle ?"
+
+#: inc/Admin/BuilderTexts.php:39
+msgid "Vorlage geladen"
+msgstr "Modèle chargé"
+
+#: inc/Admin/BuilderTexts.php:40
+msgid "Experten-Ansicht (JSON)"
+msgstr "Vue experte (JSON)"
+
+#: inc/Admin/BuilderTexts.php:41
+msgid "Zurück zum Builder"
+msgstr "Retour à l'éditeur"
+
+#: inc/Admin/BuilderTexts.php:42
+msgid "Bausteine"
+msgstr "Éléments"
+
+#: inc/Admin/BuilderTexts.php:43
+msgid "Eigenes Feld"
+msgstr "Champ personnalisé"
+
+#: inc/Admin/BuilderTexts.php:44
+msgid "Art selbst wählen"
+msgstr "Choisir le type soi-même"
+
+#: inc/Admin/BuilderTexts.php:45
+msgid "Wähle, welche Art von Eingabe du brauchst."
+msgstr "Choisissez le type de saisie dont vous avez besoin."
+
+#: inc/Admin/BuilderTexts.php:46
+msgid "Abbrechen"
+msgstr "Annuler"
+
+#: inc/Admin/BuilderTexts.php:48
+msgid ""
+"Deine Änderungen gelten erst, wenn du das Formular speicherst oder aktualisierst."
+msgstr ""
+"Vos modifications ne sont prises en compte qu'une fois le formulaire enregistré ou mis à jour."
+
+#: inc/Admin/BuilderTexts.php:59
+msgid "Das Formular ist noch leer. Wähle links einen Baustein."
+msgstr "Le formulaire est encore vide. Choisissez un élément à gauche."
+
+#: inc/Admin/BuilderTexts.php:60
+msgid "Feld"
+msgstr "Champ"
+
+#: inc/Admin/BuilderTexts.php:61
+msgid "Nach oben"
+msgstr "Vers le haut"
+
+#: inc/Admin/BuilderTexts.php:62
+msgid "Nach unten"
+msgstr "Vers le bas"
+
+#: inc/Admin/BuilderTexts.php:63
+msgid "Duplizieren"
+msgstr "Dupliquer"
+
+#: inc/Admin/BuilderTexts.php:64
+msgid "Entfernen"
+msgstr "Supprimer"
+
+#: inc/Admin/BuilderTexts.php:66
+msgid " (Kopie)"
+msgstr " (copie)"
+
+#. translators: %s: Name des Felds
+#: inc/Admin/BuilderTexts.php:68
+#, php-format
+msgid "Feld «%s» hinzugefügt"
+msgstr "Champ « %s » ajouté"
+
+#. translators: 1: Name des Felds, 2: Position
+#: inc/Admin/BuilderTexts.php:70
+#, php-format
+msgid "Feld «%1$s» steht jetzt an Position %2$d"
+msgstr "Le champ « %1$s » est maintenant en position %2$d"
+
+#. translators: %s: Name des Felds
+#: inc/Admin/BuilderTexts.php:72
+#, php-format
+msgid "Feld «%s» dupliziert"
+msgstr "Champ « %s » dupliqué"
+
+#. translators: %s: Name des Felds
+#: inc/Admin/BuilderTexts.php:74
+#, php-format
+msgid "Feld «%s» entfernt"
+msgstr "Champ « %s » supprimé"
+
+#: inc/Admin/BuilderTexts.php:81
+msgid "Das Formular braucht mindestens ein Feld."
+msgstr "Le formulaire nécessite au moins un champ."
+
+#: inc/Admin/BuilderTexts.php:82
+msgid "Die Beschriftung fehlt."
+msgstr "L'intitulé est manquant."
+
+#. translators: %s: Name des Felds
+#: inc/Admin/BuilderTexts.php:84
+#, php-format
+msgid "Feld «%s»:"
+msgstr "Champ « %s » :"
+
+#: inc/Admin/BuilderTexts.php:95
+msgid "Eigenschaften"
+msgstr "Propriétés"
+
+#: inc/Admin/BuilderTexts.php:96
+msgid "Wähle ein Feld aus, um es zu bearbeiten."
+msgstr "Choisissez un champ pour le modifier."
+
+#: inc/Admin/BuilderTexts.php:97
+msgid "Fertig"
+msgstr "Terminé"
+
+#: inc/Admin/BuilderTexts.php:98
+msgid "Beschriftung"
+msgstr "Intitulé"
+
+#: inc/Admin/BuilderTexts.php:99
+msgid "Titel"
+msgstr "Titre"
+
+#: inc/Admin/BuilderTexts.php:100
+msgid "Platzhalter"
+msgstr "Texte indicatif"
+
+#: inc/Admin/BuilderTexts.php:101
+msgid "Text der leeren ersten Zeile"
+msgstr "Texte de la première ligne vide"
+
+#: inc/Admin/BuilderTexts.php:102
+msgid "Hilfetext"
+msgstr "Texte d'aide"
+
+#: inc/Admin/BuilderTexts.php:103
+msgid "Inhalt (HTML)"
+msgstr "Contenu (HTML)"
+
+#: inc/Admin/BuilderTexts.php:104
+msgid "Standardwert"
+msgstr "Valeur par défaut"
+
+#: inc/Admin/BuilderTexts.php:105
+msgid "Pflichtfeld"
+msgstr "Champ obligatoire"
+
+#: inc/Forms/Presets.php:129
+msgid "Vorname"
+msgstr "Prénom"
+
+#: inc/Forms/Presets.php:130
+msgid "Nachname"
+msgstr "Nom"
+
+#: inc/Forms/Presets.php:154
+msgid "Firma"
+msgstr "Entreprise"
+
+#: inc/Forms/Presets.php:165
+msgid "Adresse"
+msgstr "Adresse"
+
+#: inc/Forms/Presets.php:165
+msgid "Strasse und Nummer"
+msgstr "Rue et numéro"
+
+#: inc/Forms/Presets.php:168 inc/Forms/Presets.php:172
+msgid "PLZ"
+msgstr "NPA"
+
+#: inc/Forms/Presets.php:169
+msgid "Prüft die Postleitzahl"
+msgstr "Vérifie le code postal"
+
+#: inc/Forms/Presets.php:179
+msgid "Ort"
+msgstr "Localité"
+
+#: inc/Forms/Presets.php:182 inc/Forms/Presets.php:186
+msgid "Land"
+msgstr "Pays"
+
+#: inc/Forms/Presets.php:183
+msgid "Auswahl der Länder"
+msgstr "Choix des pays"
+
+#: inc/Forms/Presets.php:192
+msgid "Schweiz"
+msgstr "Suisse"
+
+#: inc/Forms/Presets.php:195
+msgid "Deutschland"
+msgstr "Allemagne"
+
+#: inc/Forms/Presets.php:196
+msgid "Österreich"
+msgstr "Autriche"
+
+#: inc/Forms/Presets.php:197
+msgid "Liechtenstein"
+msgstr "Liechtenstein"
+
+#: inc/Forms/Presets.php:198
+msgid "Frankreich"
+msgstr "France"
+
+#: inc/Forms/Presets.php:199
+msgid "Italien"
+msgstr "Italie"
+
+#: inc/Forms/Presets.php:213
+msgid "Nachricht"
+msgstr "Message"
+
+#: inc/Forms/Presets.php:218
+msgid "Eine Option wählen"
+msgstr "Choisir une option"
+
+#: inc/Forms/Presets.php:221
+msgid "Auswahl"
+msgstr "Choix"
+
+#: inc/Forms/Presets.php:238
+msgid "Pflicht-Häkchen mit Link zur Datenschutzerklärung"
+msgstr ""
+"Case obligatoire avec lien vers la déclaration de protection des données"
+
+#: inc/Forms/Presets.php:241
+msgid "Ich bin mit der Verarbeitung meiner Angaben einverstanden."
+msgstr "J'accepte le traitement de mes données."
+
+#: inc/Admin/BuilderTexts.php:145
+msgid "Ein Eintrag ist leer."
+msgstr "Une entrée est vide."
+
+#: inc/Admin/BuilderTexts.php:146
+msgid "Zwei Einträge heissen gleich."
+msgstr "Deux entrées portent le même nom."
+
+#: inc/Admin/BuilderTexts.php:147
+msgid "Es darf nur ein Eintrag der Standard sein."
+msgstr "Une seule entrée peut être celle par défaut."
+
+#: inc/Admin/BuilderTexts.php:75
+msgid "Rückgängig"
+msgstr "Annuler"
+
+#: inc/Admin/BuilderTexts.php:76
+msgid "Rückgängig gemacht"
+msgstr "Annulé"
+
+#. translators: %s: Name des Eintrags
+#: inc/Admin/BuilderTexts.php:78
+#, php-format
+msgid "Eintrag «%s» entfernt"
+msgstr "Entrée « %s » supprimée"
+
+#: inc/Admin/BuilderTexts.php:79
+msgid ""
+"Dieses Feld wird in einer Benachrichtigung verwendet. Beim Löschen kommt die Mail nicht mehr richtig an."
+msgstr ""
+"Ce champ est utilisé dans une notification. Si vous le supprimez, l'e-mail ne sera plus correct."
+
+#: inc/Admin/BuilderTexts.php:80
+msgid "Trotzdem löschen"
+msgstr "Supprimer quand même"
+
+#: inc/Admin/Preview.php:52
+msgid "Das Formular ist zu gross für die Vorschau."
+msgstr "Le formulaire est trop volumineux pour l'aperçu."
+
+#: inc/Admin/BuilderTexts.php:193
+msgid "Standard"
+msgstr "Par défaut"
+
+#: inc/Admin/BuilderTexts.php:194
+msgid "Sprache hinzufügen"
+msgstr "Ajouter une langue"
+
+#: inc/Admin/BuilderTexts.php:195
+msgid "Sprache entfernen"
+msgstr "Supprimer la langue"
+
+#: inc/Admin/BuilderTexts.php:196
+msgid ""
+"Standardsprache: hier stehen die Texte, die ohne Übersetzung überall gelten."
+msgstr ""
+"Langue par défaut : les textes qui s'appliquent partout en l'absence de traduction figurent ici."
+
+#: inc/Admin/BuilderTexts.php:197
+msgid ""
+"Das Formular hat eine Sprache. Füge eine weitere hinzu, um Texte zu übersetzen."
+msgstr ""
+"Le formulaire n'a qu'une langue. Ajoutez-en une autre pour traduire les textes."
+
+#. translators: 1: Anzahl übersetzter Texte, 2: Anzahl aller Texte
+#: inc/Admin/BuilderTexts.php:199
+#, php-format
+msgid "%1$d von %2$d übersetzt"
+msgstr "%1$d sur %2$d traduits"
+
+#: inc/Admin/BuilderTexts.php:200
+msgid "Noch nicht übersetzt"
+msgstr "Pas encore traduit"
+
+#. translators: %s: Standardtext
+#: inc/Admin/BuilderTexts.php:202
+#, php-format
+msgid "Standardtext: %s"
+msgstr "Texte par défaut : %s"
+
+#. translators: %s: Name der Sprache
+#: inc/Admin/BuilderTexts.php:204
+#, php-format
+msgid "Du übersetzt in %s. Ein leeres Feld zeigt den Standardtext."
+msgstr "Vous traduisez en %s. Un champ vide affiche le texte par défaut."
+
+#: inc/Admin/BuilderTexts.php:205
+msgid "Dieses Feld hat keine Texte zum Übersetzen."
+msgstr "Ce champ ne contient aucun texte à traduire."
+
+#: inc/Admin/BuilderTexts.php:206
+msgid ""
+"Betreff und Text der E-Mails übersetzt du in der Experten-Ansicht (JSON) bei der Benachrichtigung unter «i18n». E-Mails an die Admin-Adresse erscheinen immer in der Standardsprache."
+msgstr ""
+"L'objet et le texte des e-mails se traduisent dans la vue experte (JSON), dans la notification, sous « i18n ». Les e-mails envoyés à l'adresse de l'administrateur sont toujours rédigés dans la langue par défaut."
+
+#. translators: %s: Name der Sprache
+#: inc/Admin/BuilderTexts.php:208
+#, php-format
+msgid "Sprache: %s"
+msgstr "Langue : %s"
+
+#. translators: %s: Name der Sprache
+#: inc/Admin/BuilderTexts.php:210
+#, php-format
+msgid "Sprache «%s» hinzugefügt"
+msgstr "Langue « %s » ajoutée"
+
+#. translators: %s: Name der Sprache
+#: inc/Admin/BuilderTexts.php:212
+#, php-format
+msgid "Sprache «%s» entfernt"
+msgstr "Langue « %s » supprimée"
+
+#. translators: 1: Name der Sprache, 2: Anzahl Übersetzungen
+#: inc/Admin/BuilderTexts.php:214
+#, php-format
+msgid ""
+"Sprache «%1$s» entfernen? Dabei werden %2$d Übersetzungen gelöscht. Danach kannst du das noch kurz rückgängig machen."
+msgstr ""
+"Supprimer la langue « %1$s » ? %2$d traductions seront alors effacées. Vous pourrez encore annuler brièvement cette action."
+
+#. translators: %s: Name der Sprache
+#: inc/Admin/BuilderTexts.php:216
+#, php-format
+msgid "Sprache «%s» entfernen? Sie hat noch keine Übersetzungen."
+msgstr ""
+"Supprimer la langue « %s » ? Elle ne contient pas encore de traductions."
+
+#: inc/Admin/BuilderTexts.php:227
+msgid "Deutsch"
+msgstr "Allemand"
+
+#: inc/Admin/BuilderTexts.php:228
+msgid "Französisch"
+msgstr "Français"
+
+#: inc/Admin/BuilderTexts.php:229
+msgid "Italienisch"
+msgstr "Italien"
+
+#: inc/Admin/BuilderTexts.php:230
+msgid "Englisch"
+msgstr "Anglais"
+
+#: inc/Admin/BuilderTexts.php:231
+msgid "Rätoromanisch"
+msgstr "Romanche"
+
+#: inc/Admin/BuilderTexts.php:232
+msgid "Spanisch"
+msgstr "Espagnol"
+
+#: inc/Admin/BuilderTexts.php:233
+msgid "Portugiesisch"
+msgstr "Portugais"
+
+#: inc/Admin/BuilderTexts.php:234
+msgid "Niederländisch"
+msgstr "Néerlandais"
+
+#. translators: %s: Sprachcode
+#: inc/Forms/I18nValidator.php:134
+#, php-format
+msgid "Die Sprache «%s» steht nicht in «languages»."
+msgstr "La langue « %s » ne figure pas dans « languages »."
+
+#. translators: %s: Schlüssel
+#: inc/Forms/I18nValidator.php:156
+#, php-format
+msgid "«%s» kann nicht übersetzt werden."
+msgstr "« %s » ne peut pas être traduit."
+
+#: inc/Forms/I18nValidator.php:174
+msgid "Dieses Feld hat keine Optionen."
+msgstr "Ce champ n'a pas d'options."
+
+#. translators: %s: Wert einer Option
+#: inc/Forms/I18nValidator.php:187
+#, php-format
+msgid "Das Feld hat keine Option mit dem Wert «%s»."
+msgstr "Le champ n'a aucune option avec la valeur « %s »."
+
+#. translators: %d: höchste Anzahl Sprachen
+#: inc/Forms/I18nValidator.php:68
+#, php-format
+msgid ""
+"«languages» muss eine Liste mit 1 bis %d Sprachcodes sein, z. B. [\"de\", \"fr\"]."
+msgstr ""
+"« languages » doit être une liste de 1 à %d codes de langue, p. ex. [\"de\", \"fr\"]."
+
+#: inc/Forms/I18nValidator.php:73
+msgid "Ein Sprachcode besteht aus zwei oder drei Kleinbuchstaben, z. B. «de»."
+msgstr ""
+"Un code de langue se compose de deux ou trois minuscules, p. ex. « de »."
+
+#. translators: %s: Sprachcode
+#: inc/Forms/I18nValidator.php:76
+#, php-format
+msgid "Die Sprache «%s» kommt mehrfach vor."
+msgstr "La langue « %s » apparaît plusieurs fois."
+
+#: inc/Admin/BuilderTexts.php:170
+msgid "Empfänger"
+msgstr "Destinataires"
+
+#: inc/Admin/BuilderTexts.php:171
+msgid "An diese Adresse(n) senden"
+msgstr "Envoyer à ces adresses"
+
+#: inc/Admin/BuilderTexts.php:172
+msgid "z. B. verkauf@firma.ch, info@firma.ch"
+msgstr "p. ex. vente@entreprise.ch, info@entreprise.ch"
+
+#. translators: %s: Standard-Empfänger aus den Plugin-Einstellungen
+#: inc/Admin/BuilderTexts.php:174
+#, php-format
+msgid "Leer lassen: Anfragen gehen an %s"
+msgstr "Laissez vide : les demandes sont envoyées à %s"
+
+#. translators: %s: Angaben, die keine E-Mail-Adresse sind
+#: inc/Admin/BuilderTexts.php:176 inc/Forms/SchemaValidator.php:114
+#, php-format
+msgid "Diese Adresse sieht nicht richtig aus: %s"
+msgstr "Cette adresse semble incorrecte : %s"
+
+#. translators: %s: Höchstzahl der Adressen
+#: inc/Admin/BuilderTexts.php:178
+#, php-format
+msgid "Es sind höchstens %s Adressen möglich."
+msgstr "%s adresses au maximum sont possibles."
+
+#: inc/Admin/BuilderTexts.php:179
+msgid "Die Bestätigungsmail an den Besucher ist davon nicht betroffen."
+msgstr "La confirmation envoyée au visiteur n'est pas concernée."
+
+#. translators: %d: Höchstzahl
+#: inc/Forms/SchemaValidator.php:117
+#, php-format
+msgid "Es sind höchstens %d Adressen möglich."
+msgstr "%d adresses au maximum sont possibles."
+
+#: inc/options.php:36
+msgid ""
+"An diese Adresse(n) gehen die Anfragen, wenn ein Formular keine eigene Adresse hat. Mehrere Adressen trennst du mit Komma. Leer lassen für die Admin-E-Mail der Website."
+msgstr ""
+"Les demandes sont envoyées à ces adresses lorsqu'un formulaire n'a pas d'adresse propre. Séparez plusieurs adresses par une virgule. Laissez vide pour utiliser l'adresse e-mail de l'administrateur du site."
+
+msgid "Datei"
+msgstr "Fichier"
+
+msgid "accept muss eine Liste von Dateiendungen sein, z. B. [\"pdf\", \"docx\"]."
+msgstr ""
+"accept doit être une liste d'extensions de fichier, p. ex. [\"pdf\", \"docx\"]."
+
+msgid "max_size ist die Grösse in MB, höchstens %d."
+msgstr "max_size est la taille en Mo, %d au maximum."
+
+msgid "Bitte wähle eine Datei aus."
+msgstr "Veuillez choisir un fichier."
+
+msgid "Die Datei konnte nicht hochgeladen werden. Bitte versuche es nochmals."
+msgstr "Le fichier n'a pas pu être téléversé. Veuillez réessayer."
+
+msgid "Bitte lade eine Datei im Format %s hoch."
+msgstr "Veuillez téléverser un fichier au format %s."
+
+msgid "Die Datei ist zu gross. Erlaubt sind höchstens %s."
+msgstr ""
+"Le fichier est trop volumineux. La taille maximale autorisée est de %s."
+
+msgid "%1$s, höchstens %2$s"
+msgstr "%1$s, %2$s au maximum"
+
+msgid "Du darfst diese Datei nicht öffnen."
+msgstr "Vous n'avez pas le droit d'ouvrir ce fichier."
+
+msgid "Die Datei gibt es nicht mehr."
+msgstr "Ce fichier n'existe plus."
+
+msgid ""
+"Die Datei konnte nicht gespeichert werden. Bitte versuche es noch einmal."
+msgstr "Le fichier n'a pas pu être enregistré. Veuillez réessayer."
+
+msgid "Dateien"
+msgstr "Fichiers"
+
+msgid "Eine Datei, z. B. Lebenslauf"
+msgstr "Un fichier, p. ex. un CV"
