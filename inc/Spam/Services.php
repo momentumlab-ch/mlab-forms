@@ -7,6 +7,7 @@
 
 namespace MLab_Forms\Spam;
 
+use MLab_Forms\Forms\Language;
 use MLab_Forms\Settings;
 
 defined( 'ABSPATH' ) || exit;
@@ -120,7 +121,19 @@ final class Services {
 	public static function script_url( string $provider ): string {
 		$url = self::captchas()[ $provider ]['script'] ?? '';
 
-		return self::RECAPTCHA === $provider ? add_query_arg( 'render', rawurlencode( self::site_key( $provider ) ), $url ) : $url;
+		$args = array();
+		if ( self::RECAPTCHA === $provider ) {
+			$args['render'] = rawurlencode( self::site_key( $provider ) );
+		}
+		if ( self::TURNSTILE !== $provider && '' !== Language::captcha() ) {
+			$args['hl'] = Language::captcha();
+		}
+
+		foreach ( $args as $name => $value ) {
+			$url = add_query_arg( $name, $value, $url );
+		}
+
+		return $url;
 	}
 
 	/**

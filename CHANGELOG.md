@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 0.9.1 =
+* Der Spam-Schutz (Turnstile, reCAPTCHA, hCaptcha) erscheint in der Sprache der Seite statt in der Browser-Sprache des Besuchers. Für Sprachen, die der Dienst nicht kennt, wählt er selbst.
+* Läuft MomentumLab Multilingual, übernimmt das Formular dessen Sprache der Seite. WPML, Polylang und die Sprache der Website funktionieren wie bisher.
+* Die Texte des Plugins gibt es jetzt auch auf Französisch und Italienisch (Schweiz und Standard).
+* Für Entwickler: Filter `mlab_forms_captcha_language`.
+
 = 0.9.0 =
 * Neu: WhatsApp-Knopf. Nummer und vorausgefüllte Nachricht unter Einstellungen › Allgemein, {page} setzt den Titel der Seite ein. Als Shortcode [mlab_whatsapp] (Attribute label, offer, text, class) oder als runder Knopf unten rechts auf allen Seiten (Standard aus). Ein normaler Link zu wa.me: kein Skript, kein Cookie.
 * Neu: Formular-Abbrüche. Das Skript meldet einmal pro Seitenaufruf die erste Eingabe (nur die Formular-ID, per sendBeacon). Gespeichert wird eine Zahl pro Formular und Tag, 400 Tage lang, höchstens 1000 pro Tag. Starts::funnel() liefert angefangen, gesendet und abgebrochen, z. B. für MomentumLab Insights.

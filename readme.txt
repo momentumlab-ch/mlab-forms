@@ -4,7 +4,7 @@ Tags: formulare, kontakt, anfrage
 Requires at least: 6.9
 Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 0.9.0
+Stable tag: 0.9.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,12 @@ Das Repository ist öffentlich, ein Token ist nicht nötig. Wird es privat, komm
 2. Auf main mergen. Der Workflow «Release» legt das Release `vX.Y.Z` mit `mlab-forms.zip` an, sobald es zur Version noch keines gibt. Ab dann sehen die Websites das Update.
 
 == Changelog ==
+
+= 0.9.1 =
+* Der Spam-Schutz (Turnstile, reCAPTCHA, hCaptcha) erscheint in der Sprache der Seite statt in der Browser-Sprache des Besuchers. Für Sprachen, die der Dienst nicht kennt, wählt er selbst.
+* Läuft MomentumLab Multilingual, übernimmt das Formular dessen Sprache der Seite. WPML, Polylang und die Sprache der Website funktionieren wie bisher.
+* Die Texte des Plugins gibt es jetzt auch auf Französisch und Italienisch (Schweiz und Standard).
+* Für Entwickler: Filter `mlab_forms_captcha_language`.
 
 = 0.9.0 =
 * Neu: WhatsApp-Knopf. Nummer und vorausgefüllte Nachricht unter Einstellungen › Allgemein, {page} setzt den Titel der Seite ein. Als Shortcode [mlab_whatsapp] (Attribute label, offer, text, class) oder als runder Knopf unten rechts auf allen Seiten (Standard aus). Ein normaler Link zu wa.me: kein Skript, kein Cookie.

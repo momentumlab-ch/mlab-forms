@@ -356,7 +356,7 @@ final class SpamServicesTest extends TestCase {
 	}
 
 	public function test_skript_adressen(): void {
-		$this->assertSame( 'https://www.google.com/recaptcha/api.js?render=rc-site', Services::script_url( 'recaptcha' ) );
+		$this->assertSame( 'https://www.google.com/recaptcha/api.js?render=rc-site&hl=de', Services::script_url( 'recaptcha' ) );
 		$this->assertSame( 'https://challenges.cloudflare.com/turnstile/v0/api.js', Services::script_url( 'turnstile' ) );
 	}
 

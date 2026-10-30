@@ -8,6 +8,7 @@
 namespace MLab_Forms\Spam;
 
 use MLab_Forms\Forms\Form;
+use MLab_Forms\Forms\Language;
 use MLab_Forms\Html;
 use MLab_Forms\Submission\SpamGuard;
 
@@ -46,12 +47,14 @@ final class Widget {
 
 		$field    = Services::captchas()[ $provider ]['field'];
 		$site_key = Services::site_key( $provider );
+		$lang     = Language::captcha();
 		$inner    = match ( $provider ) {
 			Services::TURNSTILE => Html::tag(
 				'div',
 				array(
-					'class'        => 'cf-turnstile',
-					'data-sitekey' => $site_key,
+					'class'         => 'cf-turnstile',
+					'data-sitekey'  => $site_key,
+					'data-language' => '' === $lang ? null : $lang,
 				),
 				''
 			),
