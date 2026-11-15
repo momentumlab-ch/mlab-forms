@@ -35,17 +35,14 @@ final class MailTest {
 		check_ajax_referer( self::ACTION, 'nonce' );
 		if ( ! current_user_can( SettingsPage::CAPABILITY ) ) {
 			wp_send_json_error( array( 'message' => __( 'Dazu fehlt dir die Berechtigung.', 'mlab-forms' ) ), 403 );
-			return;
 		}
 		$key = 'mlab_forms_mail_test_' . get_current_user_id();
 		if ( get_transient( $key ) ) {
 			wp_send_json_error( array( 'message' => __( 'Bitte warte eine Minute vor dem nächsten Testversand.', 'mlab-forms' ) ), 429 );
-			return;
 		}
 		$to = Recipients::defaults();
 		if ( ! $to ) {
 			wp_send_json_error( array( 'message' => __( 'Bitte zuerst eine gültige Zustelladresse speichern.', 'mlab-forms' ) ), 400 );
-			return;
 		}
 		set_transient( $key, true, MINUTE_IN_SECONDS );
 		$submission = new Submission(
