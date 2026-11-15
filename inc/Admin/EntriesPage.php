@@ -143,6 +143,7 @@ final class EntriesPage {
 			<form method="get" action="<?php echo esc_url( admin_url( Menu::PARENT ) ); ?>">
 				<input type="hidden" name="post_type" value="mlab_form">
 				<input type="hidden" name="page" value="<?php echo esc_attr( self::SLUG ); ?>">
+				<input type="hidden" name="status" value="<?php echo esc_attr( self::request_filters()[ 'status' ] ); ?>">
 				<?php
 				$table->search_box( __( 'Anfragen durchsuchen', 'mlab-forms' ), 'mlab-entries' );
 				$table->display();
@@ -217,8 +218,25 @@ final class EntriesPage {
 			: __( 'Erneuter Versand fehlgeschlagen. Formular, Zustelladresse und Mailversand prüfen.', 'mlab-forms' );
 		EntryRepository::add_note( $id, 'log', $message );
 		$list = ! empty( $_POST['resend_list'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- in verify_entry_action geprüft.
-		wp_safe_redirect( $list ? self::url( array( 'resend' => $sent ? 'sent' : 'failed' ) ) : self::url( array( 'entry' => $id ) ) . '#mlab-notes' );
+		wp_safe_redirect( $list ? self::url( $this->resend_return_filters() + array( 'resend' => $sent ? 'sent' : 'failed' ) ) : self::url( array( 'entry' => $id ) ) . '#mlab-notes' );
 		exit;
+	}
+
+	/**
+	 * Behält die aktuelle Liste beim Neuversand bei, ohne frei übergebbare Redirect-URL.
+	 *
+	 * @return array<string, scalar>
+	 */
+	private function resend_return_filters(): array {
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- ausschliesslich nach verify_entry_action aufgerufen.
+		$status = sanitize_key( wp_unslash( $_POST['return_status'] ?? '' ) );
+		return array(
+			'form_id' => absint( $_POST['return_form_id'] ?? 0 ),
+			'status'  => Status::is_valid( $status ) ? $status : '',
+			's'       => sanitize_text_field( wp_unslash( $_POST['return_search'] ?? '' ) ),
+			'paged'   => max( 1, absint( $_POST['return_paged'] ?? 1 ) ),
+		);
+		// phpcs:enable
 	}
 
 	/**

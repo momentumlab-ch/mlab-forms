@@ -201,6 +201,9 @@ final class EntriesListTable extends \WP_List_Table {
 			printf( '<form id="mlab-resend-%d" method="post" action="%s">', (int) $item['id'], esc_url( admin_url( 'admin-post.php' ) ) );
 			echo EntriesPage::action_fields( EntriesPage::RESEND_ACTION, (int) $item['id'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escapt in action_fields.
 			echo '<input type="hidden" name="resend_list" value="1">';
+			foreach ( $this->filters + array( 'paged' => $this->get_pagenum() ) as $key => $value ) {
+				printf( '<input type="hidden" name="return_%s" value="%s">', esc_attr( $key ), esc_attr( (string) $value ) );
+			}
 			echo '</form>';
 			$this->render_preview( $item );
 		}
