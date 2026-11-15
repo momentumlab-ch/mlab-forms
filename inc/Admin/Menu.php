@@ -42,7 +42,7 @@ final class Menu {
 			Capabilities::MANAGE,
 			self::PARENT,
 			'',
-			'dashicons-feedback',
+			plugins_url( 'assets/images/momentumlab-forms-icon.svg', MLAB_FORMS_FILE ),
 			57.8
 		);
 		add_submenu_page( self::PARENT, __( 'Alle Formulare', 'mlab-forms' ), __( 'Alle Formulare', 'mlab-forms' ), Capabilities::MANAGE, self::PARENT );

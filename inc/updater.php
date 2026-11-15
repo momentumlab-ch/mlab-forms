@@ -19,6 +19,16 @@ add_action( 'init', 'mlab_forms_register_updater' );
  * Registriert die Update-Prüfung. Private Repos brauchen die Token-Konstante in wp-config.php.
  */
 function mlab_forms_register_updater(): void {
+	// Core und GitHub-Fallback dürfen nie gleichzeitig einen Checker registrieren.
+	if ( apply_filters( 'mlab_core_manages_plugin', false, 'mlab-forms' ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Integrationsvertrag des Core-Plugins.
+		return;
+	}
+	static $registered = false;
+	if ( $registered ) {
+		return;
+	}
+	$registered = true;
+
 	$private = false;
 	$token   = defined( 'MLAB_FORMS_GITHUB_TOKEN' ) ? (string) constant( 'MLAB_FORMS_GITHUB_TOKEN' ) : '';
 

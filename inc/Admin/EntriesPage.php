@@ -130,18 +130,27 @@ final class EntriesPage {
 		$table = new EntriesListTable( self::request_filters() );
 		$table->prepare_items();
 		?>
-		<div class="wrap">
-			<h1 class="wp-heading-inline"><?php esc_html_e( 'Anfragen', 'mlab-forms' ); ?></h1>
+		<div class="wrap mlab-workspace">
+			<?php Workspace::heading( __( 'Anfragen', 'mlab-forms' ), __( 'Alle Anfragen. Ein klarer nächster Schritt.', 'mlab-forms' ) ); ?>
 			<hr class="wp-header-end">
-			<?php $table->views(); ?>
+			<?php
+			if ( isset( $_GET['resend'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- reine Ergebnismeldung, keine Aktion.
+				$sent = 'sent' === $_GET['resend']; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- reine Ergebnismeldung.
+				printf( '<div class="notice %s"><p>%s</p></div>', $sent ? 'notice-success' : 'notice-error', esc_html( $sent ? __( 'Anfrage erneut an den Mailversand übergeben. Details stehen im Verlauf der Anfrage.', 'mlab-forms' ) : __( 'Erneuter Versand fehlgeschlagen. Details stehen im Verlauf der Anfrage.', 'mlab-forms' ) ) );
+			}
+			$table->views();
+			?>
 			<form method="get" action="<?php echo esc_url( admin_url( Menu::PARENT ) ); ?>">
 				<input type="hidden" name="post_type" value="mlab_form">
 				<input type="hidden" name="page" value="<?php echo esc_attr( self::SLUG ); ?>">
+				<input type="hidden" name="status" value="<?php echo esc_attr( self::request_filters()['status'] ); ?>">
 				<?php
 				$table->search_box( __( 'Anfragen durchsuchen', 'mlab-forms' ), 'mlab-entries' );
 				$table->display();
 				?>
 			</form>
+			<?php $table->render_resend_forms(); ?>
+			<dialog class="mlab-drawer" aria-labelledby="mlab-preview-title"><button type="button" class="mlab-drawer__close button" data-mlab-close aria-label="<?php esc_attr_e( 'Vorschau schliessen', 'mlab-forms' ); ?>">&times;</button><div data-mlab-preview-content></div></dialog>
 		</div>
 		<?php
 	}
@@ -208,8 +217,26 @@ final class EntriesPage {
 			? __( 'Erneuter Versand an den Mailversand übergeben: ', 'mlab-forms' ) . implode( ', ', Recipients::for_form( $form ) )
 			: __( 'Erneuter Versand fehlgeschlagen. Formular, Zustelladresse und Mailversand prüfen.', 'mlab-forms' );
 		EntryRepository::add_note( $id, 'log', $message );
-		wp_safe_redirect( self::url( array( 'entry' => $id ) ) . '#mlab-notes' );
+		$list = ! empty( $_POST['resend_list'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- in verify_entry_action geprüft.
+		wp_safe_redirect( $list ? self::url( $this->resend_return_filters() + array( 'resend' => $sent ? 'sent' : 'failed' ) ) : self::url( array( 'entry' => $id ) ) . '#mlab-notes' );
 		exit;
+	}
+
+	/**
+	 * Behält die aktuelle Liste beim Neuversand bei, ohne frei übergebbare Redirect-URL.
+	 *
+	 * @return array<string, scalar>
+	 */
+	private function resend_return_filters(): array {
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- ausschliesslich nach verify_entry_action aufgerufen.
+		$status = sanitize_key( wp_unslash( $_POST['return_status'] ?? '' ) );
+		return array(
+			'form_id' => absint( $_POST['return_form_id'] ?? 0 ),
+			'status'  => Status::is_valid( $status ) ? $status : '',
+			's'       => sanitize_text_field( wp_unslash( $_POST['return_search'] ?? '' ) ),
+			'paged'   => max( 1, absint( $_POST['return_paged'] ?? 1 ) ),
+		);
+		// phpcs:enable
 	}
 
 	/**
