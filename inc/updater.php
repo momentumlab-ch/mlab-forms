@@ -20,7 +20,7 @@ add_action( 'init', 'mlab_forms_register_updater' );
  */
 function mlab_forms_register_updater(): void {
 	// Core und GitHub-Fallback dürfen nie gleichzeitig einen Checker registrieren.
-	if ( apply_filters( 'mlab_core_manages_plugin', false, 'mlab-forms' ) ) {
+	if ( apply_filters( 'mlab_core_manages_plugin', false, 'mlab-forms' ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Integrationsvertrag des Core-Plugins.
 		return;
 	}
 	static $registered = false;
