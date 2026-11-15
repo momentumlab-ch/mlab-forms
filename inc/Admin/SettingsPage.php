@@ -229,7 +229,12 @@ final class SettingsPage {
 				<?php foreach ( $fields as $key => $field ) : ?>
 					<div class="mlab-setting-field">
 						<label for="mlab_forms_<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $field['label'] ); ?></label>
-						<?php FieldRenderer::render( array( 'key' => $key, 'field' => $field ) ); ?>
+						<?php FieldRenderer::render(
+							array(
+								'key'   => $key,
+								'field' => $field,
+							)
+						); ?>
 					</div>
 				<?php endforeach; ?>
 			</section>

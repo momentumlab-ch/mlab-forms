@@ -48,7 +48,17 @@ final class MailTest {
 			return;
 		}
 		set_transient( $key, true, MINUTE_IN_SECONDS );
-		$submission = new Submission( new Form( 0, 'MomentumLab Forms', array( 'schema_version' => 1, 'fields' => array() ) ), array() );
+		$submission = new Submission(
+			new Form(
+				0,
+				'MomentumLab Forms',
+				array(
+					'schema_version' => 1,
+					'fields'         => array(),
+				)
+			),
+			array()
+		);
 		$sent       = wp_mail( $to, __( 'MomentumLab Forms · Testmail', 'mlab-forms' ), __( 'Der Testversand von MomentumLab Forms funktioniert. Diese Mail enthält keine Kundendaten.', 'mlab-forms' ), Notifier::headers( array(), $submission ) );
 		wp_send_json_success(
 			array(

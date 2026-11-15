@@ -38,10 +38,12 @@ final class UpdatesTab {
 		?>
 		<div class="mlab-card">
 			<h2><?php esc_html_e( 'Updates', 'mlab-forms' ); ?></h2>
-			<p><?php
+			<p>
+			<?php
 			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Integrationsvertrag des Core-Plugins.
 			echo esc_html( apply_filters( 'mlab_core_manages_plugin', false, 'mlab-forms' ) ? __( 'Updates werden über MLab Core verwaltet.', 'mlab-forms' ) : __( 'Updates werden direkt über GitHub bezogen.', 'mlab-forms' ) );
-			?></p>
+			?>
+			</p>
 		<table class="form-table" role="presentation">
 			<tr>
 				<th scope="row"><?php esc_html_e( 'Installierte Version', 'mlab-forms' ); ?></th>
