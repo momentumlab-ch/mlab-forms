@@ -35,15 +35,13 @@ final class EntryView {
 	public function render(): void {
 		$id = (int) $this->entry['id'];
 		?>
-		<div class="wrap mlab-entry">
+		<div class="wrap mlab-workspace mlab-entry">
 			<p><a href="<?php echo esc_url( EntriesPage::url() ); ?>">&larr; <?php esc_html_e( 'Alle Anfragen', 'mlab-forms' ); ?></a></p>
-			<h1>
-				<?php
-				/* translators: 1: Nummer, 2: Formular */
-				printf( esc_html__( 'Anfrage #%1$d · %2$s', 'mlab-forms' ), (int) $id, esc_html( get_the_title( $this->entry['form_id'] ) ) );
-				?>
-			</h1>
-			<div id="poststuff">
+			<?php
+			/* translators: %d: Anfrage-ID. */
+			Workspace::heading( sprintf( __( 'Anfrage #%d', 'mlab-forms' ), $id ), get_the_title( $this->entry['form_id'] ) );
+			?>
+			<div id="poststuff" class="mlab-detail-grid">
 				<div class="postbox"><div class="inside"><?php $this->render_fields(); ?></div></div>
 				<div class="postbox"><div class="inside"><?php $this->render_status_form(); ?></div></div>
 				<div class="postbox"><div class="inside"><?php $this->render_resend(); ?></div></div>
@@ -97,7 +95,7 @@ final class EntryView {
 			<p><?php esc_html_e( 'Sendet die gespeicherte Anfrage inklusive verfügbarer Anhänge nochmals an die aktuellen Formular-Empfänger. Der Kunde erhält keine weitere Bestätigung. Das Ergebnis erscheint im Verlauf.', 'mlab-forms' ); ?></p>
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 				<?php echo EntriesPage::action_fields( EntriesPage::RESEND_ACTION, (int) $this->entry['id'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escapt in action_fields. ?>
-				<?php submit_button( __( 'Erneut an Zustelladresse senden', 'mlab-forms' ), 'secondary', 'submit', false ); ?>
+				<?php submit_button( __( 'Resend', 'mlab-forms' ), 'secondary', 'submit', false ); ?>
 			</form>
 		<?php endif; ?>
 		<?php

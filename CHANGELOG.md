@@ -1,6 +1,11 @@
 == Changelog ==
 
-= Unreleased =
+= 0.10.0 =
+* Neues Backend-Design für Anfragen, Detailansicht und Einstellungen: helle Karten, CI-Gold und lokal eingebundene Montserrat-Schrift.
+* Neues skalierbares Forms-Logo als SVG, inklusive dunkler Variante und Plugin-Icon.
+* Anfragen-Vorschau mit Zustelladresse, Resend und direktem Zugang zur Detailansicht.
+* Einstellungen nach Aufgaben gruppiert, mit Versandvorschau, Testmail, festem Speichern-Bereich und Schutz vor ungespeicherten Änderungen.
+* Responsives Layout und tastaturbedienbare Vorschau; bestehende Status, Formulare, Filter und gespeicherte Daten bleiben erhalten.
 * Resend-Button direkt pro Anfrage in der Liste, mit Ergebnisanzeige und Protokollierung.
 * Nur ein Update-Checker: Übernimmt MLab Core die Updates, bleibt der eigene GitHub-Checker inaktiv. Ohne Core bleibt GitHub der Fallback.
 * Gespeicherte Anfragen lassen sich in der Detailansicht erneut an die aktuellen Zustelladressen des Formulars senden, inklusive verfügbarer Anhänge. Keine weitere Kundenbestätigung; Ergebnis und ausführender Benutzer werden im Verlauf protokolliert.

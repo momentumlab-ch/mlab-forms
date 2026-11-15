@@ -130,8 +130,8 @@ final class EntriesPage {
 		$table = new EntriesListTable( self::request_filters() );
 		$table->prepare_items();
 		?>
-		<div class="wrap">
-			<h1 class="wp-heading-inline"><?php esc_html_e( 'Anfragen', 'mlab-forms' ); ?></h1>
+		<div class="wrap mlab-workspace">
+			<?php Workspace::heading( __( 'Anfragen', 'mlab-forms' ), __( 'Alle Anfragen. Ein klarer nächster Schritt.', 'mlab-forms' ) ); ?>
 			<hr class="wp-header-end">
 			<?php
 			if ( isset( $_GET['resend'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- reine Ergebnismeldung, keine Aktion.
@@ -149,6 +149,7 @@ final class EntriesPage {
 				?>
 			</form>
 			<?php $table->render_resend_forms(); ?>
+			<dialog class="mlab-drawer" aria-labelledby="mlab-preview-title"><button type="button" class="mlab-drawer__close button" data-mlab-close aria-label="<?php esc_attr_e( 'Vorschau schliessen', 'mlab-forms' ); ?>">&times;</button><div data-mlab-preview-content></div></dialog>
 		</div>
 		<?php
 	}

@@ -11,6 +11,7 @@ use MLab_Forms\Entries\EntryFormatter;
 use MLab_Forms\Entries\EntryRepository;
 use MLab_Forms\Entries\Status;
 use MLab_Forms\Forms\FormPostType;
+use MLab_Forms\Mail\Recipients;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -164,7 +165,7 @@ final class EntriesListTable extends \WP_List_Table {
 		$text   = '' !== $text ? $text : '#' . $item['id'];
 		$weight = Status::NEW === $item['status'] ? 'strong' : 'span';
 
-		return sprintf( '<%1$s><a href="%2$s">%3$s</a></%1$s>', $weight, esc_url( EntriesPage::url( array( 'entry' => $item['id'] ) ) ), esc_html( wp_html_excerpt( $text, 80, '…' ) ) );
+		return sprintf( '<%1$s><a href="%2$s" data-mlab-preview="mlab-preview-%4$d">%3$s</a></%1$s><div class="mlab-entry-id">#%4$d</div>', $weight, esc_url( EntriesPage::url( array( 'entry' => $item['id'] ) ) ), esc_html( wp_html_excerpt( $text, 80, '…' ) ), (int) $item['id'] );
 	}
 
 	/**
@@ -177,14 +178,14 @@ final class EntriesListTable extends \WP_List_Table {
 		switch ( $column_name ) {
 			case 'resend':
 				$form = EntryFormatter::form( (int) $item['form_id'] );
-				if ( ! $form || ! \MLab_Forms\Mail\Recipients::for_form( $form ) ) {
+				if ( ! $form || ! Recipients::for_form( $form ) ) {
 					return '–';
 				}
-				return sprintf( '<button type="submit" class="button button-small" form="mlab-resend-%d" title="%s">%s</button>', (int) $item['id'], esc_attr( implode( ', ', \MLab_Forms\Mail\Recipients::for_form( $form ) ) ), esc_html__( 'Resend', 'mlab-forms' ) );
+				return sprintf( '<button type="submit" class="button button-small" form="mlab-resend-%d" title="%s">%s</button>', (int) $item['id'], esc_attr( implode( ', ', Recipients::for_form( $form ) ) ), esc_html__( 'Resend', 'mlab-forms' ) );
 			case 'form':
 				return esc_html( get_the_title( $item['form_id'] ) );
 			case 'status':
-				return esc_html( Status::label( $item['status'] ) );
+				return sprintf( '<span class="mlab-status mlab-status--%s">%s</span>', esc_attr( $item['status'] ), esc_html( Status::label( $item['status'] ) ) );
 			case 'date':
 				return esc_html( EntriesPage::local_date( $item['created_at'] ) );
 		}
@@ -201,7 +202,34 @@ final class EntriesListTable extends \WP_List_Table {
 			echo EntriesPage::action_fields( EntriesPage::RESEND_ACTION, (int) $item['id'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escapt in action_fields.
 			echo '<input type="hidden" name="resend_list" value="1">';
 			echo '</form>';
+			$this->render_preview( $item );
 		}
+	}
+
+	/**
+	 * Sichere Vorschau als inertes Template; ohne JavaScript bleibt der Detail-Link aktiv.
+	 *
+	 * @param array<string, mixed> $item Anfrage.
+	 */
+	private function render_preview( array $item ): void {
+		$form = EntryFormatter::form( (int) $item['form_id'] );
+		?>
+		<template id="mlab-preview-<?php echo (int) $item['id']; ?>">
+			<p class="mlab-eyebrow"><?php echo esc_html( get_the_title( $item['form_id'] ) ); ?></p>
+			<h2 id="mlab-preview-title"><?php echo esc_html( '#' . $item['id'] ); ?></h2>
+			<p><span class="mlab-status"><?php echo esc_html( Status::label( $item['status'] ) ); ?></span> · <?php echo esc_html( EntriesPage::local_date( $item['created_at'] ) ); ?></p>
+			<dl class="mlab-preview-fields">
+				<?php foreach ( EntryFormatter::rows( $item ) as $label => $value ) : ?>
+					<dt><?php echo esc_html( $label ); ?></dt><dd><?php echo nl2br( esc_html( $value ) ); ?></dd>
+				<?php endforeach; ?>
+			</dl>
+			<?php if ( $form && Recipients::for_form( $form ) ) : ?>
+				<div class="mlab-card"><h3><?php esc_html_e( 'Zustelladresse', 'mlab-forms' ); ?></h3><p><?php echo esc_html( implode( ', ', Recipients::for_form( $form ) ) ); ?></p><p class="description"><?php esc_html_e( 'Keine weitere Bestätigung an den Kunden.', 'mlab-forms' ); ?></p></div>
+				<button type="submit" class="button" form="mlab-resend-<?php echo (int) $item['id']; ?>"><?php esc_html_e( 'Resend', 'mlab-forms' ); ?></button>
+			<?php endif; ?>
+			<a class="button button-primary" href="<?php echo esc_url( EntriesPage::url( array( 'entry' => $item['id'] ) ) ); ?>"><?php esc_html_e( 'Anfrage öffnen', 'mlab-forms' ); ?></a>
+		</template>
+		<?php
 	}
 
 	/**

@@ -12,9 +12,11 @@ use MLab_Forms\Admin\ConnectionTest;
 use MLab_Forms\Admin\EntriesPage;
 use MLab_Forms\Admin\FormEditor;
 use MLab_Forms\Admin\Menu;
+use MLab_Forms\Admin\MailTest;
 use MLab_Forms\Admin\Preview;
 use MLab_Forms\Admin\SettingsPage;
 use MLab_Forms\Admin\UpdatesTab;
+use MLab_Forms\Admin\Workspace;
 use MLab_Forms\Entries\Retention;
 use MLab_Forms\Entries\Starts;
 use MLab_Forms\Files\FileStore;
@@ -57,7 +59,7 @@ final class Plugin {
 			new Starts(),
 		);
 		if ( is_admin() ) {
-			array_push( $modules, new Menu(), new FormEditor(), new Builder(), new Preview(), new EntriesPage(), new SettingsPage(), new UpdatesTab(), new ConnectionTest() );
+			array_push( $modules, new Menu(), new FormEditor(), new Builder(), new Preview(), new EntriesPage(), new SettingsPage(), new UpdatesTab(), new ConnectionTest(), new Workspace(), new MailTest() );
 		}
 
 		foreach ( $modules as $module ) {

@@ -186,3 +186,19 @@ function sanitize_key( $key ) {
 function remove_query_arg( $key, $url ) {
 	return $url;
 }
+
+function check_ajax_referer( $action, $key ) {
+    if ( 'valid' !== ( $_POST[ $key ] ?? '' ) ) {
+        throw new RuntimeException( 'invalid_nonce' );
+    }
+}
+function current_user_can( $capability ) {
+    return $GLOBALS['mlab_test']['allowed'] ?? true;
+}
+function get_current_user_id() { return 17; }
+function wp_send_json_error( $data, $status = 200 ) {
+    throw new RuntimeException( json_encode( array( 'success' => false, 'data' => $data, 'status' => $status ) ) );
+}
+function wp_send_json_success( $data ) {
+    throw new RuntimeException( json_encode( array( 'success' => true, 'data' => $data ) ) );
+}

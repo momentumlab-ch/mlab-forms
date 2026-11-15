@@ -145,26 +145,25 @@ final class SettingsPage {
 
 		$tab = $this->current_tab();
 		?>
-		<div class="wrap">
-			<h1><?php esc_html_e( 'Einstellungen', 'mlab-forms' ); ?></h1>
+		<div class="wrap mlab-workspace">
+			<?php Workspace::heading( __( 'Einstellungen', 'mlab-forms' ), __( 'Einrichten. Testen. Bereit.', 'mlab-forms' ) ); ?>
 			<?php $this->render_notices(); ?>
-			<?php $this->render_tabs( $tab ); ?>
-			<?php if ( $this->tab_has_fields( $tab ) ) : ?>
-				<form action="options.php" method="post">
-					<?php
-					settings_fields( self::GROUP );
-					printf( '<input type="hidden" name="%s[%s]" value="%s">', esc_attr( Settings::OPTION ), esc_attr( Settings::TAB_KEY ), esc_attr( $tab ) );
-					do_settings_sections( $this->section_page( $tab ) );
-					submit_button();
-					?>
-				</form>
-			<?php endif; ?>
-			<?php
-			/**
-			 * Zusätzlicher Inhalt unter dem Formular eines Tabs.
-			 */
-			do_action( "mlab_forms_settings_tab_{$tab}" );
-			?>
+			<div class="mlab-settings-layout">
+				<?php $this->render_tabs( $tab ); ?>
+				<main class="mlab-settings-content">
+					<?php if ( $this->tab_has_fields( $tab ) ) : ?>
+						<form action="options.php" method="post" data-mlab-settings>
+							<?php
+							settings_fields( self::GROUP );
+							printf( '<input type="hidden" name="%s[%s]" value="%s">', esc_attr( Settings::OPTION ), esc_attr( Settings::TAB_KEY ), esc_attr( $tab ) );
+							$this->render_cards( $tab );
+							?>
+							<div class="mlab-savebar"><span data-mlab-save-state role="status"><?php esc_html_e( 'Alle Änderungen gespeichert', 'mlab-forms' ); ?></span><?php submit_button( __( 'Änderungen speichern', 'mlab-forms' ), 'primary', 'submit', false ); ?></div>
+						</form>
+					<?php endif; ?>
+					<?php do_action( "mlab_forms_settings_tab_{$tab}" ); ?>
+				</main>
+			</div>
 		</div>
 		<?php
 	}
@@ -176,11 +175,90 @@ final class SettingsPage {
 	 */
 	private function render_tabs( string $current ): void {
 		?>
-		<nav class="nav-tab-wrapper">
+		<nav class="nav-tab-wrapper mlab-settings-nav" aria-label="<?php esc_attr_e( 'Einstellungsbereiche', 'mlab-forms' ); ?>">
 			<?php foreach ( Settings::tabs() as $key => $title ) : ?>
-				<a href="<?php echo esc_url( self::url( $key ) ); ?>" class="nav-tab <?php echo $key === $current ? 'nav-tab-active' : ''; ?>"><?php echo esc_html( $title ); ?></a>
+				<a href="<?php echo esc_url( self::url( $key ) ); ?>" class="nav-tab <?php echo $key === $current ? 'nav-tab-active' : ''; ?>" <?php echo $key === $current ? 'aria-current="page"' : ''; ?>><?php echo esc_html( $title ); ?></a>
 			<?php endforeach; ?>
 		</nav>
+		<?php
+	}
+
+	/**
+	 * Fachlich gruppierte Karten statt einer langen Einstellungstabelle.
+	 *
+	 * @param string $tab Bereich.
+	 */
+	private function render_cards( string $tab ): void {
+		$groups = array();
+		foreach ( Settings::fields() as $key => $field ) {
+			if ( $tab !== $field['tab'] ) {
+				continue;
+			}
+			$group = $field['section'] ?? $tab;
+			if ( 'email' === $tab ) {
+				$group = 'default_recipient' === $key ? 'recipients' : 'sender';
+			} elseif ( 'spam' === $tab && preg_match( '/^spam_(turnstile|recaptcha|hcaptcha|akismet)_/', $key, $match ) ) {
+				$group = $match[1];
+			}
+			$groups[ $group ][ $key ] = $field;
+		}
+		$titles = array(
+			'general'    => __( 'Darstellung', 'mlab-forms' ),
+			'whatsapp'   => 'WhatsApp',
+			'recipients' => __( '1 · Zustelladresse', 'mlab-forms' ),
+			'sender'     => __( '2 · Absender & Antworten', 'mlab-forms' ),
+			'spam'       => __( 'Basisschutz', 'mlab-forms' ),
+			'services'   => __( 'Spam-Dienst wählen', 'mlab-forms' ),
+			'turnstile'  => 'Cloudflare Turnstile',
+			'recaptcha'  => 'Google reCAPTCHA',
+			'hcaptcha'   => 'hCaptcha',
+			'akismet'    => 'Akismet',
+			'privacy'    => __( 'Aufbewahrung & Daten', 'mlab-forms' ),
+		);
+		if ( 'email' === $tab ) {
+			echo '<p class="mlab-workflow">' . esc_html__( '1 Empfänger → 2 Absender → 3 Testversand', 'mlab-forms' ) . '</p>';
+		}
+		echo '<div class="mlab-settings-cards">';
+		foreach ( $groups as $group => $fields ) {
+			?>
+			<section class="mlab-card">
+				<h2><?php echo esc_html( $titles[ $group ] ?? $group ); ?></h2>
+				<?php if ( isset( Settings::sections()[ $group ] ) ) : ?>
+					<p class="description"><?php echo esc_html( Settings::sections()[ $group ]['text'] ); ?></p>
+				<?php endif; ?>
+				<?php foreach ( $fields as $key => $field ) : ?>
+					<div class="mlab-setting-field">
+						<label for="mlab_forms_<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $field['label'] ); ?></label>
+						<?php FieldRenderer::render( array( 'key' => $key, 'field' => $field ) ); ?>
+					</div>
+				<?php endforeach; ?>
+			</section>
+			<?php
+		}
+		if ( 'email' === $tab ) {
+			$this->render_mail_preview();
+		}
+		echo '</div>';
+	}
+
+	/**
+	 * Versandvorschau und Test der gespeicherten Einstellungen.
+	 */
+	private function render_mail_preview(): void {
+		?>
+		<section class="mlab-card mlab-mail-preview">
+			<h2><?php esc_html_e( '3 · Testversand', 'mlab-forms' ); ?></h2>
+			<p><?php esc_html_e( 'So wird deine Anfrage versendet', 'mlab-forms' ); ?></p>
+			<dl>
+				<dt><?php esc_html_e( 'An', 'mlab-forms' ); ?></dt><dd data-mlab-mail-to data-fallback="<?php echo esc_attr( (string) get_option( 'admin_email' ) ); ?>"><?php echo esc_html( implode( ', ', \MLab_Forms\Mail\Recipients::defaults() ) ); ?></dd>
+				<dt><?php esc_html_e( 'Von', 'mlab-forms' ); ?></dt><dd data-mlab-mail-from><?php echo esc_html( (string) Settings::get( 'email_from_name' ) ); ?> · <?php echo esc_html( (string) Settings::get( 'email_from_address' ) ); ?></dd>
+				<dt><?php esc_html_e( 'Antwort an', 'mlab-forms' ); ?></dt><dd data-mlab-mail-reply><?php echo esc_html( 'visitor' === Settings::get( 'email_reply_to_mode' ) ? __( 'E-Mail-Adresse des Kunden', 'mlab-forms' ) : (string) Settings::get( 'email_reply_to' ) ); ?></dd>
+			</dl>
+			<p class="description"><?php esc_html_e( 'Eigene Empfänger und Absender im Formular haben Vorrang. Die Kundenadresse wird nur für Antworten verwendet. SMTP-Plugins können den Absender übersteuern.', 'mlab-forms' ); ?></p>
+			<p><?php esc_html_e( 'Zuerst Änderungen speichern. Die Testmail verwendet die gespeicherten Einstellungen und geht an die Standard-Empfänger.', 'mlab-forms' ); ?></p>
+			<button type="button" class="button" data-mlab-mail-test><?php esc_html_e( 'Testmail senden', 'mlab-forms' ); ?></button>
+			<p role="status" aria-live="polite" data-mlab-mail-result></p>
+		</section>
 		<?php
 	}
 

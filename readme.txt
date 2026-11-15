@@ -4,7 +4,7 @@ Tags: formulare, kontakt, anfrage
 Requires at least: 6.9
 Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 0.9.1
+Stable tag: 0.10.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -79,7 +79,7 @@ Das Repository ist öffentlich, ein Token ist nicht nötig. Wird es privat, komm
 
 == Changelog ==
 
-= 0.9.1 =
+= 0.10.0 =
 * Der Spam-Schutz (Turnstile, reCAPTCHA, hCaptcha) erscheint in der Sprache der Seite statt in der Browser-Sprache des Besuchers. Für Sprachen, die der Dienst nicht kennt, wählt er selbst.
 * Läuft MomentumLab Multilingual, übernimmt das Formular dessen Sprache der Seite. WPML, Polylang und die Sprache der Website funktionieren wie bisher.
 * Die Texte des Plugins gibt es jetzt auch auf Französisch und Italienisch (Schweiz und Standard).
