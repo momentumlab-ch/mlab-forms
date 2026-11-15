@@ -44,6 +44,31 @@ final class Notifier {
 	}
 
 	/**
+	 * Sendet eine gespeicherte Anfrage ausschliesslich an die festen Formular-Empfänger.
+	 *
+	 * @param Submission $submission Gespeicherte Absendung.
+	 */
+	public static function resend_to_recipients( Submission $submission ): bool {
+		$source = $submission->in_language( $submission->form->default_language() );
+		$notice = array(
+			'subject' => __( 'Anfrage: {form_title} · #{entry_id}', 'mlab-forms' ),
+			'body'    => '{all_fields}',
+		);
+		foreach ( (array) $source->form->setting( 'notifications' ) as $notification ) {
+			$notification = (array) $notification;
+			// Besucher-Platzhalter dürfen auch bei identischen Adressen keine Vorlage auswählen.
+			if ( ! str_contains( (string) ( $notification['to'] ?? '' ), '{field:' ) && self::is_for_admin( $notification, $source ) ) {
+				$notice = $notification;
+				break;
+			}
+		}
+		// Empfänger immer aus den Einstellungen, niemals aus den eingesendeten Daten.
+		$notice['to'] = implode( ', ', Recipients::for_form( $source->form ) );
+
+		return self::send( $notice, $source, self::attachments( $source ) );
+	}
+
+	/**
 	 * Geht die Benachrichtigung nur an die Empfänger der Seite (und nicht an den Besucher oder andere)?
 	 *
 	 * @param array<string, mixed> $notification Benachrichtigung.

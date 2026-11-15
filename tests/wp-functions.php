@@ -176,7 +176,7 @@ function wp_mail( $to, $subject, $message, $headers = '' ) {
 		'body'    => $message,
 		'headers' => $headers,
 	);
-	return true;
+	return $GLOBALS['mlab_mail_result'] ?? true;
 }
 
 function sanitize_key( $key ) {

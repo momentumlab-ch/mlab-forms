@@ -1,5 +1,8 @@
 == Changelog ==
 
+= Unreleased =
+* Gespeicherte Anfragen lassen sich in der Detailansicht erneut an die aktuellen Zustelladressen des Formulars senden, inklusive verfügbarer Anhänge. Keine weitere Kundenbestätigung; Ergebnis und ausführender Benutzer werden im Verlauf protokolliert.
+
 = 0.9.1 =
 * Der Spam-Schutz (Turnstile, reCAPTCHA, hCaptcha) erscheint in der Sprache der Seite statt in der Browser-Sprache des Besuchers. Für Sprachen, die der Dienst nicht kennt, wählt er selbst.
 * Läuft MomentumLab Multilingual, übernimmt das Formular dessen Sprache der Seite. WPML, Polylang und die Sprache der Website funktionieren wie bisher.

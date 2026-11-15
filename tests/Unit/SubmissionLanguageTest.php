@@ -81,6 +81,47 @@ final class SubmissionLanguageTest extends TestCase {
 		$this->assertSame( 'Deine Anfrage bei Testseite', $this->mail_to( 'gast@example.org' )['subject'] );
 	}
 
+	public function test_neuversand_geht_nur_an_formular_empfaenger(): void {
+		$schema                           = $this->schema();
+		$schema['settings']['recipients'] = 'office@example.org, team@example.org';
+		$submission = new Submission( ( new Form( 7, 'Kontakt', $schema ) )->localized( 'fr' ), array( 'name' => 'Anna', 'email' => 'gast@example.org' ) );
+		$submission->entry_id = 42;
+
+		$this->assertTrue( Notifier::resend_to_recipients( $submission ) );
+		$this->assertCount( 1, $GLOBALS['mlab_mails'] );
+		$mail = $GLOBALS['mlab_mails'][0];
+		$this->assertSame( array( 'office@example.org', 'team@example.org' ), $mail['to'] );
+		$this->assertSame( 'Neue Anfrage von Anna', $mail['subject'] );
+		$this->assertStringContainsString( 'Name: Anna', $mail['body'] );
+	}
+
+	public function test_neuversand_mit_gemischter_vorlage_sendet_nicht_an_kunden(): void {
+		$schema                                         = $this->schema();
+		$schema['settings']['notifications'][0]['to'] = '{site_admin_email}, {field:email}';
+		$submission = new Submission( new Form( 7, 'Kontakt', $schema ), array( 'name' => 'Anna', 'email' => 'gast@example.org' ) );
+		$submission->entry_id = 42;
+
+		$this->assertTrue( Notifier::resend_to_recipients( $submission ) );
+		$this->assertCount( 1, $GLOBALS['mlab_mails'] );
+		$this->assertSame( array( 'admin@example.org' ), $GLOBALS['mlab_mails'][0]['to'] );
+		$this->assertStringContainsString( '#42', $GLOBALS['mlab_mails'][0]['subject'] );
+	}
+
+	public function test_neuversand_meldet_mailfehler(): void {
+		$GLOBALS['mlab_mail_result'] = false;
+		try {
+			$this->assertFalse( Notifier::resend_to_recipients( $this->submission( 'fr' ) ) );
+		} finally {
+			unset( $GLOBALS['mlab_mail_result'] );
+		}
+	}
+
+	public function test_neuversand_ohne_empfaenger_sendet_nichts(): void {
+		update_option( 'admin_email', '' );
+		$this->assertFalse( Notifier::resend_to_recipients( $this->submission( 'fr' ) ) );
+		$this->assertSame( array(), $GLOBALS['mlab_mails'] );
+	}
+
 	public function test_formular_enthaelt_verstecktes_sprachfeld(): void {
 		$html = $this->hidden_inputs( $this->form()->localized( 'fr' ) );
 

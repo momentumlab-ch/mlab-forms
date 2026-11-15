@@ -12,6 +12,7 @@ use MLab_Forms\Entries\EntryRepository;
 use MLab_Forms\Entries\Status;
 use MLab_Forms\Files\FileStore;
 use MLab_Forms\Html;
+use MLab_Forms\Mail\Recipients;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -45,6 +46,7 @@ final class EntryView {
 			<div id="poststuff">
 				<div class="postbox"><div class="inside"><?php $this->render_fields(); ?></div></div>
 				<div class="postbox"><div class="inside"><?php $this->render_status_form(); ?></div></div>
+				<div class="postbox"><div class="inside"><?php $this->render_resend(); ?></div></div>
 				<div class="postbox" id="mlab-notes"><div class="inside"><?php $this->render_notes(); ?></div></div>
 				<div class="postbox"><div class="inside"><?php $this->render_meta(); ?></div></div>
 			</div>
@@ -79,6 +81,26 @@ final class EntryView {
 			);
 		}
 		echo '</ul>';
+	}
+
+	/**
+	 * Neuversand an die aktuell eingestellten Zustelladressen.
+	 */
+	private function render_resend(): void {
+		$form = EntryFormatter::form( (int) $this->entry['form_id'] );
+		?>
+		<h2><?php esc_html_e( 'Erneut senden', 'mlab-forms' ); ?></h2>
+		<?php if ( ! $form || ! Recipients::for_form( $form ) ) : ?>
+			<p><?php esc_html_e( 'Kein Formular oder keine gültige Zustelladresse vorhanden.', 'mlab-forms' ); ?></p>
+		<?php else : ?>
+			<p><strong><?php esc_html_e( 'Zustelladresse:', 'mlab-forms' ); ?></strong> <?php echo esc_html( implode( ', ', Recipients::for_form( $form ) ) ); ?></p>
+			<p><?php esc_html_e( 'Sendet die gespeicherte Anfrage inklusive verfügbarer Anhänge nochmals an die aktuellen Formular-Empfänger. Der Kunde erhält keine weitere Bestätigung. Das Ergebnis erscheint im Verlauf.', 'mlab-forms' ); ?></p>
+			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+				<?php echo EntriesPage::action_fields( EntriesPage::RESEND_ACTION, (int) $this->entry['id'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escapt in action_fields. ?>
+				<?php submit_button( __( 'Erneut an Zustelladresse senden', 'mlab-forms' ), 'secondary', 'submit', false ); ?>
+			</form>
+		<?php endif; ?>
+		<?php
 	}
 
 	/**
