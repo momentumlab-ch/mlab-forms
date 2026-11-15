@@ -10,6 +10,10 @@ namespace MLab_Forms\Admin;
 use MLab_Forms\Capabilities;
 use MLab_Forms\Entries\EntryRepository;
 use MLab_Forms\Entries\Status;
+use MLab_Forms\Forms\FormRepository;
+use MLab_Forms\Mail\Notifier;
+use MLab_Forms\Mail\Recipients;
+use MLab_Forms\Submission\Submission;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -21,6 +25,7 @@ final class EntriesPage {
 	public const SLUG = 'mlab-forms-entries';
 
 	public const STATUS_ACTION  = 'mlab_forms_entry_status';
+	public const RESEND_ACTION  = 'mlab_forms_entry_resend';
 	public const NOTE_ACTION    = 'mlab_forms_entry_note';
 	private const EXPORT_ACTION = 'mlab_forms_export';
 
@@ -37,6 +42,7 @@ final class EntriesPage {
 	public function register(): void {
 		add_action( 'admin_menu', array( $this, 'add_page' ), 15 );
 		add_action( 'admin_post_' . self::STATUS_ACTION, array( $this, 'handle_status' ) );
+		add_action( 'admin_post_' . self::RESEND_ACTION, array( $this, 'handle_resend' ) );
 		add_action( 'admin_post_' . self::NOTE_ACTION, array( $this, 'handle_note' ) );
 		add_action( 'admin_post_' . self::EXPORT_ACTION, array( CsvExport::class, 'handle' ) );
 	}
@@ -178,6 +184,31 @@ final class EntriesPage {
 		$id = $this->verify_entry_action( self::STATUS_ACTION );
 		EntryRepository::set_status( $id, isset( $_POST['status'] ) ? sanitize_key( $_POST['status'] ) : '' ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- in verify_entry_action geprüft.
 		wp_safe_redirect( self::url( array( 'entry' => $id ) ) );
+		exit;
+	}
+
+	/**
+	 * Manueller Neuversand, ohne Kundenbestätigung oder erneute Verarbeitung.
+	 */
+	public function handle_resend(): void {
+		$id    = $this->verify_entry_action( self::RESEND_ACTION );
+		$entry = EntryRepository::find( $id );
+		if ( ! $entry || null !== $entry['deleted_at'] ) {
+			Capabilities::ensure( false );
+			return;
+		}
+		$form = FormRepository::find( (int) $entry['form_id'], false );
+		$sent = false;
+		if ( $form ) {
+			$submission           = new Submission( $form, (array) $entry['data'], (array) $entry['meta'] );
+			$submission->entry_id = $id;
+			$sent                 = Notifier::resend_to_recipients( $submission );
+		}
+		$message = $sent
+			? __( 'Erneuter Versand an den Mailversand übergeben: ', 'mlab-forms' ) . implode( ', ', Recipients::for_form( $form ) )
+			: __( 'Erneuter Versand fehlgeschlagen. Formular, Zustelladresse und Mailversand prüfen.', 'mlab-forms' );
+		EntryRepository::add_note( $id, 'log', $message );
+		wp_safe_redirect( self::url( array( 'entry' => $id ) ) . '#mlab-notes' );
 		exit;
 	}
 
