@@ -143,7 +143,7 @@ final class EntriesPage {
 			<form method="get" action="<?php echo esc_url( admin_url( Menu::PARENT ) ); ?>">
 				<input type="hidden" name="post_type" value="mlab_form">
 				<input type="hidden" name="page" value="<?php echo esc_attr( self::SLUG ); ?>">
-				<input type="hidden" name="status" value="<?php echo esc_attr( self::request_filters()[ 'status' ] ); ?>">
+				<input type="hidden" name="status" value="<?php echo esc_attr( self::request_filters()['status'] ); ?>">
 				<?php
 				$table->search_box( __( 'Anfragen durchsuchen', 'mlab-forms' ), 'mlab-entries' );
 				$table->display();
