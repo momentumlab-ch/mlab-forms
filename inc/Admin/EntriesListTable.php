@@ -52,6 +52,7 @@ final class EntriesListTable extends \WP_List_Table {
 			'form'    => __( 'Formular', 'mlab-forms' ),
 			'status'  => __( 'Status', 'mlab-forms' ),
 			'date'    => __( 'Eingegangen', 'mlab-forms' ),
+			'resend'  => __( 'Aktion', 'mlab-forms' ),
 		);
 	}
 
@@ -174,6 +175,12 @@ final class EntriesListTable extends \WP_List_Table {
 	 */
 	protected function column_default( $item, $column_name ): string {
 		switch ( $column_name ) {
+			case 'resend':
+				$form = EntryFormatter::form( (int) $item['form_id'] );
+				if ( ! $form || ! \MLab_Forms\Mail\Recipients::for_form( $form ) ) {
+					return '–';
+				}
+				return sprintf( '<button type="submit" class="button button-small" form="mlab-resend-%d" title="%s">%s</button>', (int) $item['id'], esc_attr( implode( ', ', \MLab_Forms\Mail\Recipients::for_form( $form ) ) ), esc_html__( 'Resend', 'mlab-forms' ) );
 			case 'form':
 				return esc_html( get_the_title( $item['form_id'] ) );
 			case 'status':
@@ -183,6 +190,18 @@ final class EntriesListTable extends \WP_List_Table {
 		}
 
 		return '';
+	}
+
+	/**
+	 * Separate POST-Formulare ausserhalb des Suchformulars, keine verschachtelten Formulare.
+	 */
+	public function render_resend_forms(): void {
+		foreach ( $this->items as $item ) {
+			printf( '<form id="mlab-resend-%d" method="post" action="%s">', (int) $item['id'], esc_url( admin_url( 'admin-post.php' ) ) );
+			echo EntriesPage::action_fields( EntriesPage::RESEND_ACTION, (int) $item['id'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escapt in action_fields.
+			echo '<input type="hidden" name="resend_list" value="1">';
+			echo '</form>';
+		}
 	}
 
 	/**

@@ -1,6 +1,8 @@
 == Changelog ==
 
 = Unreleased =
+* Resend-Button direkt pro Anfrage in der Liste, mit Ergebnisanzeige und Protokollierung.
+* Nur ein Update-Checker: Übernimmt MLab Core die Updates, bleibt der eigene GitHub-Checker inaktiv. Ohne Core bleibt GitHub der Fallback.
 * Gespeicherte Anfragen lassen sich in der Detailansicht erneut an die aktuellen Zustelladressen des Formulars senden, inklusive verfügbarer Anhänge. Keine weitere Kundenbestätigung; Ergebnis und ausführender Benutzer werden im Verlauf protokolliert.
 
 = 0.9.1 =
