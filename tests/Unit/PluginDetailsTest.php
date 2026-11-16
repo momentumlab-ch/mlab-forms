@@ -12,6 +12,8 @@ final class PluginDetailsTest extends TestCase {
 		$this->assertStringContainsString( 'Resend', $details->sections['description'] );
 		$this->assertStringContainsString( 'Zustelladresse', $details->sections['faq'] );
 		$this->assertArrayHasKey( 'installation', $details->sections );
+		$this->assertStringContainsString( 'anfragen.png', $details->sections['screenshots'] );
+		$this->assertSame( 5, substr_count( $details->sections['screenshots'], '<figure' ) );
 	}
 	public function test_other_plugins_and_failures_are_unchanged(): void {
 		$result = (object) array( 'version' => '1.0' );
