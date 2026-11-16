@@ -14,6 +14,7 @@ use MLab_Forms\Admin\FormEditor;
 use MLab_Forms\Admin\Menu;
 use MLab_Forms\Admin\MailTest;
 use MLab_Forms\Admin\Preview;
+use MLab_Forms\Admin\PluginDetails;
 use MLab_Forms\Admin\SettingsPage;
 use MLab_Forms\Admin\UpdatesTab;
 use MLab_Forms\Admin\Workspace;
@@ -59,7 +60,7 @@ final class Plugin {
 			new Starts(),
 		);
 		if ( is_admin() ) {
-			array_push( $modules, new Menu(), new FormEditor(), new Builder(), new Preview(), new EntriesPage(), new SettingsPage(), new UpdatesTab(), new ConnectionTest(), new Workspace(), new MailTest() );
+			array_push( $modules, new Menu(), new FormEditor(), new Builder(), new Preview(), new EntriesPage(), new SettingsPage(), new UpdatesTab(), new ConnectionTest(), new Workspace(), new MailTest(), new PluginDetails() );
 		}
 
 		foreach ( $modules as $module ) {

@@ -4,7 +4,7 @@ Tags: formulare, kontakt, anfrage
 Requires at least: 6.9
 Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 0.10.1
+Stable tag: 0.10.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,10 @@ Das Repository ist öffentlich, ein Token ist nicht nötig. Wird es privat, komm
 2. Auf main mergen. Der Workflow «Release» legt das Release `vX.Y.Z` mit `mlab-forms.zip` an, sobald es zur Version noch keines gibt. Ab dann sehen die Websites das Update.
 
 == Changelog ==
+
+= 0.10.2 =
+* Die WordPress-Detailseite enthält Funktionsübersicht, Einrichtung, FAQ und echte Screenshots der neuen Oberfläche mit fiktiven Demodaten.
+* Details funktionieren mit GitHub-Updates und MLab Core; Version, Download und Lizenzprüfung bleiben beim jeweiligen Anbieter.
 
 = 0.10.1 =
 * Checkboxen verwenden wieder die native WordPress-Darstellung, damit gesetzte Häkchen auch mit neueren WordPress-Versionen klar sichtbar sind.

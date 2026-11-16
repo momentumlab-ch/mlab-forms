@@ -202,3 +202,5 @@ function wp_send_json_error( $data, $status = 200 ) {
 function wp_send_json_success( $data ) {
     throw new RuntimeException( json_encode( array( 'success' => true, 'data' => $data ) ) );
 }
+
+function plugins_url( $path, $plugin = null ) { return "https://example.org/wp-content/plugins/mlab-forms/" . $path; }
