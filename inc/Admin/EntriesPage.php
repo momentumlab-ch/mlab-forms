@@ -130,13 +130,13 @@ final class EntriesPage {
 		$table = new EntriesListTable( self::request_filters() );
 		$table->prepare_items();
 		?>
+		<?php Workspace::notice_boundary(); ?>
 		<div class="wrap mlab-workspace">
 			<?php Workspace::heading( __( 'Anfragen', 'mlab-forms' ), __( 'Alle Anfragen. Ein klarer nächster Schritt.', 'mlab-forms' ) ); ?>
-			<hr class="wp-header-end">
 			<?php
 			if ( isset( $_GET['resend'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- reine Ergebnismeldung, keine Aktion.
 				$sent = 'sent' === $_GET['resend']; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- reine Ergebnismeldung.
-				printf( '<div class="notice %s"><p>%s</p></div>', $sent ? 'notice-success' : 'notice-error', esc_html( $sent ? __( 'Anfrage erneut an den Mailversand übergeben. Details stehen im Verlauf der Anfrage.', 'mlab-forms' ) : __( 'Erneuter Versand fehlgeschlagen. Details stehen im Verlauf der Anfrage.', 'mlab-forms' ) ) );
+				printf( '<div class="notice inline %s" data-mlab-notice><p>%s</p></div>', $sent ? 'notice-success' : 'notice-error', esc_html( $sent ? __( 'Anfrage erneut an den Mailversand übergeben. Details stehen im Verlauf der Anfrage.', 'mlab-forms' ) : __( 'Erneuter Versand fehlgeschlagen. Details stehen im Verlauf der Anfrage.', 'mlab-forms' ) ) );
 			}
 			$table->views();
 			?>

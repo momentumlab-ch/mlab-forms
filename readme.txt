@@ -4,7 +4,7 @@ Tags: formulare, kontakt, anfrage
 Requires at least: 6.9
 Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 0.10.0
+Stable tag: 0.10.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,10 @@ Das Repository ist öffentlich, ein Token ist nicht nötig. Wird es privat, komm
 2. Auf main mergen. Der Workflow «Release» legt das Release `vX.Y.Z` mit `mlab-forms.zip` an, sobald es zur Version noch keines gibt. Ab dann sehen die Websites das Update.
 
 == Changelog ==
+
+= 0.10.1 =
+* Checkboxen verwenden wieder die native WordPress-Darstellung, damit gesetzte Häkchen auch mit neueren WordPress-Versionen klar sichtbar sind.
+* Fremde Plugin-Meldungen stehen oberhalb der Oberfläche. Nur eigene Meldungen erscheinen innerhalb von MomentumLab Forms, auch bei nachträglich eingefügten Meldungen.
 
 = 0.10.0 =
 * Neues Backend-Design für Anfragen, Detailansicht und Einstellungen: helle Karten, CI-Gold und lokal eingebundene Montserrat-Schrift.

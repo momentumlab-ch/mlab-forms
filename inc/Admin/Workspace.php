@@ -49,6 +49,13 @@ final class Workspace {
 	}
 
 	/**
+	 * WordPress verschiebt globale Meldungen hinter diesen Anker, ausserhalb der Oberfläche.
+	 */
+	public static function notice_boundary(): void {
+		echo '<div class="mlab-external-notices" data-mlab-external-notices><hr class="wp-header-end"></div>';
+	}
+
+	/**
 	 * Kopfbereich mit skalierbarem Logo.
 	 *
 	 * @param string $title    Titel.
