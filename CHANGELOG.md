@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 0.10.2 =
+* Die WordPress-Detailseite enthält Funktionsübersicht, Einrichtung, FAQ und echte Screenshots der neuen Oberfläche mit fiktiven Demodaten.
+* Details funktionieren mit GitHub-Updates und MLab Core; Version, Download und Lizenzprüfung bleiben beim jeweiligen Anbieter.
+
 = 0.10.1 =
 * Checkboxen verwenden wieder die native WordPress-Darstellung, damit gesetzte Häkchen auch mit neueren WordPress-Versionen klar sichtbar sind.
 * Fremde Plugin-Meldungen stehen oberhalb der Oberfläche. Nur eigene Meldungen erscheinen innerhalb von MomentumLab Forms, auch bei nachträglich eingefügten Meldungen.

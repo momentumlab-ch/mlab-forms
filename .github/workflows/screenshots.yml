@@ -1,0 +1,67 @@
+name: Produkt-Screenshots
+on:
+  pull_request:
+    paths:
+      - 'bin/screenshots/**'
+      - '.github/workflows/screenshots.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  screenshots:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: local-test-only
+          MYSQL_DATABASE: wordpress_test
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -plocal-test-only"
+          --health-interval=10s --health-timeout=5s --health-retries=10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mysqli, mbstring, dom, zip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Lokales WordPress vorbereiten
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -o /tmp/wp-cli.phar
+          mkdir -p /tmp/mlab-wp
+          php /tmp/wp-cli.phar core download --path=/tmp/mlab-wp --locale=de_DE
+          php /tmp/wp-cli.phar config create --path=/tmp/mlab-wp --dbname=wordpress_test --dbuser=root --dbpass=local-test-only --dbhost=127.0.0.1
+          php /tmp/wp-cli.phar core install --path=/tmp/mlab-wp --url=http://127.0.0.1:8090 --title='MomentumLab Demo' --admin_user=demo --admin_password=local-screenshots-only --admin_email=demo@example.org --skip-email
+          php /tmp/wp-cli.phar config set WP_HOME http://127.0.0.1:8090 --path=/tmp/mlab-wp
+          php /tmp/wp-cli.phar config set WP_SITEURL http://127.0.0.1:8090 --path=/tmp/mlab-wp
+          php /tmp/wp-cli.phar config set DISABLE_WP_CRON true --raw --path=/tmp/mlab-wp
+          ln -s "$GITHUB_WORKSPACE" /tmp/mlab-wp/wp-content/plugins/mlab-forms
+          php /tmp/wp-cli.phar plugin activate mlab-forms --path=/tmp/mlab-wp
+          php /tmp/wp-cli.phar eval-file "$GITHUB_WORKSPACE/bin/screenshots/seed.php" --path=/tmp/mlab-wp
+          php -S 127.0.0.1:8090 -t /tmp/mlab-wp > /tmp/mlab-php.log 2>&1 &
+      - name: Screenshots aufnehmen und Checkbox prüfen
+        run: |
+          npm ci --no-audit --no-fund
+          npm install --no-save --package-lock=false playwright@1.56.1
+          npx playwright install --with-deps chromium
+          node bin/screenshots/capture.cjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mlab-forms-screenshots
+          path: assets/screenshots/*.png
+      - name: Screenshots im Arbeitsbranch sichern
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/screenshots/*.png
+          if ! git diff --cached --quiet; then
+            git commit -m 'Add screenshots from real WordPress demo'
+            git push
+          fi

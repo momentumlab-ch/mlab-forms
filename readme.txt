@@ -4,7 +4,7 @@ Tags: formulare, kontakt, anfrage
 Requires at least: 6.9
 Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 0.10.1
+Stable tag: 0.10.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,27 @@ Updates kommen aus den GitHub-Releases von momentumlab-ch/mlab-forms und erschei
 
 Das Repository ist öffentlich, ein Token ist nicht nötig. Wird es privat, kommt der Token nur als Konstante `MLAB_FORMS_GITHUB_TOKEN` in die `wp-config.php` der Website, nie in den Code.
 
+== Screenshots ==
+
+Die Aufnahmen zeigen eine echte WordPress-Testinstallation mit fiktiven Demodaten.
+
+1. Anfragenliste mit Status, Suche und direktem Resend.
+2. Seitliche Vorschau mit Zustelladresse.
+3. Detailansicht mit Notizen und Verlauf.
+4. E-Mail-Einstellungen mit Empfänger, Absender und Testversand.
+5. Mobilansicht der Anfragen.
+
+== Frequently Asked Questions ==
+
+= Erhält der Kunde bei Resend eine weitere Bestätigung? =
+Nein. Resend sendet die gespeicherte Anfrage ausschliesslich an die aktuell konfigurierten Zustelladressen des Formulars. Ohne eigene Adressen gelten die Standard-Empfänger. Verfügbare Anhänge werden mitgesendet und das Ergebnis wird protokolliert.
+
+= Benötige ich ein SMTP-Plugin? =
+Forms verwendet wp_mail. Für einen verlässlich konfigurierten Versand kannst du ein SMTP-Plugin ergänzen. Eine erfolgreiche Übergabe an wp_mail bestätigt noch keinen Eingang im Zielpostfach.
+
+= Wo liegen die Daten? =
+Anfragen liegen in der eigenen WordPress-Datenbank. Hochgeladene Dateien werden geschützt auf dem eigenen Server gespeichert. Optionale Spam-Dienste können Daten an Dritte übertragen. Aufbewahrung und Löschung sind konfigurierbar.
+
 == Installation ==
 
 1. Das ZIP `mlab-forms.zip` aus dem neusten GitHub-Release herunterladen.
@@ -78,6 +99,10 @@ Das Repository ist öffentlich, ein Token ist nicht nötig. Wird es privat, komm
 2. Auf main mergen. Der Workflow «Release» legt das Release `vX.Y.Z` mit `mlab-forms.zip` an, sobald es zur Version noch keines gibt. Ab dann sehen die Websites das Update.
 
 == Changelog ==
+
+= 0.10.2 =
+* Die WordPress-Detailseite enthält Funktionsübersicht, Einrichtung, FAQ und echte Screenshots der neuen Oberfläche mit fiktiven Demodaten.
+* Details funktionieren mit GitHub-Updates und MLab Core; Version, Download und Lizenzprüfung bleiben beim jeweiligen Anbieter.
 
 = 0.10.1 =
 * Checkboxen verwenden wieder die native WordPress-Darstellung, damit gesetzte Häkchen auch mit neueren WordPress-Versionen klar sichtbar sind.
