@@ -5,8 +5,8 @@ use MLab_Forms\Forms\FormRepository;
 use MLab_Forms\Entries\EntryRepository;
 use MLab_Forms\Settings;
 
-if ( ! defined( 'WP_CLI' ) || ! WP_CLI || 'http://127.0.0.1:8090' !== get_option( 'siteurl' ) ) {
-	exit( 'Nur für die lokale Screenshot-Installation.' );
+if ( ! defined( 'WP_CLI' ) || ! WP_CLI || '/tmp/mlab-wp' !== realpath( ABSPATH ) || 'true' !== getenv( 'GITHUB_ACTIONS' ) ) {
+	WP_CLI::error( 'Nur für die kurzlebige Screenshot-Installation auf GitHub Actions.' );
 }
 wp_set_current_user( 1 );
 update_option( 'timezone_string', 'Europe/Zurich' );

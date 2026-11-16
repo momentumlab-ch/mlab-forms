@@ -65,6 +65,27 @@ Updates kommen aus den GitHub-Releases von momentumlab-ch/mlab-forms und erschei
 
 Das Repository ist öffentlich, ein Token ist nicht nötig. Wird es privat, kommt der Token nur als Konstante `MLAB_FORMS_GITHUB_TOKEN` in die `wp-config.php` der Website, nie in den Code.
 
+== Screenshots ==
+
+Die Aufnahmen zeigen eine echte WordPress-Testinstallation mit fiktiven Demodaten.
+
+1. Anfragenliste mit Status, Suche und direktem Resend.
+2. Seitliche Vorschau mit Zustelladresse.
+3. Detailansicht mit Notizen und Verlauf.
+4. E-Mail-Einstellungen mit Empfänger, Absender und Testversand.
+5. Mobilansicht der Anfragen.
+
+== Frequently Asked Questions ==
+
+= Erhält der Kunde bei Resend eine weitere Bestätigung? =
+Nein. Resend sendet die gespeicherte Anfrage ausschliesslich an die aktuell konfigurierten Zustelladressen des Formulars. Ohne eigene Adressen gelten die Standard-Empfänger. Verfügbare Anhänge werden mitgesendet und das Ergebnis wird protokolliert.
+
+= Benötige ich ein SMTP-Plugin? =
+Forms verwendet wp_mail. Für einen verlässlich konfigurierten Versand kannst du ein SMTP-Plugin ergänzen. Eine erfolgreiche Übergabe an wp_mail bestätigt noch keinen Eingang im Zielpostfach.
+
+= Wo liegen die Daten? =
+Anfragen liegen in der eigenen WordPress-Datenbank. Hochgeladene Dateien werden geschützt auf dem eigenen Server gespeichert. Optionale Spam-Dienste können Daten an Dritte übertragen. Aufbewahrung und Löschung sind konfigurierbar.
+
 == Installation ==
 
 1. Das ZIP `mlab-forms.zip` aus dem neusten GitHub-Release herunterladen.

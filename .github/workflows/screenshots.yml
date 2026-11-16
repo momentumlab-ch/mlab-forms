@@ -39,6 +39,8 @@ jobs:
           php /tmp/wp-cli.phar core download --path=/tmp/mlab-wp --locale=de_DE
           php /tmp/wp-cli.phar config create --path=/tmp/mlab-wp --dbname=wordpress_test --dbuser=root --dbpass=local-test-only --dbhost=127.0.0.1
           php /tmp/wp-cli.phar core install --path=/tmp/mlab-wp --url=http://127.0.0.1:8090 --title='MomentumLab Demo' --admin_user=demo --admin_password=local-screenshots-only --admin_email=demo@example.org --skip-email
+          php /tmp/wp-cli.phar config set WP_HOME http://127.0.0.1:8090 --path=/tmp/mlab-wp
+          php /tmp/wp-cli.phar config set WP_SITEURL http://127.0.0.1:8090 --path=/tmp/mlab-wp
           php /tmp/wp-cli.phar config set DISABLE_WP_CRON true --raw --path=/tmp/mlab-wp
           ln -s "$GITHUB_WORKSPACE" /tmp/mlab-wp/wp-content/plugins/mlab-forms
           php /tmp/wp-cli.phar plugin activate mlab-forms --path=/tmp/mlab-wp
