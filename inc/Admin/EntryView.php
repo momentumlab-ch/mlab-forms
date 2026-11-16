@@ -35,6 +35,7 @@ final class EntryView {
 	public function render(): void {
 		$id = (int) $this->entry['id'];
 		?>
+		<?php Workspace::notice_boundary(); ?>
 		<div class="wrap mlab-workspace mlab-entry">
 			<p><a href="<?php echo esc_url( EntriesPage::url() ); ?>">&larr; <?php esc_html_e( 'Alle Anfragen', 'mlab-forms' ); ?></a></p>
 			<?php

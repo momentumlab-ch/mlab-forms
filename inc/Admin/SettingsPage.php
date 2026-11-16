@@ -145,6 +145,7 @@ final class SettingsPage {
 
 		$tab = $this->current_tab();
 		?>
+		<?php Workspace::notice_boundary(); ?>
 		<div class="wrap mlab-workspace">
 			<?php Workspace::heading( __( 'Einstellungen', 'mlab-forms' ), __( 'Einrichten. Testen. Bereit.', 'mlab-forms' ) ); ?>
 			<?php $this->render_notices(); ?>
@@ -274,7 +275,15 @@ final class SettingsPage {
 	 */
 	private function render_notices(): void {
 		// Ausserhalb von «Einstellungen» zeigt WordPress die Meldungen nicht von selbst an.
-		settings_errors();
+		// Nur eigene Validierungsmeldungen in der Oberfläche; globale Meldungen bleiben davor.
+		ob_start();
+		settings_errors( Settings::OPTION );
+		$notices = (string) ob_get_clean();
+		echo str_replace( 'class="', 'data-mlab-notice class="inline ', $notices ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- settings_errors escapt und filtert seine Ausgabe selbst.
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- reine Ergebnismeldung.
+		if ( isset( $_GET['settings-updated'] ) && 'true' === $_GET['settings-updated'] ) {
+			printf( '<div class="notice notice-success inline" data-mlab-notice><p>%s</p></div>', esc_html__( 'Einstellungen gespeichert.', 'mlab-forms' ) );
+		}
 	}
 
 	/**

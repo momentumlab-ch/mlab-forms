@@ -49,7 +49,7 @@ final class FieldRenderer {
 
 		self::notes( $field );
 		if ( 'email_from_address' === $args['key'] && Sender::is_foreign_address( $value ) ) {
-			printf( '<div class="notice notice-warning inline"><p>%s</p></div>', esc_html__( 'Diese Adresse gehört nicht zu deiner Website. Mails können im Spam landen.', 'mlab-forms' ) );
+			printf( '<div class="notice notice-warning inline" data-mlab-notice><p>%s</p></div>', esc_html__( 'Diese Adresse gehört nicht zu deiner Website. Mails können im Spam landen.', 'mlab-forms' ) );
 		}
 	}
 
@@ -63,7 +63,7 @@ final class FieldRenderer {
 			printf( '<p class="description">%s</p>', esc_html( $field['description'] ) );
 		}
 		if ( ! empty( $field['notice'] ) ) {
-			printf( '<div class="notice notice-warning inline"><p>%s</p></div>', esc_html( $field['notice'] ) );
+			printf( '<div class="notice notice-warning inline" data-mlab-notice><p>%s</p></div>', esc_html( $field['notice'] ) );
 		}
 		if ( ! empty( $field['test'] ) ) {
 			printf(

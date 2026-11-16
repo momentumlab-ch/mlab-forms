@@ -3,6 +3,21 @@
 	'use strict';
 	var root = document.querySelector( '.mlab-workspace' );
 	if ( ! root ) { return; }
+	// Globale Meldungen bleiben sichtbar, aber ausserhalb unseres Arbeitsbereichs.
+	var externalNotices = document.querySelector( '[data-mlab-external-notices]' );
+	function separateNotices() {
+		if ( ! externalNotices ) { return; }
+		root.querySelectorAll( '.notice, div.updated, div.error' ).forEach( function ( notice ) {
+			if ( root.contains( notice ) && ! notice.closest( '[data-mlab-notice]' ) ) {
+				externalNotices.appendChild( notice );
+			}
+		} );
+	}
+	separateNotices();
+	// Erfasst auch Meldungen, die andere Plugins erst nach dem Laden einfügen.
+	if ( externalNotices && typeof MutationObserver === 'function' ) {
+		new MutationObserver( separateNotices ).observe( root, { childList: true, subtree: true } );
+	}
 	var config = window.mlabFormsWorkspace || {};
 	var dialog = root.querySelector( '.mlab-drawer' );
 	var trigger;

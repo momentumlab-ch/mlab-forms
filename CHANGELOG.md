@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 0.10.1 =
+* Checkboxen verwenden wieder die native WordPress-Darstellung, damit gesetzte Häkchen auch mit neueren WordPress-Versionen klar sichtbar sind.
+* Fremde Plugin-Meldungen stehen oberhalb der Oberfläche. Nur eigene Meldungen erscheinen innerhalb von MomentumLab Forms, auch bei nachträglich eingefügten Meldungen.
+
 = 0.10.0 =
 * Neues Backend-Design für Anfragen, Detailansicht und Einstellungen: helle Karten, CI-Gold und lokal eingebundene Montserrat-Schrift.
 * Neues skalierbares Forms-Logo als SVG, inklusive dunkler Variante und Plugin-Icon.
