@@ -204,3 +204,4 @@ function wp_send_json_success( $data ) {
 }
 
 function plugins_url( $path, $plugin = null ) { return "https://example.org/wp-content/plugins/mlab-forms/" . $path; }
+function is_wp_error( $value ) { return $value instanceof WP_Error; }

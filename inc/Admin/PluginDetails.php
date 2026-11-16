@@ -33,12 +33,12 @@ final class PluginDetails {
 		if ( 'plugin_information' !== $action || 'mlab-forms' !== ( $args->slug ?? '' ) || ! is_object( $result ) || is_wp_error( $result ) ) {
 			return $result;
 		}
-		$result->name = 'MomentumLab Forms';
-		$sections     = (array) ( $result->sections ?? array() );
+		$result->name             = 'MomentumLab Forms';
+		$sections                 = (array) ( $result->sections ?? array() );
 		$sections['description']  = self::description();
 		$sections['installation'] = '<ol><li>' . esc_html__( 'Plugin aktivieren und unter Einstellungen → E-Mail Empfänger und Absender hinterlegen.', 'mlab-forms' ) . '</li><li>' . esc_html__( 'Änderungen speichern und eine Testmail senden.', 'mlab-forms' ) . '</li><li>' . esc_html__( 'Formular im Builder erstellen und mit [mlab_form id="123"] auf einer Seite einbinden.', 'mlab-forms' ) . '</li><li>' . esc_html__( 'Neue Anfragen unter Anfragen prüfen, bearbeiten und bei Bedarf erneut zustellen.', 'mlab-forms' ) . '</li></ol>';
-		$sections['faq'] = '<h3>' . esc_html__( 'An wen geht Resend?', 'mlab-forms' ) . '</h3><p>' . esc_html__( 'Ausschliesslich an die aktuell hinterlegte Zustelladresse des Formulars. Ohne eigene Zustelladresse gelten die Standard-Empfänger. Die vom Kunden eingegebene Adresse erhält beim Neuversand keine weitere Bestätigung.', 'mlab-forms' ) . '</p><h3>' . esc_html__( 'Wo bleiben die Daten?', 'mlab-forms' ) . '</h3><p>' . esc_html__( 'Anfragen werden in der eigenen WordPress-Datenbank gespeichert. Aufbewahrung und Löschung sind einstellbar. Optionale Spam-Dienste können Daten an Dritte übertragen und müssen passend zur Datenschutzerklärung eingerichtet werden.', 'mlab-forms' ) . '</p><h3>' . esc_html__( 'Wie kommen Updates?', 'mlab-forms' ) . '</h3><p>' . esc_html__( 'Verwaltet MLab Core dieses Plugin, liefert Core die Updates über den Lizenzserver. Sonst übernimmt der direkte GitHub-Update-Checker. Automatische Updates lassen sich in WordPress ein- und ausschalten.', 'mlab-forms' ) . '</p>';
-		$screenshots = self::screenshots();
+		$sections['faq']          = '<h3>' . esc_html__( 'An wen geht Resend?', 'mlab-forms' ) . '</h3><p>' . esc_html__( 'Ausschliesslich an die aktuell hinterlegte Zustelladresse des Formulars. Ohne eigene Zustelladresse gelten die Standard-Empfänger. Die vom Kunden eingegebene Adresse erhält beim Neuversand keine weitere Bestätigung.', 'mlab-forms' ) . '</p><h3>' . esc_html__( 'Wo bleiben die Daten?', 'mlab-forms' ) . '</h3><p>' . esc_html__( 'Anfragen werden in der eigenen WordPress-Datenbank gespeichert. Aufbewahrung und Löschung sind einstellbar. Optionale Spam-Dienste können Daten an Dritte übertragen und müssen passend zur Datenschutzerklärung eingerichtet werden.', 'mlab-forms' ) . '</p><h3>' . esc_html__( 'Wie kommen Updates?', 'mlab-forms' ) . '</h3><p>' . esc_html__( 'Verwaltet MLab Core dieses Plugin, liefert Core die Updates über den Lizenzserver. Sonst übernimmt der direkte GitHub-Update-Checker. Automatische Updates lassen sich in WordPress ein- und ausschalten.', 'mlab-forms' ) . '</p>';
+		$screenshots              = self::screenshots();
 		if ( '' !== $screenshots ) {
 			$sections['screenshots'] = $screenshots;
 		}
@@ -58,11 +58,11 @@ final class PluginDetails {
 	 */
 	private static function screenshots(): string {
 		$images = array(
-			'anfragen.png'             => __( 'Anfragen mit Status, Suche und direkter Resend-Aktion.', 'mlab-forms' ),
-			'anfragen-vorschau.png'    => __( 'Seitliche Vorschau mit den Angaben und der Zustelladresse.', 'mlab-forms' ),
-			'anfrage-detail.png'       => __( 'Detailansicht mit Status, internen Notizen und Verlauf.', 'mlab-forms' ),
+			'anfragen.png'            => __( 'Anfragen mit Status, Suche und direkter Resend-Aktion.', 'mlab-forms' ),
+			'anfragen-vorschau.png'   => __( 'Seitliche Vorschau mit den Angaben und der Zustelladresse.', 'mlab-forms' ),
+			'anfrage-detail.png'      => __( 'Detailansicht mit Status, internen Notizen und Verlauf.', 'mlab-forms' ),
 			'einstellungen-email.png' => __( 'E-Mail-Einstellungen: Empfänger, Absender und Testversand.', 'mlab-forms' ),
-			'anfragen-mobil.png'       => __( 'Anfragen auf einem schmalen Bildschirm.', 'mlab-forms' ),
+			'anfragen-mobil.png'      => __( 'Anfragen auf einem schmalen Bildschirm.', 'mlab-forms' ),
 		);
 		$html   = '<p>' . esc_html__( 'Aufnahmen einer WordPress-Testinstallation. Alle Namen, Adressen und Anfragen sind fiktive Demodaten.', 'mlab-forms' ) . '</p>';
 		$count  = 0;
